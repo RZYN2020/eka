@@ -1,11 +1,9 @@
-.writing-list,
-.note-list {
+.writing-list {
 	display: grid;
 	gap: 10px;
 }
 
-.writing-row,
-.note-row {
+.writing-row {
 	display: grid;
 	grid-template-columns: 100px minmax(0, 1fr);
 	gap: 20px;
@@ -16,8 +14,7 @@
 	padding: 3px 0;
 }
 
-.writing-row time,
-.note-row > span {
+.writing-row > time {
 	overflow: hidden;
 	color: var(--faint);
 	font-size: 12px;
@@ -26,12 +23,20 @@
 	white-space: nowrap;
 }
 
-.writing-row h2,
-.note-row h3 {
+.writing-row h2 {
 	margin: 0;
 	font-size: 15px;
 	font-weight: 400;
 	line-height: 1.6;
+}
+
+.taxonomy-path {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0 6px;
+	margin-top: 2px;
+	color: var(--faint);
+	font-size: 11px;
 }
 
 .tag-list {
@@ -43,6 +48,54 @@
 	color: var(--faint);
 	font-size: 11px;
 	list-style: none;
+}
+
+.category-filter {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px 18px;
+	margin: -32px 0 40px;
+	color: var(--muted);
+	font-size: 13px;
+}
+
+.category-filter a[aria-current="page"] {
+	color: var(--ink);
+}
+
+.category-index {
+	display: grid;
+	gap: 40px;
+}
+
+.category-index-heading {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 10px;
+}
+
+.category-index-heading a {
+	font-size: 18px;
+	font-weight: 500;
+}
+
+.category-index-heading span,
+.category-index small {
+	color: var(--faint);
+	font-size: 12px;
+	font-weight: 400;
+}
+
+.category-index nav {
+	display: grid;
+	gap: 6px;
+	padding-left: 20px;
+}
+
+.category-index nav a {
+	display: flex;
+	justify-content: space-between;
+	font-size: 14px;
 }
 
 .article-header,
@@ -258,8 +311,7 @@
 }
 
 @media (max-width: 700px) {
-	.writing-row,
-	.note-row {
+	.writing-row {
 		grid-template-columns: 1fr;
 		gap: 0;
 	}

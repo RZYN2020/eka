@@ -2,7 +2,8 @@
 title: 我们向何处去？
 description: ''
 publishedAt: '2026-02-07T20:43:41+08:00'
-kind: essay
+category: Human
+subcategories: []
 tags: []
 draft: true
 featured: false

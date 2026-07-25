@@ -1,11 +1,15 @@
 ---
 import { getCollection } from 'astro:content';
+import { isFormTag } from '../../config/taxonomy';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getTagCounts, sortWriting, tagSlug } from '../../lib/content';
 
-const writing = sortWriting((await getCollection('writing')).filter((entry) => !entry.data.draft));
-const notes = (await getCollection('notes')).filter((entry) => !entry.data.draft);
-const tags = getTagCounts([...writing, ...notes]);
+const entries = sortWriting((await getCollection('writing')).filter((entry) => !entry.data.draft));
+const tags = getTagCounts(entries);
+const groups = [
+	{ name: 'Topics', tags: tags.filter(([tag]) => !isFormTag(tag)) },
+	{ name: 'Forms', tags: tags.filter(([tag]) => isFormTag(tag)) },
+];
 ---
 
 <BaseLayout title="Tags">
@@ -13,12 +17,19 @@ const tags = getTagCounts([...writing, ...notes]);
 		<h1>Tags</h1>
 	</header>
 
-	<ul class="tag-index">
-		{tags.map(([tag, count]) => (
-			<li>
-				<a href={`/tags/${tagSlug(tag)}/`}>{tag}</a>
-				<span>{String(count).padStart(2, '0')}</span>
-			</li>
+	<div class="taxonomy-sections">
+		{groups.filter((group) => group.tags.length > 0).map((group) => (
+			<section>
+				<div class="section-rule"><h2>{group.name}</h2></div>
+				<ul class="tag-index">
+					{group.tags.map(([tag, count]) => (
+						<li>
+							<a href={`/tags/${tagSlug(tag)}/`}>{tag}</a>
+							<span>{String(count).padStart(2, '0')}</span>
+						</li>
+					))}
+				</ul>
+			</section>
 		))}
-	</ul>
+	</div>
 </BaseLayout>

@@ -2,9 +2,10 @@
 title: 编译器开发反思
 description: ''
 publishedAt: '2024-11-09T15:51:53+08:00'
-kind: technical
-tags:
+category: Tech
+subcategories:
   - System
+tags:
   - Reflection
   - Compiler
 draft: false

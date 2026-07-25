@@ -1,39 +1,18 @@
 import type { CollectionEntry } from 'astro:content';
+import { taxonomySlug } from '../config/taxonomy';
 
 export type WritingEntry = CollectionEntry<'writing'>;
-export type NoteEntry = CollectionEntry<'notes'>;
-
-export const writingKindLabel = {
-	essay: 'Essay',
-	technical: 'Technical',
-	journal: 'Journal',
-} as const;
-
-export const noteSourceLabel = {
-	blog: 'Knowledge',
-	algorithm: 'Algorithm',
-} as const;
 
 export function writingSlug(id: string) {
-	return id.replace(/\/index$/, '');
+	return id
+		.replace(/\/index$/, '')
+		.replace(/^algorithm\//, '');
 }
 
-export function noteSlug(id: string) {
-	return id.replace(/\/index$/, '');
-}
+export const tagSlug = taxonomySlug;
+export const categorySlug = taxonomySlug;
 
-export function tagSlug(tag: string) {
-	return tag
-		.normalize('NFKC')
-		.trim()
-		.toLocaleLowerCase()
-		.replace(/[\s_]+/g, '-')
-		.replace(/[^\p{Letter}\p{Number}-]+/gu, '')
-		.replace(/-{2,}/g, '-')
-		.replace(/^-|-$/g, '');
-}
-
-export function getTagCounts(entries: Array<WritingEntry | NoteEntry>) {
+export function getTagCounts(entries: WritingEntry[]) {
 	const counts = new Map<string, number>();
 	for (const entry of entries) {
 		for (const tag of entry.data.tags) counts.set(tag, (counts.get(tag) ?? 0) + 1);
@@ -42,7 +21,7 @@ export function getTagCounts(entries: Array<WritingEntry | NoteEntry>) {
 }
 
 export function formatDate(date?: Date, locale = 'zh-CN') {
-	if (!date) return '持续更新';
+	if (!date) return '';
 	return new Intl.DateTimeFormat(locale, {
 		year: 'numeric',
 		month: '2-digit',
@@ -51,13 +30,11 @@ export function formatDate(date?: Date, locale = 'zh-CN') {
 }
 
 export function sortWriting(entries: WritingEntry[]) {
-	return entries.sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime());
-}
-
-export function sortNotes(entries: NoteEntry[]) {
 	return entries.sort((a, b) => {
-		const order = a.data.order - b.data.order;
-		if (order !== 0) return order;
-		return (b.data.publishedAt?.getTime() ?? 0) - (a.data.publishedAt?.getTime() ?? 0);
+		const dateOrder = (b.data.publishedAt?.getTime() ?? 0) - (a.data.publishedAt?.getTime() ?? 0);
+		if (dateOrder !== 0) return dateOrder;
+		const manualOrder = a.data.order - b.data.order;
+		if (manualOrder !== 0) return manualOrder;
+		return a.data.title.localeCompare(b.data.title, 'zh-CN');
 	});
 }

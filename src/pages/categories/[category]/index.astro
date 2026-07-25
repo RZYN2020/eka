@@ -1,0 +1,41 @@
+---
+import { getCollection } from 'astro:content';
+import WritingList from '../../../components/WritingList.astro';
+import { categories } from '../../../config/taxonomy';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { categorySlug, sortWriting } from '../../../lib/content';
+
+export async function getStaticPaths() {
+	const entries = sortWriting((await getCollection('writing')).filter((entry) => !entry.data.draft));
+	return categories
+		.map((category) => ({
+			params: { category: categorySlug(category.name) },
+			props: {
+				category,
+				entries: entries.filter((entry) => entry.data.category === category.name),
+			},
+		}))
+		.filter(({ props }) => props.entries.length > 0);
+}
+
+const { category, entries } = Astro.props;
+---
+
+<BaseLayout title={category.name}>
+	<header class="page-heading">
+		<p class="eyebrow"><a href="/categories/">Categories</a></p>
+		<h1>{category.name}</h1>
+	</header>
+
+	<nav class="category-filter" aria-label={`${category.name} 子分类`}>
+		<a href={`/categories/${categorySlug(category.name)}/`} aria-current="page">All</a>
+		{category.subcategories.map((subcategory) => {
+			const count = entries.filter((entry) => entry.data.subcategories.includes(subcategory)).length;
+			return count > 0 && (
+				<a href={`/categories/${categorySlug(category.name)}/${categorySlug(subcategory)}/`}>{subcategory}</a>
+			);
+		})}
+	</nav>
+
+	<WritingList entries={entries} showCategory={false} />
+</BaseLayout>

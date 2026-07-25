@@ -7,28 +7,14 @@ const writing = defineCollection({
 	schema: z.object({
 		title: z.string(),
 		description: z.string().default(''),
-		publishedAt: z.coerce.date(),
-		updatedAt: z.coerce.date().optional(),
-		kind: z.enum(['essay', 'technical', 'journal']),
-		tags: z.array(z.string()).default([]),
-		draft: z.boolean().default(false),
-		featured: z.boolean().default(false),
-		legacyUrls: z.array(z.string()).default([]),
-	}),
-});
-
-const notes = defineCollection({
-	loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/notes' }),
-	schema: z.object({
-		title: z.string(),
-		description: z.string().default(''),
-		topic: z.string().default('Notes'),
-		tags: z.array(z.string()).default([]),
 		publishedAt: z.coerce.date().optional(),
 		updatedAt: z.coerce.date().optional(),
+		category: z.string(),
+		subcategories: z.array(z.string()).default([]),
+		tags: z.array(z.string()).default([]),
 		order: z.number().default(999),
 		draft: z.boolean().default(false),
-		source: z.enum(['blog', 'algorithm']).default('blog'),
+		featured: z.boolean().default(false),
 		legacyUrls: z.array(z.string()).default([]),
 	}),
 });
@@ -41,4 +27,4 @@ const resume = defineCollection({
 	}),
 });
 
-export const collections = { writing, notes, resume };
+export const collections = { writing, resume };

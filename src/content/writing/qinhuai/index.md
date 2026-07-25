@@ -2,7 +2,9 @@
 title: 負けたくない
 description: ''
 publishedAt: '2025-05-24T20:18:58+08:00'
-kind: journal
+category: Life
+subcategories:
+  - Journal
 tags: []
 draft: false
 featured: false

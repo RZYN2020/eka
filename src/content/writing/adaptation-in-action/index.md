@@ -2,9 +2,10 @@
 title: Adaptation in Action (and RL Basic)
 description: ''
 publishedAt: '2025-05-15T21:17:13+08:00'
-kind: technical
-tags:
+category: Tech
+subcategories:
   - AI
+tags:
   - LLM
   - RL
 draft: false

@@ -2,9 +2,10 @@
 title: BitTorrent协议及其扩展
 description: ''
 publishedAt: '2024-11-16T21:58:53+08:00'
-kind: technical
-tags:
+category: Tech
+subcategories:
   - System
+tags:
   - BitTorrent
   - Knowledge
 draft: false

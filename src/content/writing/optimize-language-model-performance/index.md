@@ -2,9 +2,10 @@
 title: Optimize the Performance of a LM
 description: ''
 publishedAt: '2025-05-10T17:47:01+08:00'
-kind: technical
-tags:
+category: Tech
+subcategories:
   - AI
+tags:
   - LLM
   - Code
   - Performance

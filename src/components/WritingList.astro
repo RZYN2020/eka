@@ -1,24 +1,29 @@
 ---
 import type { WritingEntry } from '../lib/content';
 import { formatDate, writingSlug } from '../lib/content';
+import CategoryPath from './CategoryPath.astro';
 import TagList from './TagList.astro';
 
 interface Props {
 	entries: WritingEntry[];
 	limit?: number;
 	showTags?: boolean;
+	showCategory?: boolean;
 }
 
-const { entries, limit, showTags = true } = Astro.props;
+const { entries, limit, showTags = true, showCategory = true } = Astro.props;
 const visibleEntries = typeof limit === 'number' ? entries.slice(0, limit) : entries;
 ---
 
 <div class="writing-list">
 	{visibleEntries.map((entry) => (
 		<article class="writing-row">
-			<time datetime={entry.data.publishedAt.toISOString()}>{formatDate(entry.data.publishedAt, 'sv-SE')}</time>
+			{entry.data.publishedAt
+				? <time datetime={entry.data.publishedAt.toISOString()}>{formatDate(entry.data.publishedAt, 'sv-SE')}</time>
+				: <span aria-hidden="true"></span>}
 			<div>
 				<h2><a href={`/writing/${writingSlug(entry.id)}/`}>{entry.data.title}</a></h2>
+				{showCategory && <CategoryPath category={entry.data.category} subcategories={entry.data.subcategories} />}
 				{showTags && <TagList tags={entry.data.tags} />}
 			</div>
 		</article>

@@ -4,7 +4,7 @@ export const site = {
 	nav: [
 		{ href: '/', label: 'Home' },
 		{ href: '/writing/', label: 'Writing' },
-		{ href: '/notes/', label: 'Notes' },
+		{ href: '/categories/', label: 'Categories' },
 		{ href: '/tags/', label: 'Tags' },
 		{ href: '/about/', label: 'About' },
 	],

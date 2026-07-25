@@ -2,9 +2,10 @@
 title: 打破壁垒：代理技术在家庭网络中的应用
 description: ''
 publishedAt: 2024-11-06T15:22:36.000Z
-kind: technical
-tags:
+category: Tech
+subcategories:
   - System
+tags:
   - Share
   - Network
   - Proxy

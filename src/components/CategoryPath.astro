@@ -1,0 +1,20 @@
+---
+import { categorySlug } from '../lib/content';
+
+interface Props {
+	category: string;
+	subcategories: string[];
+}
+
+const { category, subcategories } = Astro.props;
+---
+
+<nav class="taxonomy-path" aria-label="分类">
+	<a href={`/categories/${categorySlug(category)}/`}>{category}</a>
+	{subcategories.map((subcategory) => (
+		<>
+			<span aria-hidden="true">/</span>
+			<a href={`/categories/${categorySlug(category)}/${categorySlug(subcategory)}/`}>{subcategory}</a>
+		</>
+	))}
+</nav>

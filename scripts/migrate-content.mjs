@@ -27,7 +27,7 @@ const writingEntries = [
 	{ path: 'journal/content/posts/庐山游记/index.md', slug: 'lushan', kind: 'journal' },
 ];
 
-const blogNoteEntries = [
+const blogArticleEntries = [
 	{ path: 'RZYN2020.github.io/blogs/tech/树的非递归遍历—用栈模拟递归.md', slug: 'iterative-tree-traversal', topic: 'Algorithms' },
 	{ path: 'RZYN2020.github.io/blogs/tech/编译器的结构与任务/index.md', slug: 'compiler-structure', topic: 'Programming Languages' },
 	{ path: 'RZYN2020.github.io/blogs/tech/深度学习基础知识总结/index.md', slug: 'deep-learning-foundations', topic: 'AI' },
@@ -86,6 +86,25 @@ function stringArray(value) {
 	return values.filter(Boolean).map(String);
 }
 
+const categoryParents = {
+	AI: 'Tech',
+	System: 'Tech',
+	Backend: 'Tech',
+	Application: 'Tech',
+	Algorithm: 'Tech',
+	Instinct: 'Life',
+	Journal: 'Life',
+	Sociology: 'Human',
+	Economics: 'Human',
+};
+
+function taxonomy(data, fallbackCategory, fallbackSubcategory) {
+	const subcategories = stringArray(data.categories);
+	if (fallbackSubcategory && !subcategories.includes(fallbackSubcategory)) subcategories.push(fallbackSubcategory);
+	const category = subcategories.map((value) => categoryParents[value]).find(Boolean) ?? fallbackCategory;
+	return { category, subcategories };
+}
+
 function legacyPath(sourcePath, slug, type) {
 	if (sourcePath.startsWith('journal/')) return [`/journal/posts/${path.basename(path.dirname(sourcePath))}/`, `/journal/posts/${slug}/`];
 	if (type === 'note') return [`/posts/${slug}/`];
@@ -134,12 +153,20 @@ async function writeWriting(entry) {
 	const parsed = parseSource(raw);
 	const destinationDir = path.join(projectRoot, 'src/content/writing', entry.slug);
 	await fs.mkdir(destinationDir, { recursive: true });
+	const fallbackCategory = entry.path.startsWith('journal/')
+		? 'Life'
+		: entry.path.includes('/human/')
+			? 'Human'
+			: entry.path.includes('/life/')
+				? 'Life'
+				: 'Tech';
+	const classification = taxonomy(parsed.data, fallbackCategory, entry.kind === 'journal' ? 'Journal' : undefined);
 	const data = {
 		title: String(parsed.data.title ?? entry.slug),
 		description: String(parsed.data.description ?? ''),
 		publishedAt: parsed.data.date,
-		kind: entry.kind,
-		tags: [...new Set([...stringArray(parsed.data.categories), ...stringArray(parsed.data.tags)])],
+		...classification,
+		tags: [...new Set(stringArray(parsed.data.tags))],
 		draft: Boolean(parsed.data.draft),
 		featured: Boolean(entry.featured),
 		legacyUrls: legacyPath(entry.path, entry.slug, 'writing'),
@@ -148,30 +175,29 @@ async function writeWriting(entry) {
 	await copyBundleAssets(sourceFile, destinationDir);
 }
 
-async function writeBlogNote(entry) {
+async function writeBlogArticle(entry) {
 	const sourceFile = path.join(sourceRoot, entry.path);
 	const raw = await fs.readFile(sourceFile, 'utf8');
 	const parsed = parseSource(raw);
-	const destinationDir = path.join(projectRoot, 'src/content/notes/knowledge', entry.slug);
+	const destinationDir = path.join(projectRoot, 'src/content/writing', entry.slug);
 	await fs.mkdir(destinationDir, { recursive: true });
 	const data = {
 		title: String(parsed.data.title ?? entry.slug),
 		description: '',
-		topic: entry.topic,
-		tags: [...new Set([...stringArray(parsed.data.categories), ...stringArray(parsed.data.tags)])],
+		...taxonomy(parsed.data, 'Tech'),
+		tags: [...new Set(stringArray(parsed.data.tags))],
 		publishedAt: parsed.data.date,
 		order: 500,
 		draft: Boolean(parsed.data.draft),
-		source: 'blog',
-		legacyUrls: legacyPath(entry.path, entry.slug, 'note'),
+		legacyUrls: [...legacyPath(entry.path, entry.slug, 'note'), `/notes/knowledge/${entry.slug}/`],
 	};
 	await fs.writeFile(path.join(destinationDir, 'index.md'), matter.stringify(cleanBody(parsed.content), data));
 	await copyBundleAssets(sourceFile, destinationDir);
 }
 
-async function writeAlgorithmNotes() {
+async function writeAlgorithmArticles() {
 	const sourceDir = path.join(sourceRoot, 'algorithm/docs');
-	const destinationDir = path.join(projectRoot, 'src/content/notes/algorithm');
+	const destinationDir = path.join(projectRoot, 'src/content/writing/algorithm');
 	await fs.mkdir(destinationDir, { recursive: true });
 	await fs.cp(path.join(sourceDir, 'assets'), path.join(destinationDir, 'assets'), { recursive: true, force: true });
 	const files = (await fs.readdir(sourceDir)).filter((file) => file.endsWith('.md')).sort();
@@ -183,12 +209,15 @@ async function writeAlgorithmNotes() {
 		const data = {
 			title: algorithmTitles[slug] ?? heading ?? slug,
 			description: String(parsed.data.description ?? ''),
-			topic: slug === 'haskell-learning' ? 'Programming Languages' : 'Algorithms',
+			category: 'Tech',
+			subcategories: ['Algorithm'],
 			tags: stringArray(parsed.data.tags),
 			order: index,
 			draft: false,
-			source: 'algorithm',
-			legacyUrls: [`/algorithm/${slug}/`],
+			legacyUrls: [
+				`/algorithm/${slug}/`,
+				slug === 'index' ? '/notes/algorithm/' : `/notes/algorithm/${slug}/`,
+			],
 		};
 		let body = cleanBody(parsed.content);
 		if (heading && body.startsWith(`# ${heading}`)) body = body.slice(heading.length + 2).trimStart();
@@ -217,8 +246,8 @@ async function writeResume() {
 }
 
 await Promise.all(writingEntries.map(writeWriting));
-await Promise.all(blogNoteEntries.map(writeBlogNote));
-await writeAlgorithmNotes();
+await Promise.all(blogArticleEntries.map(writeBlogArticle));
+await writeAlgorithmArticles();
 await writeResume();
 await fs.mkdir(path.join(projectRoot, 'public/content-assets'), { recursive: true });
 await fs.cp(
@@ -228,4 +257,4 @@ await fs.cp(
 );
 await optimizeLargePngs(path.join(projectRoot, 'src/content'));
 
-console.log(`Migrated ${writingEntries.length} writing entries, ${blogNoteEntries.length + Object.keys(algorithmTitles).length} notes, and 3 resumes.`);
+console.log(`Migrated ${writingEntries.length + blogArticleEntries.length + Object.keys(algorithmTitles).length} articles and 3 resumes.`);

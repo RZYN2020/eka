@@ -2,7 +2,9 @@
 title: 凯撒不做狗屁工作
 description: ''
 publishedAt: '2026-04-18T14:05:00+08:00'
-kind: journal
+category: Life
+subcategories:
+  - Journal
 tags: []
 draft: false
 featured: false

@@ -1,0 +1,41 @@
+---
+import { getCollection } from 'astro:content';
+import WritingList from '../../../components/WritingList.astro';
+import { categories } from '../../../config/taxonomy';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { categorySlug, sortWriting } from '../../../lib/content';
+
+export async function getStaticPaths() {
+	const entries = sortWriting((await getCollection('writing')).filter((entry) => !entry.data.draft));
+	return categories.flatMap((category) =>
+		category.subcategories.map((subcategory) => ({
+			params: {
+				category: categorySlug(category.name),
+				subcategory: categorySlug(subcategory),
+			},
+			props: {
+				category: category.name,
+				subcategory,
+				entries: entries.filter(
+					(entry) => entry.data.category === category.name && entry.data.subcategories.includes(subcategory),
+				),
+			},
+		})),
+	).filter(({ props }) => props.entries.length > 0);
+}
+
+const { category, subcategory, entries } = Astro.props;
+---
+
+<BaseLayout title={subcategory}>
+	<header class="page-heading">
+		<p class="eyebrow">
+			<a href="/categories/">Categories</a>
+			<span aria-hidden="true"> / </span>
+			<a href={`/categories/${categorySlug(category)}/`}>{category}</a>
+		</p>
+		<h1>{subcategory}</h1>
+	</header>
+
+	<WritingList entries={entries} showCategory={false} />
+</BaseLayout>

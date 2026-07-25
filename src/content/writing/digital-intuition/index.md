@@ -2,9 +2,10 @@
 title: 数字直觉
 description: ''
 publishedAt: '2025-04-19T17:02:20+08:00'
-kind: essay
-tags:
+category: Life
+subcategories:
   - Instinct
+tags:
   - CheatSheet
 draft: false
 featured: false

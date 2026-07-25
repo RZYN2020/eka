@@ -1,8 +1,9 @@
 ---
 import { getCollection } from 'astro:content';
 import WritingList from '../../components/WritingList.astro';
+import { categories } from '../../config/taxonomy';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { sortWriting } from '../../lib/content';
+import { categorySlug, sortWriting } from '../../lib/content';
 
 const entries = sortWriting((await getCollection('writing')).filter((entry) => !entry.data.draft));
 ---
@@ -11,6 +12,13 @@ const entries = sortWriting((await getCollection('writing')).filter((entry) => !
 	<header class="page-heading">
 		<h1>Writing</h1>
 	</header>
+
+	<nav class="category-filter" aria-label="文章分类">
+		<a href="/writing/" aria-current="page">All</a>
+		{categories.map((category) => (
+			<a href={`/categories/${categorySlug(category.name)}/`}>{category.name}</a>
+		))}
+	</nav>
 
 	<WritingList entries={entries} />
 </BaseLayout>

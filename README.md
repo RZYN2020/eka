@@ -2,8 +2,9 @@
 
 Eka（赵勇臻）的个人内容出版网站。四个旧站被合并为一个 Astro 项目：
 
-- `Writing`：完整文章、技术写作与 Journal
-- `Notes`：算法、系统、编程语言与知识笔记
+- `Writing`：全部文章
+- `Categories`：父子两层的主要分类
+- `Tags`：跨分类的主题与文章形态标签
 - `About`：个人介绍、旅行地图与多语言简历
 
 ## Local development

@@ -1,0 +1,41 @@
+---
+import { getCollection } from 'astro:content';
+import { categories } from '../../config/taxonomy';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { categorySlug } from '../../lib/content';
+
+const entries = (await getCollection('writing')).filter((entry) => !entry.data.draft);
+---
+
+<BaseLayout title="Categories">
+	<header class="page-heading">
+		<h1>Categories</h1>
+	</header>
+
+	<div class="category-index">
+		{categories.map((category) => {
+			const categoryEntries = entries.filter((entry) => entry.data.category === category.name);
+			if (categoryEntries.length === 0) return null;
+			return (
+				<section>
+					<div class="category-index-heading">
+						<a href={`/categories/${categorySlug(category.name)}/`}>{category.name}</a>
+						<span>{String(categoryEntries.length).padStart(2, '0')}</span>
+					</div>
+					<nav aria-label={`${category.name} 子分类`}>
+						{category.subcategories.map((subcategory) => {
+							const count = categoryEntries.filter((entry) => entry.data.subcategories.includes(subcategory)).length;
+							if (count === 0) return null;
+							return (
+								<a href={`/categories/${categorySlug(category.name)}/${categorySlug(subcategory)}/`}>
+									<span>{subcategory}</span>
+									<small>{String(count).padStart(2, '0')}</small>
+								</a>
+							);
+						})}
+					</nav>
+				</section>
+			);
+		})}
+	</div>
+</BaseLayout>
