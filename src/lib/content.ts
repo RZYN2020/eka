@@ -37,17 +37,3 @@ export function sortNotes(entries: NoteEntry[]) {
 		return (b.data.publishedAt?.getTime() ?? 0) - (a.data.publishedAt?.getTime() ?? 0);
 	});
 }
-
-export function plainExcerpt(body: string, fallback = '', length = 126) {
-	if (fallback) return fallback;
-	const text = body
-		.replace(/^---[\s\S]*?---/m, '')
-		.replace(/```[\s\S]*?```/g, '')
-		.replace(/!\[[^\]]*\]\([^)]+\)/g, '')
-		.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
-		.replace(/<[^>]+>/g, '')
-		.replace(/[#>*_`~+-]/g, ' ')
-		.replace(/\s+/g, ' ')
-		.trim();
-	return text.length > length ? `${text.slice(0, length).trim()}…` : text;
-}

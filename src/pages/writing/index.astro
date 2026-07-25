@@ -1,47 +1,22 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { formatDate, plainExcerpt, sortWriting, writingSlug } from '../../lib/content';
+import { formatDate, sortWriting, writingSlug } from '../../lib/content';
 
 const entries = sortWriting((await getCollection('writing')).filter((entry) => !entry.data.draft));
 ---
 
-<BaseLayout title="Writing" description="技术、社会与个人经验：经过整理的完整写作。">
+<BaseLayout title="Writing">
 	<header class="page-heading">
 		<h1>Writing</h1>
-		<p>技术文章、阅读与思考，以及不定期的生活记录。</p>
 	</header>
 
-	<div class="filter-bar" aria-label="文章筛选">
-		<button class="filter-button" type="button" data-filter="all" aria-pressed="true">全部</button>
-		<button class="filter-button" type="button" data-filter="essay" aria-pressed="false">思想</button>
-		<button class="filter-button" type="button" data-filter="technical" aria-pressed="false">技术</button>
-		<button class="filter-button" type="button" data-filter="journal" aria-pressed="false">手记</button>
-	</div>
-
-	<div class="content-list" id="writing-list">
+	<div class="content-list">
 		{entries.map((entry) => (
-			<a class="content-row" data-kind={entry.data.kind} href={`/writing/${writingSlug(entry.id)}/`}>
-				<time class="content-index" datetime={entry.data.publishedAt.toISOString()}>{formatDate(entry.data.publishedAt)}</time>
-				<div class="content-main">
-					<h2>{entry.data.title}</h2>
-					<p>{plainExcerpt(entry.body ?? '', entry.data.description)}</p>
-				</div>
+			<a class="content-row" href={`/writing/${writingSlug(entry.id)}/`}>
+				<time class="content-index" datetime={entry.data.publishedAt.toISOString()}>{formatDate(entry.data.publishedAt, 'sv-SE')}</time>
+				<div class="content-main"><h2>{entry.data.title}</h2></div>
 			</a>
 		))}
 	</div>
 </BaseLayout>
-
-<script>
-	const buttons = [...document.querySelectorAll<HTMLButtonElement>('[data-filter]')];
-	const rows = [...document.querySelectorAll<HTMLElement>('[data-kind]')];
-	buttons.forEach((button) => {
-		button.addEventListener('click', () => {
-			const filter = button.dataset.filter;
-			buttons.forEach((item) => item.setAttribute('aria-pressed', String(item === button)));
-			rows.forEach((row) => {
-				row.hidden = filter !== 'all' && row.dataset.kind !== filter;
-			});
-		});
-	});
-</script>

@@ -1,6 +1,6 @@
 import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
-import { plainExcerpt, sortWriting, writingSlug } from '../lib/content';
+import { sortWriting, writingSlug } from '../lib/content';
 
 export async function GET(context: { site: URL }) {
 	const entries = sortWriting((await getCollection('writing')).filter((entry) => !entry.data.draft));
@@ -10,7 +10,7 @@ export async function GET(context: { site: URL }) {
 		site: context.site,
 		items: entries.map((entry) => ({
 			title: entry.data.title,
-			description: plainExcerpt(entry.body ?? '', entry.data.description),
+			description: entry.data.description || undefined,
 			pubDate: entry.data.publishedAt,
 			link: `/writing/${writingSlug(entry.id)}/`,
 		})),

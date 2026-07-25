@@ -1,6 +1,6 @@
 ---
 title: 扬州游记
-description: 沿着运河、园林与城市记忆行走。
+description: ''
 publishedAt: '2025-05-31T22:44:19+08:00'
 kind: journal
 topics: []

@@ -1,6 +1,7 @@
 ---
 const pathname = Astro.url.pathname;
 const nav = [
+	{ href: '/', label: 'Home' },
 	{ href: '/writing/', label: 'Writing' },
 	{ href: '/notes/', label: 'Notes' },
 	{ href: '/about/', label: 'About' },
@@ -8,16 +9,15 @@ const nav = [
 ---
 
 <header class="site-header">
-	<a class="brand" href="/" aria-label="Eka 首页">
-		<span>Eka</span>
-		<span class="brand-mark">赵勇臻</span>
-	</a>
 	<nav class="main-nav" aria-label="主导航">
 		{nav.map((item) => (
-			<a href={item.href} aria-current={pathname.startsWith(item.href) ? 'page' : undefined}>
+			<a href={item.href} aria-current={item.href === '/' ? pathname === '/' ? 'page' : undefined : pathname.startsWith(item.href) ? 'page' : undefined}>
 				{item.label}
 			</a>
 		))}
-		<a class="search-nav" href="/search/" aria-current={pathname.startsWith('/search/') ? 'page' : undefined}>Search</a>
+	</nav>
+	<nav class="social-nav" aria-label="其他链接">
+		<a href="https://github.com/RZYN2020" rel="me noopener" target="_blank">GitHub</a>
+		<a href="/rss.xml">RSS</a>
 	</nav>
 </header>

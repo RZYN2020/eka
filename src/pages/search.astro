@@ -1,21 +1,19 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { noteSlug, plainExcerpt, sortNotes, sortWriting, writingSlug } from '../lib/content';
+import { noteSlug, sortNotes, sortWriting, writingSlug } from '../lib/content';
 
 const writing = sortWriting((await getCollection('writing')).filter((entry) => !entry.data.draft));
 const notes = sortNotes((await getCollection('notes')).filter((entry) => !entry.data.draft));
 const documents = [
 	...writing.map((entry) => ({
 		title: entry.data.title,
-		description: plainExcerpt(entry.body ?? '', entry.data.description),
 		meta: entry.data.topics.join(' '),
 		type: 'Writing',
 		url: `/writing/${writingSlug(entry.id)}/`,
 	})),
 	...notes.map((entry) => ({
 		title: entry.data.title,
-		description: plainExcerpt(entry.body ?? '', entry.data.description),
 		meta: entry.data.topic,
 		type: 'Notes',
 		url: `/notes/${noteSlug(entry.id)}/`,
@@ -23,11 +21,9 @@ const documents = [
 ];
 ---
 
-<BaseLayout title="Search" description="搜索 Eka 的文章与笔记。">
+<BaseLayout title="Search">
 	<header class="page-heading">
-		<div class="eyebrow">Local index · No tracking</div>
 		<h1>Search</h1>
-		<p>搜索标题、摘要、主题和标签。所有查询都只在你的浏览器中完成。</p>
 	</header>
 
 	<label class="search-box">
@@ -53,13 +49,13 @@ const documents = [
 	function render(query = '') {
 		const term = query.trim().toLocaleLowerCase();
 		const matches = term
-			? data.filter((item: any) => `${item.title} ${item.description} ${item.meta}`.toLocaleLowerCase().includes(term))
+			? data.filter((item: any) => `${item.title} ${item.meta}`.toLocaleLowerCase().includes(term))
 			: data.slice(0, 12);
 		if (count) count.textContent = term ? `找到 ${matches.length} 条内容` : `最近展示 ${matches.length} / ${data.length} 条内容`;
 		if (results) results.innerHTML = matches.map((item: any, index: number) => `
 			<a class="content-row" href="${encodeURI(item.url)}">
 				<span class="content-index">${String(index + 1).padStart(2, '0')}</span>
-				<div class="content-main"><h2>${escapeHtml(item.title)}</h2><p>${escapeHtml(item.description)}</p></div>
+				<div class="content-main"><h2>${escapeHtml(item.title)}</h2></div>
 				<div class="content-meta">${escapeHtml(item.type)}</div>
 			</a>`).join('');
 	}
@@ -70,29 +66,25 @@ const documents = [
 
 <style>
 	.search-box {
-		display: grid;
-		grid-template-columns: auto 1fr;
-		gap: 1rem;
-		align-items: center;
-		padding: 0 0 0.8rem;
-		border-bottom: 1px solid var(--ink);
+		display: block;
+		width: min(100%, 700px);
+		margin-bottom: 16px;
 	}
 
 	.search-box span {
-		color: var(--ember);
-		font-family: var(--font-mono);
-		font-size: 0.65rem;
-		text-transform: uppercase;
+		display: none;
 	}
 
 	.search-box input {
 		width: 100%;
+		padding: 8px 0;
 		border: 0;
-		outline: 0;
+		border-bottom: 1px solid var(--line);
+		outline: none;
 		background: transparent;
 		color: var(--ink);
-		font-family: var(--font-serif);
-		font-size: clamp(1.5rem, 4vw, 2.5rem);
+		font: inherit;
+		font-size: 16px;
 	}
 
 	.search-box input::placeholder {
@@ -100,8 +92,8 @@ const documents = [
 	}
 
 	.search-count {
-		margin: 1rem 0 3rem;
+		margin: 0 0 32px;
 		color: var(--muted);
-		font-size: 0.72rem;
+		font-size: 14px;
 	}
 </style>

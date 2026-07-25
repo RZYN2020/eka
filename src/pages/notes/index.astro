@@ -1,16 +1,15 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { noteSlug, plainExcerpt, sortNotes } from '../../lib/content';
+import { noteSlug, sortNotes } from '../../lib/content';
 
 const entries = sortNotes((await getCollection('notes')).filter((entry) => !entry.data.draft));
 const groups = Map.groupBy(entries, (entry) => entry.data.topic);
 ---
 
-<BaseLayout title="Notes" description="算法、系统、编程语言与人工智能的长期学习笔记。">
+<BaseLayout title="Notes">
 	<header class="page-heading">
 		<h1>Notes</h1>
-		<p>算法、系统、编程语言与人工智能的学习笔记。</p>
 	</header>
 
 	<div class="note-groups">
@@ -24,10 +23,7 @@ const groups = Map.groupBy(entries, (entry) => entry.data.topic);
 					{topicEntries.map((entry) => (
 						<a class="content-row" href={`/notes/${noteSlug(entry.id)}/`}>
 							<span class="content-index">{entry.data.source === 'algorithm' ? 'Algorithm' : 'Note'}</span>
-							<div class="content-main">
-								<h3>{entry.data.title}</h3>
-								<p>{plainExcerpt(entry.body ?? '', entry.data.description, 105)}</p>
-							</div>
+							<div class="content-main"><h3>{entry.data.title}</h3></div>
 						</a>
 					))}
 				</div>
@@ -35,20 +31,3 @@ const groups = Map.groupBy(entries, (entry) => entry.data.topic);
 		))}
 	</div>
 </BaseLayout>
-
-<style>
-	.note-groups {
-		display: grid;
-		gap: 4.5rem;
-	}
-
-	.section-rule span {
-		color: var(--faint);
-		font-family: var(--font-mono);
-		font-size: 0.65rem;
-	}
-
-	.note-groups .content-list {
-		padding-top: 0.2rem;
-	}
-</style>

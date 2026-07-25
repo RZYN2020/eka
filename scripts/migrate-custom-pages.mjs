@@ -38,7 +38,6 @@ import 'leaflet/dist/leaflet.css';
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width" />
-	<meta name="description" content="Eka 的旅行足迹：城市、驻地与仍在延伸的道路。" />
 	<link rel="icon" type="image/webp" href="/favicon.webp" />
 	<title>旅行足迹 · Eka</title>
 </head>

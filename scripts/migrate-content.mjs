@@ -60,15 +60,6 @@ const algorithmTitles = {
 	'leetcode-zunxiang-36': 'LeetCode 尊享 100 · 36%',
 };
 
-const descriptions = {
-	'backend-panorama': '从思考、方法与实践三个层面，勾勒后台开发与软件架构的完整图景。',
-	'phantom-light': '人也许可以识破幻光，却不能没有幻光。',
-	'building-a-transformer-lm': '从基础 API 出发，实现并理解一个 Transformer 语言模型。',
-	'giddens-sociology': '阅读社会学，也是在重新理解我们置身其中的现代世界。',
-	'yangzhou': '沿着运河、园林与城市记忆行走。',
-	'lushan': '一段关于庐山、道路与时间的旅行记录。',
-};
-
 function parseSource(raw) {
 	if (raw.startsWith('+++')) {
 		const end = raw.indexOf('\n+++', 3);
@@ -145,7 +136,7 @@ async function writeWriting(entry) {
 	await fs.mkdir(destinationDir, { recursive: true });
 	const data = {
 		title: String(parsed.data.title ?? entry.slug),
-		description: descriptions[entry.slug] ?? '',
+		description: String(parsed.data.description ?? ''),
 		publishedAt: parsed.data.date,
 		kind: entry.kind,
 		topics: [...new Set([...stringArray(parsed.data.categories), ...stringArray(parsed.data.tags)])],
@@ -190,7 +181,7 @@ async function writeAlgorithmNotes() {
 		const heading = parsed.content.match(/^#\s+(.+)$/m)?.[1];
 		const data = {
 			title: algorithmTitles[slug] ?? heading ?? slug,
-			description: slug === 'index' ? '算法、数据结构与解题过程的长期记录。' : '',
+			description: String(parsed.data.description ?? ''),
 			topic: slug === 'haskell-learning' ? 'Programming Languages' : 'Algorithms',
 			order: index,
 			draft: false,

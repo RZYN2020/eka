@@ -1,6 +1,6 @@
 ---
 title: 算法笔记：前言
-description: 算法、数据结构与解题过程的长期记录。
+description: ''
 topic: Algorithms
 order: 2
 draft: false

@@ -7,14 +7,12 @@ import 'katex/dist/katex.min.css';
 interface Props {
 	title?: string;
 	description?: string;
-	image?: string;
 	article?: boolean;
 }
 
 const {
 	title = 'Eka · 赵勇臻',
-	description = '写技术、社会与个人经验。理解系统如何运转，也寻找人在其中保持自由的可能。',
-		image = '/og.png',
+	description = '',
 	article = false,
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -27,17 +25,16 @@ const pageTitle = title === 'Eka · 赵勇臻' ? title : `${title} · Eka`;
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<meta name="description" content={description} />
-		<meta name="theme-color" content="#f3f0e9" />
+		{description && <meta name="description" content={description} />}
+		<meta name="theme-color" content="#181818" />
 		<link rel="canonical" href={canonical} />
 		<link rel="icon" type="image/webp" href="/favicon.webp" />
 		<link rel="alternate" type="application/rss+xml" title="Eka" href="/rss.xml" />
 		<meta property="og:type" content={article ? 'article' : 'website'} />
 		<meta property="og:title" content={pageTitle} />
-		<meta property="og:description" content={description} />
+		{description && <meta property="og:description" content={description} />}
 		<meta property="og:url" content={canonical} />
-		<meta property="og:image" content={new URL(image, Astro.site)} />
-		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:card" content="summary" />
 		<title>{pageTitle}</title>
 	</head>
 	<body>

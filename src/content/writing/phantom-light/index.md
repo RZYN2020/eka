@@ -1,6 +1,6 @@
 ---
 title: 幻光
-description: 人也许可以识破幻光，却不能没有幻光。
+description: ''
 publishedAt: '2026-04-11T19:06:30+08:00'
 kind: journal
 topics: []

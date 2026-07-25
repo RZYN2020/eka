@@ -1,6 +1,6 @@
 ---
 title: 吉登斯「社会学」笔记
-description: 阅读社会学，也是在重新理解我们置身其中的现代世界。
+description: ''
 publishedAt: '2024-11-23T11:31:25+08:00'
 kind: essay
 topics:

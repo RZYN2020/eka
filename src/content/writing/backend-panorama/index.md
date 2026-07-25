@@ -1,6 +1,6 @@
 ---
 title: 后台开发全景图：思考、方法与实践
-description: 从思考、方法与实践三个层面，勾勒后台开发与软件架构的完整图景。
+description: ''
 publishedAt: '2025-07-06T17:23:46+08:00'
 kind: technical
 topics:

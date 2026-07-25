@@ -12,20 +12,17 @@ const recentNotes = [...Map.groupBy(notes, (entry) => entry.data.topic).values()
 
 <BaseLayout>
 	<section class="home-intro">
-		<h1>你好，我是 Eka。</h1>
-		<p>赵勇臻，软件工程师。这里放着我的技术文章、读书笔记和一些生活记录。</p>
-		<p class="home-links"><a href="/about/">关于我</a> · <a href="https://github.com/RZYN2020">GitHub</a> · <a href="/resume/">简历</a></p>
+		<h1>Eka</h1>
 	</section>
 
 	<section class="home-section">
 		<div class="section-rule">
 			<h2>Writing</h2>
-			<a href="/writing/">全部文章 →</a>
 		</div>
 		<div class="content-list">
 			{writing.slice(0, 12).map((entry) => (
 				<a class="content-row" href={`/writing/${writingSlug(entry.id)}/`}>
-					<time class="content-index" datetime={entry.data.publishedAt.toISOString()}>{formatDate(entry.data.publishedAt)}</time>
+					<time class="content-index" datetime={entry.data.publishedAt.toISOString()}>{formatDate(entry.data.publishedAt, 'sv-SE')}</time>
 					<div class="content-main"><h3>{entry.data.title}</h3></div>
 				</a>
 			))}
@@ -35,7 +32,6 @@ const recentNotes = [...Map.groupBy(notes, (entry) => entry.data.topic).values()
 	<section class="home-section">
 		<div class="section-rule">
 			<h2>Notes</h2>
-			<a href="/notes/">全部笔记 →</a>
 		</div>
 		<div class="content-list">
 			{recentNotes.map((entry) => (
@@ -47,47 +43,3 @@ const recentNotes = [...Map.groupBy(notes, (entry) => entry.data.topic).values()
 		</div>
 	</section>
 </BaseLayout>
-
-<style>
-	.home-intro {
-		max-width: 620px;
-		padding: 5rem 0 5.5rem;
-	}
-
-	.home-intro h1 {
-		margin: 0 0 0.9rem;
-		font-size: clamp(2rem, 6vw, 2.8rem);
-		font-weight: 650;
-		letter-spacing: -0.045em;
-		line-height: 1.15;
-	}
-
-	.home-intro p {
-		margin: 0;
-		color: var(--muted);
-		font-size: 0.95rem;
-		line-height: 1.75;
-	}
-
-	.home-intro .home-links {
-		margin-top: 0.8rem;
-		font-size: 0.8rem;
-	}
-
-	.home-links a {
-		color: var(--link);
-		text-decoration: underline;
-		text-decoration-color: color-mix(in srgb, var(--link) 40%, transparent);
-		text-underline-offset: 0.18em;
-	}
-
-	.home-section + .home-section {
-		margin-top: 4.5rem;
-	}
-
-	@media (max-width: 680px) {
-		.home-intro {
-			padding: 3.5rem 0 4rem;
-		}
-	}
-</style>

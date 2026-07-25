@@ -1,6 +1,6 @@
 ---
 title: 庐山游记
-description: 一段关于庐山、道路与时间的旅行记录。
+description: ''
 publishedAt: '2026-06-12T23:23:35+08:00'
 kind: journal
 topics: []

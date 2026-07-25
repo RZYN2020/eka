@@ -1,6 +1,6 @@
 ---
 title: Building a Transformer LM
-description: 从基础 API 出发，实现并理解一个 Transformer 语言模型。
+description: ''
 publishedAt: '2025-04-06T09:58:31+08:00'
 kind: technical
 topics:
