@@ -36,6 +36,11 @@ a:hover {
 	text-decoration: underline;
 }
 
+:focus-visible {
+	outline: 1px solid var(--link);
+	outline-offset: 3px;
+}
+
 ::selection {
 	background: color-mix(in srgb, var(--link) 30%, transparent);
 }

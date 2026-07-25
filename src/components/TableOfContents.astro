@@ -53,7 +53,15 @@ const items = headings.filter((heading) => heading.depth === 2 || heading.depth 
 				});
 			};
 
-			document.addEventListener('scroll', setCurrent, { passive: true });
+			let scheduled = false;
+			document.addEventListener('scroll', () => {
+				if (scheduled) return;
+				scheduled = true;
+				requestAnimationFrame(() => {
+					setCurrent();
+					scheduled = false;
+				});
+			}, { passive: true });
 			setCurrent();
 		</script>
 	</>

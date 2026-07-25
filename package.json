@@ -12,7 +12,7 @@
     "astro": "astro",
     "migrate": "node scripts/migrate-content.mjs && node scripts/migrate-custom-pages.mjs",
     "check": "astro check",
-    "verify": "node scripts/verify-build.mjs"
+    "verify": "node scripts/verify-build.mjs && node scripts/verify-content-styles.mjs"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7.2.1",

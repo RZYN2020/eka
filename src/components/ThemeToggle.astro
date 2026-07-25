@@ -10,6 +10,7 @@
 		const label = isDark ? 'Light' : 'Dark';
 		const text = button?.querySelector('span');
 		if (text) text.textContent = label;
+		button?.setAttribute('aria-pressed', String(isDark));
 	}
 
 	button?.addEventListener('click', () => {
