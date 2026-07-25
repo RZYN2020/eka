@@ -249,7 +249,8 @@
 	margin: 2em auto;
 }
 
-:root[data-theme="dark"] .prose-eka img {
+:root[data-theme="dark"] .prose-eka img,
+:root[data-theme="graphite"] .prose-eka img {
 	background: #fff;
 }
 
@@ -270,7 +271,9 @@
 }
 
 :root[data-theme="dark"] .astro-code,
-:root[data-theme="dark"] .astro-code span {
+:root[data-theme="dark"] .astro-code span,
+:root[data-theme="graphite"] .astro-code,
+:root[data-theme="graphite"] .astro-code span {
 	color: var(--shiki-dark) !important;
 	font-style: var(--shiki-dark-font-style) !important;
 	font-weight: var(--shiki-dark-font-weight) !important;

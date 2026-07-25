@@ -30,11 +30,13 @@ const pageTitle = title === site.fullTitle ? title : `${title} · ${site.title}`
 		<meta name="theme-color" content="#ffffff" />
 		<script is:inline>
 			const savedTheme = localStorage.getItem('eka-theme');
-			const theme = savedTheme === 'light' || savedTheme === 'dark'
+			const themes = ['light', 'sepia', 'dark', 'graphite'];
+			const theme = themes.includes(savedTheme)
 				? savedTheme
 				: matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+			const themeColors = { light: '#fbfbfa', sepia: '#f7f3e9', dark: '#1e1e1e', graphite: '#17191c' };
 			document.documentElement.dataset.theme = theme;
-			document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#111111' : '#ffffff');
+			document.querySelector('meta[name="theme-color"]')?.setAttribute('content', themeColors[theme]);
 		</script>
 		<link rel="canonical" href={canonical} />
 		<link rel="icon" type="image/webp" href="/favicon.webp" />

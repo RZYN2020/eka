@@ -1,25 +1,58 @@
-<button class="theme-toggle" type="button" aria-label="切换明暗主题" title="切换明暗主题">
-	<span aria-hidden="true">Dark</span>
-</button>
+<details class="theme-picker">
+	<summary class="theme-toggle" aria-label="选择主题">
+		<span>Paper</span>
+	</summary>
+	<div class="theme-menu" role="group" aria-label="网站主题">
+		<button type="button" data-theme-value="light"><i aria-hidden="true"></i>Paper</button>
+		<button type="button" data-theme-value="sepia"><i aria-hidden="true"></i>Sepia</button>
+		<button type="button" data-theme-value="dark"><i aria-hidden="true"></i>Night</button>
+		<button type="button" data-theme-value="graphite"><i aria-hidden="true"></i>Graphite</button>
+	</div>
+</details>
 
 <script>
-	const button = document.querySelector<HTMLButtonElement>('.theme-toggle');
+	const picker = document.querySelector<HTMLDetailsElement>('.theme-picker');
+	const label = picker?.querySelector<HTMLElement>('.theme-toggle span');
+	const buttons = [...document.querySelectorAll<HTMLButtonElement>('[data-theme-value]')];
+	const names: Record<string, string> = {
+		light: 'Paper',
+		sepia: 'Sepia',
+		dark: 'Night',
+		graphite: 'Graphite',
+	};
+	const colors: Record<string, string> = {
+		light: '#fbfbfa',
+		sepia: '#f7f3e9',
+		dark: '#1e1e1e',
+		graphite: '#17191c',
+	};
 
 	function updateLabel() {
-		const isDark = document.documentElement.dataset.theme === 'dark';
-		const label = isDark ? 'Light' : 'Dark';
-		const text = button?.querySelector('span');
-		if (text) text.textContent = label;
-		button?.setAttribute('aria-pressed', String(isDark));
+		const theme = document.documentElement.dataset.theme ?? 'light';
+		if (label) label.textContent = names[theme] ?? names.light;
+		buttons.forEach((button) => {
+			button.setAttribute('aria-pressed', String(button.dataset.themeValue === theme));
+		});
 	}
 
-	button?.addEventListener('click', () => {
-		const current = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
-		const next = current === 'dark' ? 'light' : 'dark';
-		document.documentElement.dataset.theme = next;
-		localStorage.setItem('eka-theme', next);
-		document.querySelector('meta[name="theme-color"]')?.setAttribute('content', next === 'dark' ? '#111111' : '#ffffff');
-		updateLabel();
+	buttons.forEach((button) => {
+		button.addEventListener('click', () => {
+			const theme = button.dataset.themeValue ?? 'light';
+			document.documentElement.dataset.theme = theme;
+			localStorage.setItem('eka-theme', theme);
+			document.querySelector('meta[name="theme-color"]')?.setAttribute('content', colors[theme] ?? colors.light);
+			window.dispatchEvent(new CustomEvent('eka-theme-change', { detail: { theme } }));
+			picker?.removeAttribute('open');
+			updateLabel();
+		});
+	});
+
+	document.addEventListener('click', (event) => {
+		if (picker?.open && !picker.contains(event.target as Node)) picker.removeAttribute('open');
+	});
+
+	document.addEventListener('keydown', (event) => {
+		if (event.key === 'Escape') picker?.removeAttribute('open');
 	});
 
 	updateLabel();

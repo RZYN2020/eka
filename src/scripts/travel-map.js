@@ -26,7 +26,7 @@ const bases = [
             { city:"庆阳", province:"甘肃", dates:"2020.1", year:2020, slug:"", note:"寒假回家" }
         ]
     },{
-        period: "2020.9 — 2026", summary: "本科与研究生时代",
+        period: "2020.9 — 2026.6", summary: "本科与研究生时代",
         city: "南京", province: "江苏",
         color: "#61758c", slug: "qinhuai",
         trips: [
@@ -77,6 +77,11 @@ const bases = [
             { city:"南昌", province:"江西", dates:"2026.6", year:2026, slug:"" },
             { city:"九江", province:"江西", dates:"2026.6", year:2026, slug:"lushan" }
         ]
+    },{
+        period: "2026.6.27 — 至今", summary: "开始工作",
+        city: "北京", province: "北京",
+        color: "#75677d", slug: "", note: "主基地",
+        trips: []
     }
 ];
 
@@ -96,6 +101,19 @@ const cityCoord = new Map();
 const ui = { selBase: null, selTrip: null, noSync: false };
 let currentView = 'china';
 let highlightMode = 'city';
+const journey = {
+    active: false,
+    playing: false,
+    moving: false,
+    index: -1,
+    token: 0,
+    frame: 0,
+    timer: 0,
+    line: null,
+    person: null,
+    stops: [],
+    completed: []
+};
 const GEO_CITY = '/geojson/china-cities.json';
 const GEO_PROVINCE = '/geojson/china.json';
 const GEO_WORLD = '/geojson/world.json';
@@ -197,6 +215,7 @@ async function init() {
         addMarkers();
         renderTL();
         stats();
+        document.getElementById('btnJourney').disabled = false;
         document.getElementById('map').classList.add('on');
     } catch(e) {
         console.error(e);
@@ -426,6 +445,7 @@ function switchHighlight(mode) {
 // Back to overview
 // =============================================================================
 function goBack() {
+    stopJourney();
     clearSel();
     map.closePopup();
     if (currentView === 'world') {
@@ -545,6 +565,205 @@ function fly(lat,lng,z,cb) {
 }
 
 // =============================================================================
+// Life journey
+// =============================================================================
+function journeyIcon() {
+    return L.divIcon({
+        className: '',
+        iconSize: [36, 36],
+        iconAnchor: [18, 18],
+        html: '<span class="journey-avatar" aria-hidden="true"></span>'
+    });
+}
+
+function getJourneyStops() {
+    const stops = [];
+    bases.forEach(base => {
+        stops.push({
+            city: base.city,
+            province: base.province,
+            dates: base.period,
+            action: [base.summary, base.note].filter(Boolean).join(' · ')
+        });
+        [...base.trips]
+            .map((trip, order) => ({ ...trip, order }))
+            .sort((a, b) => (a.year || 0) - (b.year || 0) || a.order - b.order)
+            .forEach(trip => {
+                stops.push({
+                    city: trip.city,
+                    province: trip.province,
+                    dates: trip.dates || String(trip.year || ''),
+                    action: trip.note || (trip.baseLike ? '实习' : '旅行')
+                });
+                trip.subtrips?.forEach(subtrip => {
+                    stops.push({
+                        city: subtrip.city,
+                        province: subtrip.province,
+                        dates: subtrip.dates || String(subtrip.year || ''),
+                        action: subtrip.note || '短途'
+                    });
+                });
+            });
+    });
+    return stops.map(stop => ({ ...stop, ...getCoords(stop.city) }));
+}
+
+function updateJourneyStatus(stop) {
+    const status = document.getElementById('journeyStatus');
+    status.hidden = false;
+    status.classList.remove('is-changing');
+    void status.offsetWidth;
+    status.classList.add('is-changing');
+    document.getElementById('journeyPeriod').textContent = stop.dates;
+    document.getElementById('journeyCity').textContent = stop.city;
+    document.getElementById('journeySummary').textContent = stop.action;
+    document.getElementById('journeyProgress').textContent = `${journey.index + 1} / ${journey.stops.length}`;
+}
+
+function resetJourneyButton(label = '人生轨迹') {
+    const button = document.getElementById('btnJourney');
+    button.textContent = label;
+    button.setAttribute('aria-pressed', 'false');
+}
+
+function updateJourneyControls() {
+    const playButton = document.getElementById('btnJourneyPlay');
+    const finished = journey.stops.length > 0 && journey.index >= journey.stops.length - 1;
+    playButton.textContent = finished ? '重播' : journey.playing ? '暂停' : '自动播放';
+    playButton.setAttribute('aria-pressed', String(journey.playing));
+    document.getElementById('btnJourneyNext').disabled = journey.moving || finished;
+}
+
+function stopJourney() {
+    journey.token += 1;
+    journey.active = false;
+    journey.playing = false;
+    journey.moving = false;
+    journey.index = -1;
+    clearTimeout(journey.timer);
+    journey.frame = 0;
+    if (map) {
+        if (journey.line) map.removeLayer(journey.line);
+        if (journey.person) map.removeLayer(journey.person);
+    }
+    journey.line = null;
+    journey.person = null;
+    journey.stops = [];
+    journey.completed = [];
+    document.getElementById('journeyStatus').hidden = true;
+    resetJourneyButton();
+}
+
+function animateJourneySegment(from, to, completed, duration, token) {
+    return new Promise(resolve => {
+        const startedAt = performance.now();
+        const step = now => {
+            if (token !== journey.token) return resolve(false);
+            const progress = Math.min((now - startedAt) / duration, 1);
+            const eased = 0.5 - Math.cos(Math.PI * progress) / 2;
+            const current = [
+                from.lat + (to.lat - from.lat) * eased,
+                from.lng + (to.lng - from.lng) * eased
+            ];
+            journey.person.setLatLng(current);
+            journey.line.setLatLngs([...completed, current]);
+            if (progress < 1) journey.frame = requestAnimationFrame(step);
+            else resolve(true);
+        };
+        journey.frame = requestAnimationFrame(step);
+    });
+}
+
+function scheduleJourneyStep() {
+    clearTimeout(journey.timer);
+    if (!journey.playing || journey.index >= journey.stops.length - 1) return;
+    journey.timer = window.setTimeout(advanceJourney, 950);
+}
+
+async function advanceJourney() {
+    if (!journey.active || journey.moving || journey.index >= journey.stops.length - 1) return;
+    clearTimeout(journey.timer);
+    const token = journey.token;
+    const nextIndex = journey.index + 1;
+    const next = journey.stops[nextIndex];
+    const previous = journey.index >= 0 ? journey.stops[journey.index] : next;
+    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    journey.moving = true;
+    updateJourneyControls();
+    if (!journey.person) {
+        journey.person = L.marker([next.lat, next.lng], {
+            icon: journeyIcon(),
+            interactive: false,
+            zIndexOffset: 2000
+        }).addTo(map);
+        journey.completed = [[next.lat, next.lng]];
+        journey.line.setLatLngs(journey.completed);
+    } else {
+        const completedSegment = await animateJourneySegment(
+            previous,
+            next,
+            journey.completed,
+            reducedMotion ? 120 : 720,
+            token
+        );
+        if (!completedSegment) return;
+        journey.completed.push([next.lat, next.lng]);
+    }
+
+    journey.index = nextIndex;
+    journey.moving = false;
+    updateJourneyStatus(next);
+    updateJourneyControls();
+
+    if (journey.index >= journey.stops.length - 1) {
+        journey.playing = false;
+        journey.active = false;
+        resetJourneyButton('重播轨迹');
+        updateJourneyControls();
+        return;
+    }
+    scheduleJourneyStep();
+}
+
+function toggleJourneyPlayback() {
+    if (!journey.active) return;
+    journey.playing = !journey.playing;
+    clearTimeout(journey.timer);
+    updateJourneyControls();
+    if (journey.playing) scheduleJourneyStep();
+}
+
+function startJourney() {
+    stopJourney();
+    const button = document.getElementById('btnJourney');
+    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    journey.active = true;
+    journey.playing = true;
+    journey.stops = getJourneyStops();
+    button.textContent = '退出轨迹';
+    button.setAttribute('aria-pressed', 'true');
+    clearSel();
+    map.closePopup();
+    if (currentView !== 'china') switchView('china');
+
+    map.fitBounds(journey.stops.map(stop => [stop.lat, stop.lng]), {
+        padding: [64, 64],
+        maxZoom: 5,
+        animate: !reducedMotion
+    });
+
+    journey.line = L.polyline([], {
+        color: tone('--journey-line', '#536b85'),
+        weight: 2,
+        opacity: 0.88
+    }).addTo(map);
+    updateJourneyControls();
+    advanceJourney();
+}
+
+// =============================================================================
 // Timeline
 // =============================================================================
 function blink(slug) {
@@ -553,6 +772,16 @@ function blink(slug) {
 }
 
 const tgSVG = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>`;
+
+function activateWithKeyboard(element, handler) {
+    element.tabIndex = 0;
+    element.setAttribute('role', 'button');
+    element.addEventListener('keydown', event => {
+        if (event.target !== element || (event.key !== 'Enter' && event.key !== ' ')) return;
+        event.preventDefault();
+        handler();
+    });
+}
 
 function toggleTrips(id) {
     const el = document.getElementById(id); if(!el) return;
@@ -602,16 +831,17 @@ function renderTL() {
         be.className = 'tl-base'; be.id = `b-${bi}`;
         be.style.setProperty('--dot', b.color);
         be.innerHTML = `<div class="tl-dot" style="background:${b.color};box-shadow:0 0 0 2px ${b.color},0 1px 4px rgba(0,0,0,0.15);"></div>
-            <span class="tl-toggle flipped" data-target="tps-${bi}" title="展开">${tgSVG}</span>
+            ${b.trips.length ? `<button type="button" class="tl-toggle flipped" data-target="tps-${bi}" title="展开" aria-label="展开 ${b.city} 的旅行">${tgSVG}</button>` : ''}
             <div class="tl-period" style="color:${b.color}">${b.period}</div>
             <div style="display:flex;align-items:baseline;gap:4px;flex-wrap:wrap;">
                 <span class="tl-city">${b.city}</span><span class="tl-prov">${b.province}</span>${blink(b.slug)}
             </div>
-            ${b.note?`<div class="tl-note">${b.note}</div>`:''}`;
+            ${(b.summary || b.note) ? `<div class="tl-note">${[b.summary, b.note].filter(Boolean).join(' · ')}</div>` : ''}`;
         be.addEventListener('click', () => selBase(bi));
+        activateWithKeyboard(be, () => selBase(bi));
         be.addEventListener('mouseenter', () => pulse(b.lat,b.lng,true));
         be.addEventListener('mouseleave', () => pulse(b.lat,b.lng,false));
-        be.querySelector('.tl-toggle').addEventListener('click', e => { e.stopPropagation(); toggleTrips(`tps-${bi}`); });
+        be.querySelector('.tl-toggle')?.addEventListener('click', e => { e.stopPropagation(); toggleTrips(`tps-${bi}`); });
 
         // Trips
         const tl = document.createElement('div'); tl.className = 'tl-trips collapsed'; tl.id = `tps-${bi}`;
@@ -624,12 +854,13 @@ function renderTL() {
                 sub.style.setProperty('--dot', b.color);
                 const hasSub = t.subtrips && t.subtrips.length;
                 sub.innerHTML = `<div class="tl-dot-sub"></div>
-                    ${hasSub ? `<span class="tl-toggle flipped" data-target="tps-sub-${bi}-${oi}" title="展开" style="top:0.6rem;right:0.4rem;">${tgSVG}</span>` : ''}
+                    ${hasSub ? `<button type="button" class="tl-toggle flipped" data-target="tps-sub-${bi}-${oi}" title="展开" aria-label="展开 ${t.city} 的旅行" style="top:0.6rem;right:0.4rem;">${tgSVG}</button>` : ''}
                     <div class="tl-period" style="color:${b.color};font-size:0.68rem;">${t.dates||''}</div>
                     <div style="display:flex;align-items:baseline;gap:4px;flex-wrap:wrap;">
                         <span class="tl-city" style="font-size:0.88rem;">${t.city}</span><span class="tl-prov">${t.province}</span>${blink(t.slug)}
                     </div>`;
                 sub.addEventListener('click', e => { e.stopPropagation(); selTrip(bi,oi); });
+                activateWithKeyboard(sub, () => selTrip(bi,oi));
                 sub.addEventListener('mouseenter', () => pulse(t.lat,t.lng,true));
                 sub.addEventListener('mouseleave', () => pulse(t.lat,t.lng,false));
                 if (hasSub) sub.querySelector('.tl-toggle').addEventListener('click', e => { e.stopPropagation(); toggleTrips(`tps-sub-${bi}-${oi}`); });
@@ -650,6 +881,7 @@ function renderTL() {
                             </div>
                             ${st.note?`<div class="tl-trip-note">${st.note}</div>`:''}`;
                         ste.addEventListener('click', e => { e.stopPropagation(); selSubTrip(bi,oi,si); });
+                        activateWithKeyboard(ste, () => selSubTrip(bi,oi,si));
                         ste.addEventListener('mouseenter', () => pulse(st.lat,st.lng,true));
                         ste.addEventListener('mouseleave', () => pulse(st.lat,st.lng,false));
                         stl.appendChild(ste);
@@ -667,6 +899,7 @@ function renderTL() {
                     </div>
                     ${t.note?`<div class="tl-trip-note">${t.note}</div>`:''}`;
                 te.addEventListener('click', e => { e.stopPropagation(); selTrip(bi,oi); });
+                activateWithKeyboard(te, () => selTrip(bi,oi));
                 te.addEventListener('mouseenter', () => pulse(t.lat,t.lng,true));
                 te.addEventListener('mouseleave', () => pulse(t.lat,t.lng,false));
                 tl.appendChild(te);
@@ -693,6 +926,7 @@ function clearSel() {
     showBack(false);
 }
 function selBase(bi) {
+    stopJourney();
     clearSel();
     const b = bases[bi];
     expandTrips(`tps-${bi}`);
@@ -708,6 +942,7 @@ function selBase(bi) {
     });
 }
 function selTrip(bi,ti) {
+    stopJourney();
     clearSel();
     const b = bases[bi]; const t = b.trips[ti];
     expandTrips(`tps-${bi}`);
@@ -732,6 +967,7 @@ function selTrip(bi,ti) {
     });
 }
 function selSubTrip(bi,ti,si) {
+    stopJourney();
     clearSel();
     const b = bases[bi]; const t = b.trips[ti]; const st = t.subtrips[si];
     expandTrips(`tps-${bi}`);
@@ -753,6 +989,7 @@ function selSubTrip(bi,ti,si) {
 }
 function syncFromMap(cm) {
     if (ui.noSync) return;
+    stopJourney();
     clearSel();
     const ctx = cm.contexts[0]; if(!ctx) return;
     if (ctx.type==='base') {
@@ -825,13 +1062,32 @@ function stats() {
 document.getElementById('btnBack').addEventListener('click', ()=>{ window.location.href='/about/'; });
 
 document.querySelectorAll('.map-ctrl-btn[data-view]').forEach(b => {
-    b.addEventListener('click', () => switchView(b.dataset.view));
+    b.addEventListener('click', () => {
+        stopJourney();
+        switchView(b.dataset.view);
+    });
 });
 document.querySelectorAll('.map-ctrl-btn[data-mode]').forEach(b => {
-    b.addEventListener('click', () => switchHighlight(b.dataset.mode));
+    b.addEventListener('click', () => {
+        stopJourney();
+        switchHighlight(b.dataset.mode);
+    });
 });
 
 document.getElementById('btnGlobal').addEventListener('click', goBack);
+document.getElementById('btnJourney').addEventListener('click', () => {
+    if (journey.active) stopJourney();
+    else startJourney();
+});
+document.getElementById('btnJourneyPlay').addEventListener('click', () => {
+    if (journey.active) toggleJourneyPlayback();
+    else startJourney();
+});
+document.getElementById('btnJourneyNext').addEventListener('click', advanceJourney);
+window.addEventListener('eka-theme-change', () => {
+    updateLayerStyles();
+    journey.line?.setStyle({ color: tone('--journey-line', '#536b85') });
+});
 
 document.getElementById('btnBackTop').addEventListener('click', ()=>{
     document.querySelector('.sidebar-scroll').scrollTo({top:0, behavior:'smooth'});
@@ -855,6 +1111,10 @@ document.addEventListener('DOMContentLoaded', async ()=>{
     });
     map.on('click', e => {
         const t = e.originalEvent.target;
-        if (t.classList.contains('leaflet-tile') || t.closest('.leaflet-tile-pane')) { clearSel(); map.closePopup(); }
+        if (t.classList.contains('leaflet-tile') || t.closest('.leaflet-tile-pane')) {
+            stopJourney();
+            clearSel();
+            map.closePopup();
+        }
     });
 });

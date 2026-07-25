@@ -3,6 +3,7 @@ import '../../styles/global.css';
 import 'leaflet/dist/leaflet.css';
 import '../../styles/map.css';
 import '../../styles/map-theme.css';
+import ThemeToggle from '../../components/ThemeToggle.astro';
 ---
 <!doctype html>
 <html lang="zh-CN" data-theme="light">
@@ -12,11 +13,13 @@ import '../../styles/map-theme.css';
 	<meta name="theme-color" content="#ffffff" />
 	<script is:inline>
 		const savedTheme = localStorage.getItem('eka-theme');
-		const theme = savedTheme === 'light' || savedTheme === 'dark'
+		const themes = ['light', 'sepia', 'dark', 'graphite'];
+		const theme = themes.includes(savedTheme)
 			? savedTheme
 			: matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+		const themeColors = { light: '#fbfbfa', sepia: '#f7f3e9', dark: '#1e1e1e', graphite: '#17191c' };
 		document.documentElement.dataset.theme = theme;
-		document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#111111' : '#ffffff');
+		document.querySelector('meta[name="theme-color"]')?.setAttribute('content', themeColors[theme]);
 	</script>
 	<link rel="icon" type="image/webp" href="/favicon.webp" />
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -32,7 +35,7 @@ import '../../styles/map-theme.css';
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
         </button>
         <h1>旅行足迹</h1>
-        <div style="width:34px"></div>
+        <ThemeToggle />
     </div>
 
     <!-- Body: edge-to-edge flex row -->
@@ -51,6 +54,19 @@ import '../../styles/map-theme.css';
                 <div class="map-ctrls" id="modeControls">
                     <button class="map-ctrl-btn active" data-mode="city" aria-pressed="true">城市</button>
                     <button class="map-ctrl-btn" data-mode="province" aria-pressed="false">省份</button>
+                </div>
+                <button class="journey-button" id="btnJourney" aria-pressed="false" disabled>人生轨迹</button>
+            </div>
+            <div class="journey-status" id="journeyStatus" aria-live="polite" hidden>
+                <div class="journey-status-head">
+                    <span id="journeyPeriod"></span>
+                    <span id="journeyProgress"></span>
+                </div>
+                <strong id="journeyCity"></strong>
+                <span id="journeySummary"></span>
+                <div class="journey-actions">
+                    <button type="button" id="btnJourneyPlay" aria-pressed="true">暂停</button>
+                    <button type="button" id="btnJourneyNext">下一步</button>
                 </div>
             </div>
             <!-- Back to overview -->
