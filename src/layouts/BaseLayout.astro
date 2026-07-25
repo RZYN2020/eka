@@ -39,13 +39,6 @@ const pageTitle = title === 'Eka · 赵勇臻' ? title : `${title} · Eka`;
 		<meta property="og:image" content={new URL(image, Astro.site)} />
 		<meta name="twitter:card" content="summary_large_image" />
 		<title>{pageTitle}</title>
-		<script is:inline>
-			(() => {
-				const saved = localStorage.getItem('eka-theme');
-				const dark = saved === 'dark' || (!saved && matchMedia('(prefers-color-scheme: dark)').matches);
-				if (dark) document.documentElement.dataset.theme = 'dark';
-			})();
-		</script>
 	</head>
 	<body>
 		<div class="shell">
@@ -55,14 +48,5 @@ const pageTitle = title === 'Eka · 赵勇臻' ? title : `${title} · Eka`;
 			</main>
 			<Footer />
 		</div>
-		<script>
-			const toggle = document.querySelector<HTMLButtonElement>('#theme-toggle');
-			toggle?.addEventListener('click', () => {
-				const root = document.documentElement;
-				const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
-				root.dataset.theme = next;
-				localStorage.setItem('eka-theme', next);
-			});
-		</script>
 	</body>
 </html>

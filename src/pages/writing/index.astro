@@ -1,16 +1,15 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { formatDate, plainExcerpt, sortWriting, writingKindLabel, writingSlug } from '../../lib/content';
+import { formatDate, plainExcerpt, sortWriting, writingSlug } from '../../lib/content';
 
 const entries = sortWriting((await getCollection('writing')).filter((entry) => !entry.data.draft));
 ---
 
 <BaseLayout title="Writing" description="技术、社会与个人经验：经过整理的完整写作。">
 	<header class="page-heading">
-		<div class="eyebrow">Essays · Technical · Journal</div>
 		<h1>Writing</h1>
-		<p>完整的论述，私人的经验，以及那些值得被认真写下来的时刻。</p>
+		<p>技术文章、阅读与思考，以及不定期的生活记录。</p>
 	</header>
 
 	<div class="filter-bar" aria-label="文章筛选">
@@ -21,16 +20,12 @@ const entries = sortWriting((await getCollection('writing')).filter((entry) => !
 	</div>
 
 	<div class="content-list" id="writing-list">
-		{entries.map((entry, index) => (
+		{entries.map((entry) => (
 			<a class="content-row" data-kind={entry.data.kind} href={`/writing/${writingSlug(entry.id)}/`}>
-				<span class="content-index">{String(index + 1).padStart(2, '0')}</span>
+				<time class="content-index" datetime={entry.data.publishedAt.toISOString()}>{formatDate(entry.data.publishedAt)}</time>
 				<div class="content-main">
 					<h2>{entry.data.title}</h2>
 					<p>{plainExcerpt(entry.body ?? '', entry.data.description)}</p>
-				</div>
-				<div class="content-meta">
-					<div class="tagline">{writingKindLabel[entry.data.kind]}</div>
-					<div>{formatDate(entry.data.publishedAt)}</div>
 				</div>
 			</a>
 		))}

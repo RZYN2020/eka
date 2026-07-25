@@ -15,7 +15,7 @@ const toc = headings.filter((heading) => heading.depth === 2 || heading.depth ==
 <BaseLayout title={entry.data.title} description={entry.data.description || `${entry.data.topic} 学习笔记`} article>
 	<article class="note-layout">
 		<header class="article-header">
-			<div class="eyebrow">Working Notes · {entry.data.topic}</div>
+			<div class="eyebrow">{entry.data.topic}</div>
 			<h1>{entry.data.title}</h1>
 			{entry.data.description && <p class="article-deck">{entry.data.description}</p>}
 			<div class="article-meta">
