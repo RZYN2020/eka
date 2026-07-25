@@ -1,0 +1,41 @@
+---
+import { getCollection } from 'astro:content';
+import NoteList from '../../components/NoteList.astro';
+import WritingList from '../../components/WritingList.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getTagCounts, sortNotes, sortWriting, tagSlug } from '../../lib/content';
+
+export async function getStaticPaths() {
+	const writing = sortWriting((await getCollection('writing')).filter((entry) => !entry.data.draft));
+	const notes = sortNotes((await getCollection('notes')).filter((entry) => !entry.data.draft));
+	return getTagCounts([...writing, ...notes]).map(([tag]) => ({
+		params: { tag: tagSlug(tag) },
+		props: {
+			tag,
+			writing: writing.filter((entry) => entry.data.tags.includes(tag)),
+			notes: notes.filter((entry) => entry.data.tags.includes(tag)),
+		},
+	}));
+}
+
+const { tag, writing, notes } = Astro.props;
+---
+
+<BaseLayout title={tag}>
+	<header class="page-heading">
+		<p class="eyebrow">Tag</p>
+		<h1>{tag}</h1>
+	</header>
+	{writing.length > 0 && (
+		<section class="home-section">
+			<div class="section-rule"><h2>Writing</h2><span>{String(writing.length).padStart(2, '0')}</span></div>
+			<WritingList entries={writing} />
+		</section>
+	)}
+	{notes.length > 0 && (
+		<section class="home-section">
+			<div class="section-rule"><h2>Notes</h2><span>{String(notes.length).padStart(2, '0')}</span></div>
+			<NoteList entries={notes} />
+		</section>
+	)}
+</BaseLayout>

@@ -1,7 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
+import NoteList from '../../components/NoteList.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { noteSlug, sortNotes } from '../../lib/content';
+import { sortNotes } from '../../lib/content';
 
 const entries = sortNotes((await getCollection('notes')).filter((entry) => !entry.data.draft));
 const groups = Map.groupBy(entries, (entry) => entry.data.topic);
@@ -19,14 +20,7 @@ const groups = Map.groupBy(entries, (entry) => entry.data.topic);
 					<h2>{topic}</h2>
 					<span>{String(topicEntries.length).padStart(2, '0')}</span>
 				</div>
-				<div class="content-list">
-					{topicEntries.map((entry) => (
-						<a class="content-row" href={`/notes/${noteSlug(entry.id)}/`}>
-							<span class="content-index">{entry.data.source === 'algorithm' ? 'Algorithm' : 'Note'}</span>
-							<div class="content-main"><h3>{entry.data.title}</h3></div>
-						</a>
-					))}
-				</div>
+				<NoteList entries={topicEntries} />
 			</section>
 		))}
 	</div>

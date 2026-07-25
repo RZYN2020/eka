@@ -1,6 +1,7 @@
 ---
 import BaseLayout from './BaseLayout.astro';
-import { formatDate } from '../lib/content';
+import TagList from '../components/TagList.astro';
+import { formatDate, writingKindLabel } from '../lib/content';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
@@ -12,18 +13,21 @@ const { entry } = Astro.props;
 ---
 
 <BaseLayout title={entry.data.title} description={entry.data.description} article>
-	<article>
+	<article class={`reading-page writing-page writing-page--${entry.data.kind}`}>
 		<header class="article-header">
+			<div class="article-kicker">
+				<span>{writingKindLabel[entry.data.kind]}</span>
+				<time datetime={entry.data.publishedAt.toISOString()}>{formatDate(entry.data.publishedAt, 'sv-SE')}</time>
+			</div>
 			<h1>{entry.data.title}</h1>
 			{entry.data.description && <p class="article-deck">{entry.data.description}</p>}
+			<TagList tags={entry.data.tags} />
 		</header>
 		<div class="article-shell">
 			<div class="prose prose-eka">
 				<slot />
 			</div>
 		</div>
-		<footer class="post-footer">
-			Published on {formatDate(entry.data.publishedAt, 'sv-SE')}
-		</footer>
+		<footer class="post-footer" aria-hidden="true">∎</footer>
 	</article>
 </BaseLayout>

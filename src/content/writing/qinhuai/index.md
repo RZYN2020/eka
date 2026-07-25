@@ -3,7 +3,7 @@ title: 負けたくない
 description: ''
 publishedAt: '2025-05-24T20:18:58+08:00'
 kind: journal
-topics: []
+tags: []
 draft: false
 featured: false
 legacyUrls:

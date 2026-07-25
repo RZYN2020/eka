@@ -3,7 +3,7 @@ title: Building a Transformer LM
 description: ''
 publishedAt: '2025-04-06T09:58:31+08:00'
 kind: technical
-topics:
+tags:
   - AI
   - LLM
   - Code

@@ -1,7 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
+import WritingList from '../../components/WritingList.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { formatDate, sortWriting, writingSlug } from '../../lib/content';
+import { sortWriting } from '../../lib/content';
 
 const entries = sortWriting((await getCollection('writing')).filter((entry) => !entry.data.draft));
 ---
@@ -11,12 +12,5 @@ const entries = sortWriting((await getCollection('writing')).filter((entry) => !
 		<h1>Writing</h1>
 	</header>
 
-	<div class="content-list">
-		{entries.map((entry) => (
-			<a class="content-row" href={`/writing/${writingSlug(entry.id)}/`}>
-				<time class="content-index" datetime={entry.data.publishedAt.toISOString()}>{formatDate(entry.data.publishedAt, 'sv-SE')}</time>
-				<div class="content-main"><h2>{entry.data.title}</h2></div>
-			</a>
-		))}
-	</div>
+	<WritingList entries={entries} />
 </BaseLayout>

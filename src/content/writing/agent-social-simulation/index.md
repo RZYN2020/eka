@@ -3,7 +3,7 @@ title: Agent社会模拟
 description: ''
 publishedAt: '2025-12-09T11:09:37+08:00'
 kind: technical
-topics:
+tags:
   - Sociology
   - Share
   - Agent

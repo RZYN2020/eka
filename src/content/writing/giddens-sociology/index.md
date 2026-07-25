@@ -3,7 +3,7 @@ title: 吉登斯「社会学」笔记
 description: ''
 publishedAt: '2024-11-23T11:31:25+08:00'
 kind: essay
-topics:
+tags:
   - Sociology
   - Book
 draft: false

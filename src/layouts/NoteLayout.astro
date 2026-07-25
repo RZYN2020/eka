@@ -1,6 +1,7 @@
 ---
 import BaseLayout from './BaseLayout.astro';
-import { formatDate } from '../lib/content';
+import TagList from '../components/TagList.astro';
+import { formatDate, noteSourceLabel } from '../lib/content';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
@@ -12,20 +13,26 @@ const { entry } = Astro.props;
 ---
 
 <BaseLayout title={entry.data.title} description={entry.data.description} article>
-	<article>
+	<article class="reading-page note-page">
 		<header class="article-header">
+			<div class="article-kicker">
+				<span>{entry.data.topic}</span>
+				<span>{noteSourceLabel[entry.data.source]}</span>
+				{(entry.data.updatedAt || entry.data.publishedAt) && (
+					<time datetime={(entry.data.updatedAt ?? entry.data.publishedAt)?.toISOString()}>
+						{formatDate(entry.data.updatedAt ?? entry.data.publishedAt, 'sv-SE')}
+					</time>
+				)}
+			</div>
 			<h1>{entry.data.title}</h1>
 			{entry.data.description && <p class="article-deck">{entry.data.description}</p>}
+			<TagList tags={entry.data.tags} />
 		</header>
 		<div class="article-shell">
 			<div class="prose prose-eka">
 				<slot />
 			</div>
 		</div>
-		{(entry.data.updatedAt || entry.data.publishedAt) && (
-			<footer class="post-footer">
-				{formatDate(entry.data.updatedAt ?? entry.data.publishedAt, 'sv-SE')}
-			</footer>
-		)}
+		<footer class="post-footer" aria-hidden="true">∎</footer>
 	</article>
 </BaseLayout>

@@ -1,23 +1,23 @@
 ---
+import { site } from '../config/site';
+import ThemeToggle from './ThemeToggle.astro';
+
 const pathname = Astro.url.pathname;
-const nav = [
-	{ href: '/', label: 'Home' },
-	{ href: '/writing/', label: 'Writing' },
-	{ href: '/notes/', label: 'Notes' },
-	{ href: '/about/', label: 'About' },
-];
 ---
 
 <header class="site-header">
 	<nav class="main-nav" aria-label="主导航">
-		{nav.map((item) => (
+		{site.nav.map((item) => (
 			<a href={item.href} aria-current={item.href === '/' ? pathname === '/' ? 'page' : undefined : pathname.startsWith(item.href) ? 'page' : undefined}>
 				{item.label}
 			</a>
 		))}
 	</nav>
-	<nav class="social-nav" aria-label="其他链接">
-		<a href="https://github.com/RZYN2020" rel="me noopener" target="_blank">GitHub</a>
-		<a href="/rss.xml">RSS</a>
-	</nav>
+	<div class="header-actions">
+		<nav class="social-nav" aria-label="其他链接">
+			<a href={site.links.github} rel="me noopener" target="_blank">GitHub</a>
+			<a href={site.links.rss}>RSS</a>
+		</nav>
+		<ThemeToggle />
+	</div>
 </header>

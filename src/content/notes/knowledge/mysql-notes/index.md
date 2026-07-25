@@ -2,6 +2,12 @@
 title: 'MySQL 知识点总结 '
 description: ''
 topic: Backend
+tags:
+  - Backend
+  - System
+  - Database
+  - Interview
+  - Summary
 publishedAt: '2025-03-12T11:12:50+08:00'
 order: 500
 draft: false

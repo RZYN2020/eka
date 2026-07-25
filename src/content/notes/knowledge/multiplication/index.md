@@ -2,6 +2,9 @@
 title: Multiplication
 description: ''
 topic: Computer Science
+tags:
+  - Algorithm
+  - Book
 publishedAt: '2022-03-20T20:41:38'
 order: 500
 draft: false

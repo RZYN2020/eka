@@ -3,7 +3,7 @@ title: 脑电波与信号处理
 description: ''
 publishedAt: '2025-09-12T17:15:11+08:00'
 kind: technical
-topics:
+tags:
   - Application
   - Knowledge
 draft: false

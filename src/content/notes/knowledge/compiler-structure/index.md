@@ -2,6 +2,10 @@
 title: 编译器的结构与任务
 description: ''
 topic: Programming Languages
+tags:
+  - System
+  - Compiler
+  - Knowledge
 publishedAt: '2023-03-06T11:52:38'
 order: 500
 draft: false

@@ -2,6 +2,10 @@
 title: 浅析jmp_buf的定义
 description: ''
 topic: Systems
+tags:
+  - System
+  - C
+  - Knowledge
 publishedAt: '2021-11-14T09:23:52'
 order: 500
 draft: false

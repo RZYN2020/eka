@@ -2,6 +2,9 @@
 title: 树的非递归遍历—用栈模拟递归
 description: ''
 topic: Algorithms
+tags:
+  - Algorithm
+  - Knowledge
 publishedAt: '2021-11-09T18:02:23'
 order: 500
 draft: false

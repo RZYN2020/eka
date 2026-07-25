@@ -8,7 +8,7 @@ const notes = sortNotes((await getCollection('notes')).filter((entry) => !entry.
 const documents = [
 	...writing.map((entry) => ({
 		title: entry.data.title,
-		meta: entry.data.topics.join(' '),
+		meta: entry.data.tags.join(' '),
 		type: 'Writing',
 		url: `/writing/${writingSlug(entry.id)}/`,
 	})),

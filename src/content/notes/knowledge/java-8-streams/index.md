@@ -2,6 +2,11 @@
 title: 浅谈java8中的流
 description: ''
 topic: Backend
+tags:
+  - Backend
+  - Java
+  - Stream
+  - Knowledge
 publishedAt: '2021-08-18T20:31:48'
 order: 500
 draft: false

@@ -3,7 +3,7 @@ title: 庐山游记
 description: ''
 publishedAt: '2026-06-12T23:23:35+08:00'
 kind: journal
-topics: []
+tags: []
 draft: false
 featured: false
 legacyUrls:

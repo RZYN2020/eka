@@ -3,7 +3,7 @@ title: 扬州游记
 description: ''
 publishedAt: '2025-05-31T22:44:19+08:00'
 kind: journal
-topics: []
+tags: []
 draft: false
 featured: false
 legacyUrls:

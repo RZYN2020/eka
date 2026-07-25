@@ -1,0 +1,33 @@
+@theme {
+	--font-sans: "Avenir Next", "SF Pro Text", "PingFang SC", "Noto Sans CJK SC", "Noto Sans SC", sans-serif;
+	--font-serif: "Iowan Old Style", "Baskerville", "Noto Serif CJK SC", "Noto Serif SC", "Songti SC", STSong, serif;
+	--font-mono: "SFMono-Regular", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+:root,
+:root[data-theme="light"] {
+	color-scheme: light;
+	--paper: #f7f5ef;
+	--paper-raised: #eeece4;
+	--ink: #20211f;
+	--muted: #64655f;
+	--faint: #85867f;
+	--line: #d8d6ce;
+	--link: #405d91;
+	--code: #20231f;
+	--font-ui: "Avenir Next", "SF Pro Text", "PingFang SC", "Noto Sans CJK SC", "Noto Sans SC", sans-serif;
+	--font-reading: "Iowan Old Style", "Baskerville", "Noto Serif CJK SC", "Noto Serif SC", "Songti SC", STSong, serif;
+	--font-code: "SFMono-Regular", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+:root[data-theme="dark"] {
+	color-scheme: dark;
+	--paper: #171917;
+	--paper-raised: #242724;
+	--ink: #eceae3;
+	--muted: #b2b0a8;
+	--faint: #8b8981;
+	--line: #3b3e39;
+	--link: #adc2ea;
+	--code: #101210;
+}

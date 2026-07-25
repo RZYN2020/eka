@@ -2,6 +2,11 @@
 title: 探究支撑os的硬件(以xv6和riscv为例)
 description: ''
 topic: Systems
+tags:
+  - System
+  - OS
+  - Reflection
+  - Knowledge
 publishedAt: '2022-08-11T21:27:52'
 order: 500
 draft: false

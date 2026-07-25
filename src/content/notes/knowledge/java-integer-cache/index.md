@@ -2,6 +2,11 @@
 title: Autoboxing and IntegerCache in Java
 description: ''
 topic: Backend
+tags:
+  - Backend
+  - Java
+  - Interview
+  - Knowledge
 publishedAt: '2023-03-07T14:49:32'
 order: 500
 draft: false

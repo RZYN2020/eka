@@ -2,6 +2,7 @@
 title: Haskell 学习笔记
 description: ''
 topic: Programming Languages
+tags: []
 order: 1
 draft: false
 source: algorithm

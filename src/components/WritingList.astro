@@ -1,0 +1,25 @@
+---
+import type { WritingEntry } from '../lib/content';
+import { formatDate, writingSlug } from '../lib/content';
+import TagList from './TagList.astro';
+
+interface Props {
+	entries: WritingEntry[];
+	limit?: number;
+}
+
+const { entries, limit } = Astro.props;
+const visibleEntries = typeof limit === 'number' ? entries.slice(0, limit) : entries;
+---
+
+<div class="writing-list">
+	{visibleEntries.map((entry) => (
+		<article class="writing-row">
+			<time datetime={entry.data.publishedAt.toISOString()}>{formatDate(entry.data.publishedAt, 'sv-SE')}</time>
+			<div>
+				<h2><a href={`/writing/${writingSlug(entry.id)}/`}>{entry.data.title}</a></h2>
+				<TagList tags={entry.data.tags} />
+			</div>
+		</article>
+	))}
+</div>
