@@ -14,7 +14,7 @@ featured: false
 legacyUrls:
   - /posts/proxy-technology/
 ---
-查看本文配套的 slide [点这里](/slides/proxy)
+查看本文配套的 slide [点这里](/slides/proxy/index.html)
 
 ---
 

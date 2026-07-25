@@ -1,6 +1,8 @@
 /journal/map.html /map/ 301
 /journal/geojson/* /geojson/:splat 301
+/slides/number_intuition /slides/number_intuition/index.html 200
 /slides/number_intuition/ /slides/number_intuition/index.html 200
+/slides/proxy /slides/proxy/index.html 200
 /slides/proxy/ /slides/proxy/index.html 200
 /journal/posts/幻光/ /writing/phantom-light/ 301
 /journal/posts/凯撒不做狗屁工作/ /writing/caesar-refuses-bullshit-work/ 301

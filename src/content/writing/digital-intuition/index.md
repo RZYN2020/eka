@@ -190,9 +190,8 @@ legacyUrls:
 这种直觉能帮助我们更好地理解新闻报道、分析数据、评估风险，并在日常生活中做出更明智的决策。
 
 
-[数字尺度交互数轴](/slides/number_intuition)
+[数字尺度交互数轴](/slides/number_intuition/index.html)
 
 {{< rawhtml >}}
-<iframe src="/slides/number_intuition" width="100%" height="700px"></iframe>
+<iframe src="/slides/number_intuition/index.html" width="100%" height="700px"></iframe>
 {{< /rawhtml >}}
-

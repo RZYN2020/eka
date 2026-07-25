@@ -40,6 +40,7 @@ const files = await walk(dist);
 const htmlFiles = files.filter((file) => file.endsWith('.html'));
 const broken = [];
 const missingAlt = [];
+const leakedShortcodes = [];
 
 for (const file of htmlFiles) {
 	const html = await fs.readFile(file, 'utf8');
@@ -59,11 +60,15 @@ for (const file of htmlFiles) {
 			missingAlt.push(path.relative(dist, file));
 		}
 	}
+	if (/\{\{(?:&#x3C;|&lt;|<)\s*\/?(?:comment|rawhtml)\b/i.test(html)) {
+		leakedShortcodes.push(path.relative(dist, file));
+	}
 }
 
-if (broken.length || missingAlt.length) {
+if (broken.length || missingAlt.length || leakedShortcodes.length) {
 	if (broken.length) console.error(`Broken internal references:\n${[...new Set(broken)].join('\n')}`);
 	if (missingAlt.length) console.error(`Images missing alt text:\n${[...new Set(missingAlt)].join('\n')}`);
+	if (leakedShortcodes.length) console.error(`Unprocessed Hugo shortcodes:\n${[...new Set(leakedShortcodes)].join('\n')}`);
 	process.exit(1);
 }
 

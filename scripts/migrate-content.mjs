@@ -75,6 +75,8 @@ function cleanBody(content) {
 		.replaceAll('https://rzyn2020.github.io/posts/', '/writing/')
 		.replaceAll('https://RZYN2020.github.io/posts/', '/writing/')
 		.replaceAll('/writing/optimize-the-performance-of-a-lm/', '/writing/optimize-language-model-performance/')
+		.replace(/\/slides\/number_intuition\/?(?=[)"])/g, '/slides/number_intuition/index.html')
+		.replace(/\/slides\/proxy\/?(?=[)"])/g, '/slides/proxy/index.html')
 		.replaceAll('.png#half)', '.png)')
 		.replaceAll('./assets/rl_algorithms_9_15.svg', '/content-assets/rl_algorithms_9_15.svg')
 		.trimStart();
