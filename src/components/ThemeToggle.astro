@@ -1,15 +1,25 @@
 <button class="theme-toggle" type="button" aria-label="切换明暗主题" title="切换明暗主题">
-	<span aria-hidden="true">◐</span>
+	<span aria-hidden="true">Dark</span>
 </button>
 
 <script>
 	const button = document.querySelector<HTMLButtonElement>('.theme-toggle');
+
+	function updateLabel() {
+		const isDark = document.documentElement.dataset.theme === 'dark';
+		const label = isDark ? 'Light' : 'Dark';
+		const text = button?.querySelector('span');
+		if (text) text.textContent = label;
+	}
 
 	button?.addEventListener('click', () => {
 		const current = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
 		const next = current === 'dark' ? 'light' : 'dark';
 		document.documentElement.dataset.theme = next;
 		localStorage.setItem('eka-theme', next);
-		document.querySelector('meta[name="theme-color"]')?.setAttribute('content', next === 'dark' ? '#171917' : '#f7f5ef');
+		document.querySelector('meta[name="theme-color"]')?.setAttribute('content', next === 'dark' ? '#111111' : '#ffffff');
+		updateLabel();
 	});
+
+	updateLabel();
 </script>

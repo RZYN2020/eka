@@ -21,7 +21,7 @@ const recentNotes = [...Map.groupBy(notes, (entry) => entry.data.topic).values()
 		<div class="section-rule">
 			<h2>Writing</h2>
 		</div>
-		<WritingList entries={writing} limit={12} />
+		<WritingList entries={writing} limit={12} showTags={false} />
 	</section>
 
 	<section class="home-section">

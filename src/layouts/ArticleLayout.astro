@@ -13,7 +13,7 @@ const { entry } = Astro.props;
 ---
 
 <BaseLayout title={entry.data.title} description={entry.data.description} article>
-	<article class={`reading-page writing-page writing-page--${entry.data.kind}`}>
+	<article>
 		<header class="article-header">
 			<div class="article-kicker">
 				<span>{writingKindLabel[entry.data.kind]}</span>
@@ -28,6 +28,5 @@ const { entry } = Astro.props;
 				<slot />
 			</div>
 		</div>
-		<footer class="post-footer" aria-hidden="true">∎</footer>
 	</article>
 </BaseLayout>

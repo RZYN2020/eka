@@ -6,9 +6,10 @@ import TagList from './TagList.astro';
 interface Props {
 	entries: WritingEntry[];
 	limit?: number;
+	showTags?: boolean;
 }
 
-const { entries, limit } = Astro.props;
+const { entries, limit, showTags = true } = Astro.props;
 const visibleEntries = typeof limit === 'number' ? entries.slice(0, limit) : entries;
 ---
 
@@ -18,7 +19,7 @@ const visibleEntries = typeof limit === 'number' ? entries.slice(0, limit) : ent
 			<time datetime={entry.data.publishedAt.toISOString()}>{formatDate(entry.data.publishedAt, 'sv-SE')}</time>
 			<div>
 				<h2><a href={`/writing/${writingSlug(entry.id)}/`}>{entry.data.title}</a></h2>
-				<TagList tags={entry.data.tags} />
+				{showTags && <TagList tags={entry.data.tags} />}
 			</div>
 		</article>
 	))}
