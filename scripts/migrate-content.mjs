@@ -40,25 +40,93 @@ const blogArticleEntries = [
 	{ path: 'RZYN2020.github.io/blogs/tech/Autoboxing-and-IntegerCache-in-Java/index.md', slug: 'java-integer-cache', topic: 'Backend' },
 ];
 
-const algorithmTitles = {
-	'index': '算法笔记：前言',
-	'gugu-interview': '咕咕：面试篇',
-	'haskell-learning': 'Haskell 学习笔记',
-	'leetcode-2024-feb': 'LeetCode · 2024 年 2 月',
-	'leetcode-2024-jan': 'LeetCode · 2024 年 1 月',
-	'leetcode-ali': '算法题 · 阿里',
-	'leetcode-bytedance-2023': '算法题 · 字节跳动',
-	'leetcode-contest-355': 'LeetCode 周赛 355',
-	'leetcode-feb-2025': 'LeetCode · 2025 年 2 月',
-	'leetcode-hot100-100': 'LeetCode Hot 100 · 完成',
-	'leetcode-hot100-12': 'LeetCode Hot 100 · 12%',
-	'leetcode-hot100-25': 'LeetCode Hot 100 · 25%',
-	'leetcode-hot100-50': 'LeetCode Hot 100 · 50%',
-	'leetcode-hot100-77': 'LeetCode Hot 100 · 77%',
-	'leetcode-tencent': '算法题 · 腾讯',
-	'leetcode-zunxiang-19': 'LeetCode 尊享 100 · 19%',
-	'leetcode-zunxiang-36': 'LeetCode 尊享 100 · 36%',
-};
+const algorithmEntries = [
+	{
+		slug: 'leetcode-contest-355',
+		title: 'LeetCode 周赛 355',
+		sources: ['leetcode-contest-355.md'],
+		publishedAt: '2023-08-23T00:00:00+08:00',
+		updatedAt: '2023-10-05T00:00:00+08:00',
+	},
+	{
+		slug: 'haskell-learning',
+		title: 'Haskell 学习笔记',
+		sources: ['haskell-learning.md'],
+		category: 'Tech',
+		subcategories: ['Application'],
+		publishedAt: '2023-10-05T00:00:00+08:00',
+		updatedAt: '2024-01-15T00:00:00+08:00',
+	},
+	{
+		slug: 'leetcode-daily-2024',
+		title: 'LeetCode 日题 · 2024 年 1—2 月',
+		sources: ['leetcode-2024-jan.md', 'leetcode-2024-feb.md'],
+		publishedAt: '2024-01-14T00:00:00+08:00',
+		updatedAt: '2024-02-17T00:00:00+08:00',
+	},
+	{
+		slug: 'leetcode-hot100-12',
+		title: 'LeetCode Hot 100 · 哈希、双指针与滑动窗口',
+		sources: ['leetcode-hot100-12.md'],
+		publishedAt: '2024-11-22T00:00:00+08:00',
+		updatedAt: '2025-07-01T00:00:00+08:00',
+	},
+	{
+		slug: 'leetcode-hot100-25',
+		title: 'LeetCode Hot 100 · 动态规划',
+		sources: ['leetcode-hot100-25.md'],
+		publishedAt: '2024-12-01T00:00:00+08:00',
+		updatedAt: '2025-07-01T00:00:00+08:00',
+	},
+	{
+		slug: 'leetcode-bytedance-2023',
+		title: '字节跳动算法题记录 · 2023 年 5—7 月',
+		sources: ['leetcode-bytedance-2023.md'],
+		publishedAt: '2023-05-01T00:00:00+08:00',
+		updatedAt: '2023-07-31T00:00:00+08:00',
+		transform: 'shift-headings',
+	},
+	{
+		slug: 'leetcode-hot100-50',
+		title: 'LeetCode Hot 100 · 二分、栈、堆与贪心',
+		sources: ['leetcode-hot100-50.md'],
+		publishedAt: '2025-02-09T00:00:00+08:00',
+	},
+	{
+		slug: 'leetcode-hot100-77',
+		title: 'LeetCode Hot 100 · 树、图与回溯',
+		sources: ['leetcode-hot100-77.md'],
+		publishedAt: '2025-02-11T00:00:00+08:00',
+	},
+	{
+		slug: 'leetcode-hot100-100',
+		title: 'LeetCode Hot 100 · 数组、矩阵与链表',
+		sources: ['leetcode-hot100-100.md'],
+		publishedAt: '2025-02-14T00:00:00+08:00',
+	},
+	{
+		slug: 'leetcode-tencent',
+		title: '腾讯算法题记录',
+		sources: ['leetcode-tencent.md'],
+		publishedAt: '2025-07-01T00:00:00+08:00',
+		transform: 'trim-tencent-index',
+	},
+	{
+		slug: 'gugu-interview',
+		title: 'Google 面试准备记录',
+		sources: ['gugu-interview.md'],
+		publishedAt: '2025-07-01T00:00:00+08:00',
+		updatedAt: '2025-07-29T00:00:00+08:00',
+		transform: 'trim-google-overview',
+	},
+	{
+		slug: 'leetcode-premium',
+		title: 'LeetCode 尊享 100',
+		sources: ['leetcode-zunxiang-19.md', 'leetcode-zunxiang-36.md'],
+		publishedAt: '2025-07-29T00:00:00+08:00',
+		updatedAt: '2025-07-30T00:00:00+08:00',
+	},
+];
 
 function parseSource(raw) {
 	if (raw.startsWith('+++')) {
@@ -70,8 +138,13 @@ function parseSource(raw) {
 }
 
 function cleanBody(content) {
-	return content
+	const containsLegacyBlock =
+		/\{\{[%<]\s*comment\s*[%>]\}\}[\s\S]*?\{\{[%<]\s*\/comment\s*[%>]\}\}/i.test(content) ||
+		/\{\{[%<]\s*\/?rawhtml\s*[%>]\}\}/i.test(content);
+	const cleaned = content
 		.replace(/<!--more-->/g, '')
+		.replace(/\{\{[%<]\s*comment\s*[%>]\}\}[\s\S]*?\{\{[%<]\s*\/comment\s*[%>]\}\}/gi, '')
+		.replace(/\{\{[%<]\s*\/?rawhtml\s*[%>]\}\}/gi, '')
 		.replaceAll('https://rzyn2020.github.io/posts/', '/writing/')
 		.replaceAll('https://RZYN2020.github.io/posts/', '/writing/')
 		.replaceAll('/writing/optimize-the-performance-of-a-lm/', '/writing/optimize-language-model-performance/')
@@ -80,6 +153,7 @@ function cleanBody(content) {
 		.replaceAll('.png#half)', '.png)')
 		.replaceAll('./assets/rl_algorithms_9_15.svg', '/content-assets/rl_algorithms_9_15.svg')
 		.trimStart();
+	return containsLegacyBlock ? cleaned.trimEnd() : cleaned;
 }
 
 function stringArray(value) {
@@ -200,30 +274,48 @@ async function writeBlogArticle(entry) {
 async function writeAlgorithmArticles() {
 	const sourceDir = path.join(sourceRoot, 'algorithm/docs');
 	const destinationDir = path.join(projectRoot, 'src/content/writing/algorithm');
+	await fs.rm(destinationDir, { recursive: true, force: true });
 	await fs.mkdir(destinationDir, { recursive: true });
 	await fs.cp(path.join(sourceDir, 'assets'), path.join(destinationDir, 'assets'), { recursive: true, force: true });
-	const files = (await fs.readdir(sourceDir)).filter((file) => file.endsWith('.md')).sort();
-	for (const [index, file] of files.entries()) {
-		const slug = path.basename(file, '.md');
-		const raw = await fs.readFile(path.join(sourceDir, file), 'utf8');
-		const parsed = matter(raw);
-		const heading = parsed.content.match(/^#\s+(.+)$/m)?.[1];
+
+	for (const [index, entry] of algorithmEntries.entries()) {
+		const sourceBodies = await Promise.all(
+			entry.sources.map(async (file) => {
+				const raw = await fs.readFile(path.join(sourceDir, file), 'utf8');
+				return cleanBody(matter(raw).content).trim();
+			}),
+		);
+		let body = sourceBodies.filter(Boolean).join('\n\n---\n\n');
+		if (entry.transform === 'trim-google-overview') {
+			body = body.replace(/\n## 面试[\s\S]*$/, '').trim();
+		}
+		if (entry.transform === 'trim-tencent-index') {
+			const firstNote = body.indexOf('### [546. 移除盒子]');
+			if (firstNote >= 0) body = body.slice(firstNote);
+			body = body.replace(/^### /gm, '## ');
+		}
+		if (entry.transform === 'shift-headings') {
+			body = body.replace(/^(#{1,5}) /gm, '#$1 ');
+		}
+		body = body.replace(/[ \t]+$/gm, '');
+
+		const sourceSlugs = entry.sources.map((file) => path.basename(file, '.md'));
 		const data = {
-			title: algorithmTitles[slug] ?? heading ?? slug,
-			description: String(parsed.data.description ?? ''),
-			category: 'Tech',
-			subcategories: ['Algorithm'],
-			tags: stringArray(parsed.data.tags),
+			title: entry.title,
+			description: '',
+			category: entry.category ?? 'Tech',
+			subcategories: entry.subcategories ?? ['Algorithm'],
+			tags: [],
+			publishedAt: entry.publishedAt,
+			...(entry.updatedAt ? { updatedAt: entry.updatedAt } : {}),
 			order: index,
 			draft: false,
-			legacyUrls: [
+			legacyUrls: sourceSlugs.flatMap((slug) => [
 				`/algorithm/${slug}/`,
-				slug === 'index' ? '/notes/algorithm/' : `/notes/algorithm/${slug}/`,
-			],
+				`/notes/algorithm/${slug}/`,
+			]),
 		};
-		let body = cleanBody(parsed.content);
-		if (heading && body.startsWith(`# ${heading}`)) body = body.slice(heading.length + 2).trimStart();
-		await fs.writeFile(path.join(destinationDir, file), matter.stringify(body, data));
+		await fs.writeFile(path.join(destinationDir, `${entry.slug}.md`), matter.stringify(body, data));
 	}
 }
 
@@ -259,4 +351,4 @@ await fs.cp(
 );
 await optimizeLargePngs(path.join(projectRoot, 'src/content'));
 
-console.log(`Migrated ${writingEntries.length + blogArticleEntries.length + Object.keys(algorithmTitles).length} articles and 3 resumes.`);
+console.log(`Migrated ${writingEntries.length + blogArticleEntries.length + algorithmEntries.length} articles and 3 resumes.`);

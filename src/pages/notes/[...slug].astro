@@ -4,14 +4,20 @@ import { writingSlug } from '../../lib/content';
 
 export async function getStaticPaths() {
 	const entries = (await getCollection('writing')).filter((entry) => !entry.data.draft);
-	return entries.flatMap((entry) =>
-		entry.data.legacyUrls
-			.filter((url) => url.startsWith('/notes/'))
-			.map((url) => ({
-				params: { slug: url.replace(/^\/notes\/|\/$/g, '') },
-				props: { destination: `/writing/${writingSlug(entry.id)}/` },
-			})),
-	);
+	return [
+		...entries.flatMap((entry) =>
+			entry.data.legacyUrls
+				.filter((url) => url.startsWith('/notes/'))
+				.map((url) => ({
+					params: { slug: url.replace(/^\/notes\/|\/$/g, '') },
+					props: { destination: `/writing/${writingSlug(entry.id)}/` },
+				})),
+		),
+		...['algorithm', 'algorithm/leetcode-ali', 'algorithm/leetcode-feb-2025'].map((slug) => ({
+			params: { slug },
+			props: { destination: '/categories/tech/algorithm/' },
+		})),
+	];
 }
 
 return Astro.redirect(Astro.props.destination, 301);

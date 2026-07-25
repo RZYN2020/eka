@@ -104,6 +104,10 @@
 	margin-inline: auto;
 }
 
+.article-shell {
+	position: relative;
+}
+
 .article-header {
 	margin-bottom: 48px;
 }
@@ -115,6 +119,15 @@
 	margin-bottom: 14px;
 	color: var(--muted);
 	font-size: 12px;
+}
+
+.article-dates {
+	display: flex;
+	gap: 6px 12px;
+}
+
+.article-dates > span {
+	color: var(--faint);
 }
 
 .article-header h1 {
@@ -157,6 +170,7 @@
 
 .prose-eka :where(h1, h2, h3, h4) {
 	margin: 2.25em 0 0.7em;
+	scroll-margin-top: 32px;
 	color: var(--ink);
 	font-weight: 600;
 	letter-spacing: -0.015em;
@@ -308,6 +322,88 @@
 .content-meta,
 .filter-bar {
 	display: none;
+}
+
+.article-toc {
+	position: fixed;
+	top: 50%;
+	left: max(20px, calc(50vw - 680px));
+	z-index: 10;
+	width: 208px;
+	max-height: min(64vh, 560px);
+	padding: 12px 14px;
+	overflow-y: auto;
+	border-left: 1px solid var(--line);
+	background: color-mix(in srgb, var(--paper) 94%, transparent);
+	opacity: 0.55;
+	transform: translateY(-50%);
+	transition: opacity 150ms ease;
+}
+
+.article-toc:hover,
+.article-toc:focus-within {
+	opacity: 1;
+}
+
+.article-toc-label {
+	margin-bottom: 8px;
+	color: var(--faint);
+	font-size: 11px;
+}
+
+.article-toc nav,
+.article-toc-mobile nav {
+	display: grid;
+	gap: 5px;
+}
+
+.article-toc a,
+.article-toc-mobile a {
+	overflow: hidden;
+	color: var(--faint);
+	font-size: 11px;
+	line-height: 1.45;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.article-toc a[data-depth="3"],
+.article-toc-mobile a[data-depth="3"] {
+	padding-left: 12px;
+}
+
+.article-toc a:hover,
+.article-toc a[aria-current="location"],
+.article-toc-mobile a:hover {
+	color: var(--ink);
+	text-decoration: none;
+}
+
+.article-toc-mobile {
+	display: none;
+	margin-bottom: 36px;
+	padding-block: 10px;
+	border-block: 1px solid var(--line);
+	color: var(--muted);
+	font-size: 12px;
+}
+
+.article-toc-mobile summary {
+	cursor: pointer;
+}
+
+.article-toc-mobile nav {
+	margin-top: 12px;
+}
+
+@media (max-width: 1120px) {
+	.article-toc {
+		display: none;
+	}
+
+	.article-toc-mobile {
+		display: block;
+	}
 }
 
 @media (max-width: 700px) {

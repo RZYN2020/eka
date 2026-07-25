@@ -4,7 +4,6 @@ import { unified } from '@astrojs/markdown-remark';
 import tailwindcss from '@tailwindcss/vite';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
-import remarkHugoShortcodes from './src/lib/remark-hugo-shortcodes.mjs';
 
 export default defineConfig({
 	site: 'https://yongzhen.space',
@@ -13,7 +12,7 @@ export default defineConfig({
 	integrations: [sitemap()],
 	markdown: {
 		processor: unified({
-			remarkPlugins: [remarkHugoShortcodes, remarkMath],
+			remarkPlugins: [remarkMath],
 			rehypePlugins: [rehypeKatex],
 		}),
 		shikiConfig: {

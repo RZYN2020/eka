@@ -1,11 +1,12 @@
 ---
-title: LeetCode Hot 100 · 50%
+title: LeetCode Hot 100 · 二分、栈、堆与贪心
 description: ''
 category: Tech
 subcategories:
   - Algorithm
 tags: []
-order: 12
+publishedAt: '2025-02-09T00:00:00+08:00'
+order: 6
 draft: false
 legacyUrls:
   - /algorithm/leetcode-hot100-50/
@@ -93,7 +94,7 @@ python库中也有二分查找module： https://docs.python.org/3/library/bisect
 class Solution:
     def searchInsert(self, nums: List[int], target: int) -> int:
         l, r = 0, len(nums) - 1
-        while l <= r: 
+        while l <= r:
             mid = l + (r - l) // 2
             if nums[mid] == target:
                 return mid
@@ -174,7 +175,7 @@ class Solution:
         pos = findone()
         if pos == -1:
             return [-1, -1]
-        l, r = pos, pos 
+        l, r = pos, pos
         while l - 1 >= 0 and nums[l - 1] == target:
             l = l - 1
         while r + 1 < len(nums) and nums[r + 1] == target:
@@ -187,13 +188,13 @@ class Solution:
 ```python
 class Solution:
     def lower_bound(self, nums: List[int], target: int) -> int:
-        left, right = 0, len(nums) - 1 
+        left, right = 0, len(nums) - 1
         while left <= right:
             mid = (left + right) // 2
             if nums[mid] >= target:
                 right = mid - 1
             else:
-                left = mid + 1 
+                left = mid + 1
         return left
 
     def searchRange(self, nums: List[int], target: int) -> List[int]:
@@ -315,7 +316,7 @@ class MinStack:
     def pop(self) -> None:
         val = self.stack.pop()
         self.array.remove(val)
-        
+
     def top(self) -> int:
         return self.stack[-1]
 
@@ -375,7 +376,7 @@ class MinStack:
                             inners += s[i]
                     else:
                         inners += s[i]
-                    i += 1 
+                    i += 1
                 res += int(num) * self.decodeString(inners)
             else:
                 res += s[i]
@@ -630,7 +631,7 @@ class Solution:
                 return quick_select(small, k - len(nums) + len(small))
             # 第 k 大元素在 equal 中，直接返回 pivot
             return pivot
-        
+
         return quick_select(nums, k)
 ```
 
@@ -668,7 +669,7 @@ class Solution:
                 rev[v] = []
             rev[v].append(k)
 
-        freqs = list(freq.values()) 
+        freqs = list(freq.values())
         # parent of k = (k - 1) / 2
         # left son = 2k + 1; right son = 2k + 2
         def heapfy(hp: List[int], i: int):
@@ -688,10 +689,10 @@ class Solution:
                     maxv = hp[ls]
                     if hp[rs] > hp[ls]:
                         son = rs
-                        maxv = hp[rs] 
+                        maxv = hp[rs]
                     else:
                         son = ls
-                        maxv = hp[ls] 
+                        maxv = hp[ls]
                     if maxv > hp[cur]:
                         hp[son], hp[cur] = hp[cur], hp[son]
                         cur = son
@@ -780,7 +781,7 @@ class MedianFinder:
 
     def __init__(self):
         self.min_heap = []
-        self.max_heap = []        
+        self.max_heap = []
 
     def addNum(self, num: int) -> None:
         if len(self.min_heap) == 0 or self.min_heap[0] < num:
@@ -811,7 +812,7 @@ class MedianFinder:
 >
 > 你只能选择 **某一天** 买入这只股票，并选择在 **未来的某一个不同的日子** 卖出该股票。设计一个算法来计算你所能获取的最大利润。
 >
-> 返回你可以从这笔交易中获取的最大利润。如果你不能获取任何利润，返回 `0` 
+> 返回你可以从这笔交易中获取的最大利润。如果你不能获取任何利润，返回 `0`
 
 就是求最大的两天差
 
@@ -856,7 +857,7 @@ class MedianFinder:
 >
 > 每个元素 `nums[i]` 表示从索引 `i` 向后跳转的最大长度。换句话说，如果你在 `nums[i]` 处，你可以跳转到任意 `nums[i + j]` 处:
 >
-> - `0 <= j <= nums[i]` 
+> - `0 <= j <= nums[i]`
 > - `i + j < n`
 >
 > 返回到达 `nums[n - 1]` 的最小跳跃次数。生成的测试用例可以到达 `nums[n - 1]`。
@@ -878,7 +879,7 @@ class MedianFinder:
             for i in range(cur, farest + 1):
                 if i + nums[i] > farest:
                     cur = i
-                    farest = i + nums[i] 
+                    farest = i + nums[i]
             step += 1
 ```
 
@@ -1036,7 +1037,7 @@ class Solution:
             while j >= 0 and nums[i] >= nums[j]:
                 j -= 1
             nums[i], nums[j] = nums[j], nums[i]
-        
+
         # 顺序变换
         left, right = i + 1, len(nums) - 1
         while left < right:
@@ -1082,4 +1083,3 @@ class Solution:
 
         return ptr
 ```
-

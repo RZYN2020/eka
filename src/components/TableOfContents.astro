@@ -1,0 +1,60 @@
+---
+interface Heading {
+	depth: number;
+	slug: string;
+	text: string;
+}
+
+interface Props {
+	headings: Heading[];
+}
+
+const { headings } = Astro.props;
+const items = headings.filter((heading) => heading.depth === 2 || heading.depth === 3);
+---
+
+{items.length > 1 && (
+	<>
+		<aside class="article-toc" aria-label="文章目录">
+			<div class="article-toc-label">Contents</div>
+			<nav>
+				{items.map((heading) => (
+					<a href={`#${heading.slug}`} data-depth={heading.depth}>
+						{heading.text}
+					</a>
+				))}
+			</nav>
+		</aside>
+
+		<details class="article-toc-mobile">
+			<summary>Contents</summary>
+			<nav>
+				{items.map((heading) => (
+					<a href={`#${heading.slug}`} data-depth={heading.depth}>
+						{heading.text}
+					</a>
+				))}
+			</nav>
+		</details>
+
+		<script>
+			const tocLinks = [...document.querySelectorAll<HTMLAnchorElement>('.article-toc a')];
+			const sections = tocLinks
+				.map((link) => document.getElementById(decodeURIComponent(link.hash.slice(1))))
+				.filter((section): section is HTMLElement => Boolean(section));
+
+			const setCurrent = () => {
+				const current = [...sections]
+					.reverse()
+					.find((section) => section.getBoundingClientRect().top <= 120) ?? sections[0];
+				tocLinks.forEach((link) => {
+					if (decodeURIComponent(link.hash.slice(1)) === current?.id) link.setAttribute('aria-current', 'location');
+					else link.removeAttribute('aria-current');
+				});
+			};
+
+			document.addEventListener('scroll', setCurrent, { passive: true });
+			setCurrent();
+		</script>
+	</>
+)}

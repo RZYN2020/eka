@@ -10,7 +10,7 @@
 /journal/posts/扬州游记/ /writing/yangzhou/ 301
 /journal/posts/庐山游记/ /writing/lushan/ 301
 /journal/ /writing/?kind=journal 301
-/algorithm/ /notes/ 301
+/algorithm/ /categories/tech/algorithm/ 301
 /algorithm/* /notes/algorithm/:splat 301
 /resume/ /resume/zh/ 301
 /posts/building-a-transformer-lm/ /writing/building-a-transformer-lm/ 301

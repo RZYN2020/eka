@@ -1,19 +1,23 @@
 ---
-title: 算法题 · 字节跳动
+title: 字节跳动算法题记录 · 2023 年 5—7 月
 description: ''
 category: Tech
 subcategories:
   - Algorithm
 tags: []
-order: 6
+publishedAt: '2023-05-01T00:00:00+08:00'
+updatedAt: '2023-07-31T00:00:00+08:00'
+order: 5
 draft: false
 legacyUrls:
   - /algorithm/leetcode-bytedance-2023/
   - /notes/algorithm/leetcode-bytedance-2023/
 ---
-## 新题
+## 2023 7月
 
-### [455. 分发饼干](https://leetcode.cn/problems/assign-cookies/)
+### 新题
+
+#### [455. 分发饼干](https://leetcode.cn/problems/assign-cookies/)
 
 注意，python的sort函数是**从小到大**排序
 
@@ -59,7 +63,7 @@ class Solution:
 
 
 
-### [103. 二叉树的锯齿形层序遍历](https://leetcode.cn/problems/binary-tree-zigzag-level-order-traversal/)
+#### [103. 二叉树的锯齿形层序遍历](https://leetcode.cn/problems/binary-tree-zigzag-level-order-traversal/)
 
 记得每次循环后清空cur
 
@@ -87,7 +91,7 @@ class Solution:
 
 5min
 
-### [344. 反转字符串](https://leetcode.cn/problems/reverse-string/)
+#### [344. 反转字符串](https://leetcode.cn/problems/reverse-string/)
 
 我的写法
 
@@ -112,7 +116,7 @@ class Solution:
 
 < 1 min
 
-## 旧题
+### 旧题
 
 [199. 二叉树的右视图](https://leetcode.cn/problems/binary-tree-right-side-view/)  11min 犯了和第一次做同样的错误，下标0/-1搞错
 
@@ -124,15 +128,15 @@ class Solution:
 
 [146. LRU 缓存](https://leetcode.cn/problems/lru-cache/) todo
 
-# 2023 年 6 月
+## 2023 年 6 月
 
-## 新题
+### 新题
 
 [225. 用队列实现栈](https://leetcode.cn/problems/implement-stack-using-queues/)
 
 [88. 合并两个有序数组](https://leetcode.cn/problems/merge-sorted-array/)
 
-## 旧题
+### 旧题
 
 [25. K 个一组翻转链表](https://leetcode.cn/problems/reverse-nodes-in-k-group/)
 
@@ -142,15 +146,15 @@ class Solution:
 
 [200. 岛屿数量](https://leetcode.cn/problems/number-of-islands/)
 
-# 2023年 5 月
+## 2023年 5 月
 
-## 新题
+### 新题
 
 [310. 最小高度树](https://leetcode.cn/problems/minimum-height-trees/)
 
 [852. 山脉数组的峰顶索引](https://leetcode.cn/problems/peak-index-in-a-mountain-array/)
 
-## 旧题
+### 旧题
 
 [92. 反转链表 II](https://leetcode.cn/problems/reverse-linked-list-ii/)
 

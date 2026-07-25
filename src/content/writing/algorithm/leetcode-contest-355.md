@@ -5,7 +5,9 @@ category: Tech
 subcategories:
   - Algorithm
 tags: []
-order: 7
+publishedAt: '2023-08-23T00:00:00+08:00'
+updatedAt: '2023-10-05T00:00:00+08:00'
+order: 0
 draft: false
 legacyUrls:
   - /algorithm/leetcode-contest-355/
@@ -85,7 +87,7 @@ impl Solution {
         for (idx, ele) in parent.iter().enumerate() {
             graph.entry(*ele).or_insert(vec![]).push(idx as i32);
         }
-        
+
         xors.insert(0, 1);
         let mut stack: Vec<(i32, u32)> = vec![(0, 0)];
         while let Some((cur, p_xor)) = stack.pop() {
@@ -212,8 +214,8 @@ JonGjengset的youtube频道有关于它们的很好的介绍
 
 发现两个有关rust的有趣的项目：
 
-+ [frunk crate](https://beachape.com/frunk/frunk/index.html)：rust函数式编程支持 
-+ [cranelift](https://cranelift.dev/)：rust似乎计划未来用这个替代llvm作为后端(这样就完全自举了！) 
++ [frunk crate](https://beachape.com/frunk/frunk/index.html)：rust函数式编程支持
++ [cranelift](https://cranelift.dev/)：rust似乎计划未来用这个替代llvm作为后端(这样就完全自举了！)
 
 文章:
 
@@ -226,4 +228,4 @@ JonGjengset的youtube频道有关于它们的很好的介绍
 
 课程:
 
-+ [15-816 Linear Logic](https://www.cs.cmu.edu/~fp/courses/98-linear/handouts.html)  by [Frank Pfenning](http://www.cs.cmu.edu/~fp/) 
++ [15-816 Linear Logic](https://www.cs.cmu.edu/~fp/courses/98-linear/handouts.html)  by [Frank Pfenning](http://www.cs.cmu.edu/~fp/)

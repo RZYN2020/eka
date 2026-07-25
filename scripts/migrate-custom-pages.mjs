@@ -18,6 +18,28 @@ mapScript = mapScript
 	.replace("const GEO_CITY = '/journal/geojson/china-cities.json';", "const GEO_CITY = '/geojson/china-cities.json';")
 	.replace("const GEO_PROVINCE = '/journal/geojson/china.json';", "const GEO_PROVINCE = '/geojson/china.json';")
 	.replace("const GEO_WORLD = '/journal/geojson/world.json';", "const GEO_WORLD = '/geojson/world.json';")
+	.replace('color: "#5b8cc9", slug: "",', 'color: "#5b8cc9", slug: "qinhuai",')
+	.replace('{ city:"扬州", province:"江苏", dates:"2025.5", year:2025, slug:"" }', '{ city:"扬州", province:"江苏", dates:"2025.5", year:2025, slug:"yangzhou" }')
+	.replace('{ city:"九江", province:"江西", dates:"2026.6", year:2026, slug:"" }', '{ city:"九江", province:"江西", dates:"2026.6", year:2026, slug:"lushan" }')
+	.replace(
+		'// =============================================================================\n// State',
+		`const blogTitles = {
+    qinhuai: '秦淮',
+    yangzhou: '扬州游记',
+    lushan: '庐山游记'
+};
+
+// =============================================================================
+// State`,
+	)
+	.replace(
+		'style="display:inline-flex;align-items:center;gap:2px;font-size:0.72rem;color:#b0a590;text-decoration:none;margin-top:2px;" onclick="event.stopPropagation()">游记 ',
+		'class="blink" onclick="event.stopPropagation()">@${blogTitles[slug] ?? \'文章\'} ',
+	)
+	.replace(
+		'title="游记">游记<svg',
+		'title="相关文章">@${blogTitles[slug] ?? \'文章\'}<svg',
+	)
 	.replaceAll('href="/journal/posts/${slug}/"', 'href="/writing/${slug}/"')
 	.replace("window.location.href='/journal';", "window.location.href='/about/';");
 
@@ -25,7 +47,7 @@ await fs.mkdir(path.join(projectRoot, 'src/styles'), { recursive: true });
 await fs.mkdir(path.join(projectRoot, 'src/scripts'), { recursive: true });
 await fs.mkdir(path.join(projectRoot, 'src/pages/map'), { recursive: true });
 await fs.writeFile(path.join(projectRoot, 'src/styles/map.css'), mapStyle);
-await fs.writeFile(path.join(projectRoot, 'src/scripts/travel-map.js'), `import L from 'leaflet';\n${mapScript}\n`);
+await fs.writeFile(path.join(projectRoot, 'src/scripts/travel-map.js'), `import L from 'leaflet';\n${mapScript.trim()}\n`);
 await fs.writeFile(
 	path.join(projectRoot, 'src/pages/map/index.astro'),
 	`---

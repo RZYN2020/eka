@@ -1,17 +1,25 @@
 ---
 import { getCollection, render } from 'astro:content';
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { writingRedirects } from '../../config/redirects';
 import { writingSlug } from '../../lib/content';
 
 export async function getStaticPaths() {
 	const entries = (await getCollection('writing')).filter((entry) => !entry.data.draft);
-	return entries.map((entry) => ({
-		params: { slug: writingSlug(entry.id) },
-		props: { entry },
-	}));
+	return [
+		...entries.map((entry) => ({
+			params: { slug: writingSlug(entry.id) },
+			props: { entry },
+		})),
+		...Object.entries(writingRedirects).map(([slug, destination]) => ({
+			params: { slug },
+			props: { destination },
+		})),
+	];
 }
 
-const { entry } = Astro.props;
+const { entry, destination } = Astro.props;
+if (destination) return Astro.redirect(destination, 301);
 const { Content, headings } = await render(entry);
 ---
 

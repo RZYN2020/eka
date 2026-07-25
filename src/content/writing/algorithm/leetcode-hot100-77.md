@@ -1,11 +1,12 @@
 ---
-title: LeetCode Hot 100 · 77%
+title: LeetCode Hot 100 · 树、图与回溯
 description: ''
 category: Tech
 subcategories:
   - Algorithm
 tags: []
-order: 13
+publishedAt: '2025-02-11T00:00:00+08:00'
+order: 7
 draft: false
 legacyUrls:
   - /algorithm/leetcode-hot100-77/
@@ -98,7 +99,7 @@ class Solution:
     def exist(self, board: List[List[str]], word: str) -> bool:
         found = False
         path = []
-        
+
         def backtrack(c, i, j):
             nonlocal found
             if board[i][j] != word[c]:
@@ -148,4 +149,3 @@ class Solution:
         return list(map(''.join, product(*(phoneMap[digit] for digit in digits))))
 
 ```
-

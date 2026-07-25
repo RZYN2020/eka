@@ -1,28 +1,18 @@
 ---
-title: 算法题 · 腾讯
+title: 腾讯算法题记录
 description: ''
 category: Tech
 subcategories:
   - Algorithm
 tags: []
-order: 14
+publishedAt: '2025-07-01T00:00:00+08:00'
+order: 9
 draft: false
 legacyUrls:
   - /algorithm/leetcode-tencent/
   - /notes/algorithm/leetcode-tencent/
 ---
-625. 最长有效括号
-626. 两数相加
-627. 无重复字符的最长子串
-628. 零钱兑换
-629. 数据流的中位数
-
-625. 正则表达式匹配排序数组
-626. 合并两个有序数组
-
-
-
-### [546. 移除盒子](https://leetcode.cn/problems/remove-boxes/)
+## [546. 移除盒子](https://leetcode.cn/problems/remove-boxes/)
 
 这题在 Codeforces 上有 2400 分 [CF1107E](https://leetcode.cn/link/?target=https%3A%2F%2Fcodeforces.com%2Fproblemset%2Fproblem%2F1107%2FE)，换算成力扣难度分的话至少有 3000。
 
@@ -48,7 +38,7 @@ class Solution:
         return dfs(0, len(boxes) - 1, 0)
 ```
 
-### 625 最小因式分解
+## 625 最小因式分解
 
 https://github.com/doocs/leetcode/blob/main/solution/0600-0699/0625.Minimum%20Factorization/README.md
 
@@ -82,7 +72,7 @@ class Solution:
         return result
 ```
 
-### [354. 俄罗斯套娃信封问题](https://leetcode.cn/problems/russian-doll-envelopes/)
+## [354. 俄罗斯套娃信封问题](https://leetcode.cn/problems/russian-doll-envelopes/)
 
 思路是有了：先遍历构建树，然后求最大深度
 
@@ -133,7 +123,7 @@ class Solution:
     def maxEnvelopes(self, envelopes: List[List[int]]) -> int:
         if not envelopes:
             return 0
-        
+
         n = len(envelopes)
         envelopes.sort(key=lambda x: (x[0], -x[1]))
 
@@ -142,11 +132,11 @@ class Solution:
             for j in range(i):
                 if envelopes[j][1] < envelopes[i][1]:
                     f[i] = max(f[i], f[j] + 1)
-        
+
         return max(f)
 ```
 
-### [146. LRU 缓存](https://leetcode.cn/problems/lru-cache/)
+## [146. LRU 缓存](https://leetcode.cn/problems/lru-cache/)
 
 经典老题了，一个 dummy node 即可（环形链表）
 
@@ -204,4 +194,3 @@ class LRUCache:
         x.prev.next = x
         x.next.prev = x
 ```
-

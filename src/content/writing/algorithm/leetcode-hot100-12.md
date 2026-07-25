@@ -1,11 +1,13 @@
 ---
-title: LeetCode Hot 100 · 12%
+title: LeetCode Hot 100 · 哈希、双指针与滑动窗口
 description: ''
 category: Tech
 subcategories:
   - Algorithm
 tags: []
-order: 10
+publishedAt: '2024-11-22T00:00:00+08:00'
+updatedAt: '2025-07-01T00:00:00+08:00'
+order: 3
 draft: false
 legacyUrls:
   - /algorithm/leetcode-hot100-12/
@@ -40,7 +42,7 @@ class Solution:
         for st in strs:
             key = "".join(sorted(st))
             mp[key].append(st)
-        
+
         return list(mp.values())
 
 class Solution:
@@ -53,7 +55,7 @@ class Solution:
                 counts[ord(ch) - ord("a")] += 1
             # 需要将 list 转换成 tuple 才能进行哈希
             mp[tuple(counts)].append(st)
-        
+
         return list(mp.values())
 ```
 
@@ -78,21 +80,21 @@ class Solution:
 class Solution(object):
     def longestConsecutive(self, nums):
         hash_dict = dict()
-        
+
         max_length = 0
         for num in nums:
             if num not in hash_dict:
                 left = hash_dict.get(num - 1, 0)
                 right = hash_dict.get(num + 1, 0)
-                
+
                 cur_length = 1 + left + right
                 if cur_length > max_length:
                     max_length = cur_length
-                
+
                 hash_dict[num] = cur_length
                 hash_dict[num - left] = cur_length
                 hash_dict[num + right] = cur_length
-                
+
         return max_length
 ```
 
@@ -196,7 +198,7 @@ class Solution:
         n = len(nums)
         nums.sort()
         ans = list()
-        
+
         # 枚举 a
         for first in range(n):
             # 需要和上一次枚举的数不相同
@@ -219,7 +221,7 @@ class Solution:
                     break
                 if nums[second] + nums[third] == target:
                     ans.append([nums[first], nums[second], nums[third]])
-        
+
         return ans
 ```
 
@@ -229,7 +231,7 @@ class Solution:
 
 1. 暴力思路显然超时（每一层分别遍历）
 2. 考虑：
-   1. 什么时候能接到雨水 -> 凹形	
+   1. 什么时候能接到雨水 -> 凹形
    2. 什么是凹 -> 两侧墙中较矮侧为单侧极值（从此望去，一马平川
 
 所以
@@ -241,7 +243,7 @@ class Solution:
     def trap(self, height: List[int]) -> int:
         if not height:
             return 0
-        
+
         n = len(height)
         leftMax = [height[0]] + [0] * (n - 1)
         for i in range(1, n):
@@ -297,8 +299,8 @@ class Solution:
             sub = s[i: i + len(p)]
             if sorted(sub) == ss:
                 res.append(i)
-        return res 
-            
+        return res
+
 ```
 
 但考虑滑动窗口，渐变计算 ·`O(m+(n−m)Σ)`
@@ -307,7 +309,7 @@ class Solution:
 class Solution:
     def findAnagrams(self, s: str, p: str) -> List[int]:
         s_len, p_len = len(s), len(p)
-        
+
         if s_len < p_len:
             return []
 
@@ -324,7 +326,7 @@ class Solution:
         for i in range(s_len - p_len):
             s_count[ord(s[i]) - 97] -= 1
             s_count[ord(s[i + p_len]) - 97] += 1
-            
+
             if s_count == p_count:
                 ans.append(i + 1)
 
@@ -357,7 +359,7 @@ class Solution:
             prsum += n
             res += mp[prsum - k]
             mp[prsum] += 1
-        return res 
+        return res
 ```
 
 
@@ -370,7 +372,7 @@ class Solution:
 
 有没有这样一种数据结构：增删都快，而且能求最值？`O(nlogn)`
 
-当然有，但前提是你知道 api 
+当然有，但前提是你知道 api
 
 > 可以将自定义元素和一个可比较的键（如数字）组合成元组，然后将元组添加到堆中。`heapq` 模块会首先比较元组的第一个元素。
 >
@@ -390,7 +392,7 @@ class Solution:
             while q[0][1] <= i - k:
                 heapq.heappop(q)
             ans.append(-q[0][0])
-        
+
         return ans
 
 ```
@@ -424,7 +426,7 @@ class Solution:
             while q[0] <= i - k:
                 q.popleft()
             ans.append(nums[q[0]])
-        
+
         return ans
 ```
 
@@ -455,4 +457,3 @@ class Solution:
                 left += 1
         return "" if ans_left < 0 else s[ans_left: ans_right + 1]
 ```
-

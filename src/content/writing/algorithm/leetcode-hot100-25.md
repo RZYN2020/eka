@@ -1,11 +1,13 @@
 ---
-title: LeetCode Hot 100 · 25%
+title: LeetCode Hot 100 · 动态规划
 description: ''
 category: Tech
 subcategories:
   - Algorithm
 tags: []
-order: 11
+publishedAt: '2024-12-01T00:00:00+08:00'
+updatedAt: '2025-07-01T00:00:00+08:00'
+order: 4
 draft: false
 legacyUrls:
   - /algorithm/leetcode-hot100-25/
@@ -68,7 +70,7 @@ class Solution:
             c = b + a
             a = b
             b = c
-        return b 
+        return b
 ```
 
 考虑到递推式齐次线性的，则可以转化为矩阵乘法，进而使用[快速幂算法](https://www.desgard.com/algo/docs/part2/ch01/3-matrix-quick-pow/)把复杂度降到 `O(log n)` (非齐次式也可以通过变换转化为齐次递推问题)
@@ -194,7 +196,7 @@ class Solution:
             if words == []:
                 return False
             else:
-                return any([dfs(s.replace(word, "_", 1)) for word in words])    
+                return any([dfs(s.replace(word, "_", 1)) for word in words])
         return dfs(s)
 ```
 
@@ -402,7 +404,7 @@ class Solution:
                         maxl = 1 + 2 * j
                 else:
                     break
-                    
+
 
         # two kernel
         for i in range(len(s) - 1):
@@ -434,14 +436,14 @@ class Solution:
     def longestCommonSubsequence(self, text1: str, text2: str) -> int:
         if set(text1).isdisjoint(set(text2)):
             return 0
-        dp = [[0 for _ in range(len(text1))] for _ in range(len(text2))] 
+        dp = [[0 for _ in range(len(text1))] for _ in range(len(text2))]
         for i in range(len(text2)):
             dp[i][0] = 1 if text2[i] == text1[0] else 0
         for i in range(len(text1)):
             dp[0][i] = 1 if text2[0] == text1[i] else 0
         for i in range(len(text2)):
             for j in range(len(text1)):
-                c = text2[i] 
+                c = text2[i]
                 l = 0
                 for k in reversed(range(0, j + 1)):
                     if k == 0 or i == 0:
@@ -462,14 +464,14 @@ class Solution:
     def longestCommonSubsequence(self, text1: str, text2: str) -> int:
         m, n = len(text1), len(text2)
         dp = [[0] * (n + 1) for _ in range(m + 1)]
-        
+
         for i in range(1, m + 1):
             for j in range(1, n + 1):
                 if text1[i - 1] == text2[j - 1]:
                     dp[i][j] = dp[i - 1][j - 1] + 1
                 else:
                     dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
-        
+
         return dp[m][n]
 ```
 
@@ -487,7 +489,7 @@ class Solution:
         for i in range(len(word2) + 1):
             dp[i][0] = i
         for i in range(len(word1) + 1):
-            dp[0][i] = i     
+            dp[0][i] = i
         for i in range(1, len(word2) + 1):
             for j in range(1, len(word1) + 1):
                 if word1[j - 1] != word2[i - 1]:
@@ -504,31 +506,30 @@ class Solution:
     def minDistance(self, word1: str, word2: str) -> int:
         n = len(word1)
         m = len(word2)
-        
+
         # 有一个字符串为空串
         if n * m == 0:
             return n + m
-        
+
         # DP 数组
         D = [ [0] * (m + 1) for _ in range(n + 1)]
-        
+
         # 边界状态初始化
         for i in range(n + 1):
             D[i][0] = i
         for j in range(m + 1):
             D[0][j] = j
-        
+
         # 计算所有 DP 值
         for i in range(1, n + 1):
             for j in range(1, m + 1):
                 left = D[i - 1][j] + 1
                 down = D[i][j - 1] + 1
-                left_down = D[i - 1][j - 1] 
+                left_down = D[i - 1][j - 1]
                 if word1[i - 1] != word2[j - 1]:
                     left_down += 1
                 D[i][j] = min(left, down, left_down)
-        
+
         return D[n][m]
 
 ```
-

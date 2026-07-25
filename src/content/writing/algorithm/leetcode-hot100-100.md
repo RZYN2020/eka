@@ -1,11 +1,12 @@
 ---
-title: LeetCode Hot 100 · 完成
+title: LeetCode Hot 100 · 数组、矩阵与链表
 description: ''
 category: Tech
 subcategories:
   - Algorithm
 tags: []
-order: 9
+publishedAt: '2025-02-14T00:00:00+08:00'
+order: 8
 draft: false
 legacyUrls:
   - /algorithm/leetcode-hot100-100/
@@ -67,7 +68,7 @@ legacyUrls:
             if not interv:
                 ans.append(inv1)
         return ans
-            
+
 ```
 
 但其实排序后扫描一遍即可：
@@ -189,7 +190,7 @@ legacyUrls:
                 matrix[c][i] = 0
         for i in range(len(matrix)):
             for r in zero_rows:
-                matrix[i][r] = 0   
+                matrix[i][r] = 0
 ```
 
 但依然不是常数...所以有...
@@ -201,21 +202,21 @@ legacyUrls:
         m, n = len(matrix), len(matrix[0])
         flag_col0 = any(matrix[i][0] == 0 for i in range(m))
         flag_row0 = any(matrix[0][j] == 0 for j in range(n))
-        
+
         for i in range(1, m):
             for j in range(1, n):
                 if matrix[i][j] == 0:
                     matrix[i][0] = matrix[0][j] = 0
-        
+
         for i in range(1, m):
             for j in range(1, n):
                 if matrix[i][0] == 0 or matrix[0][j] == 0:
                     matrix[i][j] = 0
-        
+
         if flag_col0:
             for i in range(m):
                 matrix[i][0] = 0
-        
+
         if flag_row0:
             for j in range(n):
                 matrix[0][j] = 0
@@ -234,7 +235,7 @@ class Solution:
     def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
         UP, DOWN, LEFT, RIGHT = 1, 2, 3, 4
         MOVE = {UP: (-1, 0), DOWN: (1, 0), LEFT: (0, -1), RIGHT: (0, 1)}
-        DIRECT_CHANGE = {RIGHT: DOWN, DOWN: LEFT, LEFT: UP, UP: RIGHT} 
+        DIRECT_CHANGE = {RIGHT: DOWN, DOWN: LEFT, LEFT: UP, UP: RIGHT}
         border = {UP: 0, DOWN: len(matrix) - 1, LEFT: 0, RIGHT: len(matrix[0]) - 1}
         curr = (0, 0)
         direct = RIGHT
@@ -335,7 +336,7 @@ class Solution:
                 l = j
                 r = len(matrix) - j - 1
                 matrix[i][l], matrix[i][r] = matrix[i][r], matrix[i][l]
-                
+
          	====
             matrix[i].reverse()
            	====
@@ -465,9 +466,9 @@ class Solution:
         while fast and fast.next:
             slow = slow.next
             fast = fast.next.next
-            if fast is slow: 
+            if fast is slow:
                 return True
-        return False 
+        return False
 ```
 
 ```python
@@ -485,7 +486,7 @@ class Solution:
         return None
 ```
 
-### [21. 合并两个有序链表](https://leetcode.cn/problems/merge-two-sorted-lists/) 
+### [21. 合并两个有序链表](https://leetcode.cn/problems/merge-two-sorted-lists/)
 
 1. 注意可以用dummy node简化操作
 2. 注意循环终止条件的简化
@@ -597,7 +598,7 @@ class Solution:
 ```python
     def reverseKGroup(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
         dummy = prev = last = ListNode(next=head)
-        
+
         def reverse(prev, end):
             before = prev
             cur = first = prev.next
@@ -613,7 +614,7 @@ class Solution:
             last = last.next
             if last == None:
                 return dummy.next
-        
+
         while True:
             last_ = prev.next
             reverse(prev, last)
@@ -624,7 +625,7 @@ class Solution:
                 if last == None:
                      return dummy.next
         return dummy.next
-        
+
 ```
 
 然后看看SOTA写法：
@@ -941,4 +942,3 @@ class LRUCache:
         x.prev.next = x
         x.next.prev = x
 ```
-

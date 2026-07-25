@@ -1,5 +1,4 @@
 import L from 'leaflet';
-
 // =============================================================================
 // 数据 —— 在这里编辑你的旅行记录
 // 结构: 驻地(bases) → 旅行地(trips)，均可选 slug 指向博客
@@ -29,7 +28,7 @@ const bases = [
     },{
         period: "2020.9 — 2026", summary: "本科与研究生时代",
         city: "南京", province: "江苏",
-        color: "#5b8cc9", slug: "",
+        color: "#5b8cc9", slug: "qinhuai",
         trips: [
             { city:"庆阳", province:"甘肃", dates:"2021.1", year:2021, slug:"", note:"寒假回家" },
             { city:"庆阳", province:"甘肃", dates:"2021.7", year:2021, slug:"", note:"暑假回家" },
@@ -52,7 +51,7 @@ const bases = [
             { city:"无锡", province:"江苏", dates:"2024夏", year:2024, slug:"" },
             { city:"镇江", province:"江苏", dates:"2024夏", year:2024, slug:"" },
             { city:"庆阳", province:"甘肃", dates:"2025.1", year:2025, slug:"", note:"寒假回家" },
-            { city:"扬州", province:"江苏", dates:"2025.5", year:2025, slug:"" },
+            { city:"扬州", province:"江苏", dates:"2025.5", year:2025, slug:"yangzhou" },
             { city:"深圳", province:"广东", dates:"2025.6–9", year:2025, slug:"", baseLike:true, subtrips:[
                 { city:"香港", province:"香港", dates:"2025.8", year:2025, slug:"" },
                 { city:"广州", province:"广东", dates:"2025.8", year:2025, slug:"" },
@@ -76,10 +75,16 @@ const bases = [
             { city:"珠海", province:"广东", dates:"2026.6", year:2026, slug:"" },
             { city:"惠州", province:"广东", dates:"2026.6", year:2026, slug:"" },
             { city:"南昌", province:"江西", dates:"2026.6", year:2026, slug:"" },
-            { city:"九江", province:"江西", dates:"2026.6", year:2026, slug:"" }
+            { city:"九江", province:"江西", dates:"2026.6", year:2026, slug:"lushan" }
         ]
     }
 ];
+
+const blogTitles = {
+    qinhuai: '秦淮',
+    yangzhou: '扬州游记',
+    lushan: '庐山游记'
+};
 
 // =============================================================================
 // State
@@ -422,7 +427,7 @@ function showBack(on) {
 // =============================================================================
 function blogLinkHTML(slug) {
     if (!slug) return '';
-    return `<a href="/writing/${slug}/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:2px;font-size:0.72rem;color:#b0a590;text-decoration:none;margin-top:2px;" onclick="event.stopPropagation()">游记 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>`;
+    return `<a href="/writing/${slug}/" target="_blank" rel="noopener" class="blink" onclick="event.stopPropagation()">@${blogTitles[slug] ?? '文章'} <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>`;
 }
 
 function addMarkers() {
@@ -527,7 +532,7 @@ function fly(lat,lng,z,cb) {
 // =============================================================================
 function blink(slug) {
     if(!slug) return '';
-    return `<a href="/writing/${slug}/" target="_blank" rel="noopener" class="blink" onclick="event.stopPropagation()" title="游记">游记<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>`;
+    return `<a href="/writing/${slug}/" target="_blank" rel="noopener" class="blink" onclick="event.stopPropagation()" title="相关文章">@${blogTitles[slug] ?? '文章'}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>`;
 }
 
 const tgSVG = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>`;

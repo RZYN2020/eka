@@ -3,8 +3,10 @@ title: Haskell 学习笔记
 description: ''
 category: Tech
 subcategories:
-  - Algorithm
+  - Application
 tags: []
+publishedAt: '2023-10-05T00:00:00+08:00'
+updatedAt: '2024-01-15T00:00:00+08:00'
 order: 1
 draft: false
 legacyUrls:
@@ -82,7 +84,7 @@ highAndLow = unwords . map show . f . map read . words
 
 ```haskell
 highAndLow :: String -> String
-highAndLow input = 
+highAndLow input =
   let ns = map read $ words input :: [Int]
       mx = maximum ns
       mn = minimum ns
@@ -146,7 +148,7 @@ tribonacci _ n | n < 1 = []
 tribonacci (a, b, c) n = a : tribonacci (b, c, a+b+c) (n-1)
 ```
 
-emmmm.... very very clever!!! 
+emmmm.... very very clever!!!
 
 在做本题的时候脑子里就没有产生过**递归**这个念头...被 wholemeal programming 毒害了么...
 
@@ -157,7 +159,7 @@ tribonacci :: Num a => (a, a, a) -> Int -> [a]
 tribonacci (a, b, c) n = take n tribs
     where tribs = [a, b, c] ++ zipWith3 (\x y z -> x + y + z) tribs (tail tribs) (tail $ tail tribs)
 
--- 或类似的    
+-- 或类似的
 tribonacci :: Num a => (a, a, a) -> Int -> [a]
 tribonacci (a, b, c) n = take n $ trib
     where trib = a : b : c : zipWith3 (\a b c -> a + b + c)
