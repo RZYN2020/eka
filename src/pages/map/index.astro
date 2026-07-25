@@ -1,0 +1,80 @@
+---
+import '../../styles/global.css';
+import '../../styles/map.css';
+import 'leaflet/dist/leaflet.css';
+---
+<!doctype html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width" />
+	<meta name="description" content="Eka 的旅行足迹：城市、驻地与仍在延伸的道路。" />
+	<link rel="icon" type="image/webp" href="/favicon.webp" />
+	<title>旅行足迹 · Eka</title>
+</head>
+<body>
+<div class="flex flex-col h-screen">
+    <!-- Header -->
+    <div class="topbar">
+        <button id="btnBack" class="btn-back" aria-label="返回" title="返回首页">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
+        </button>
+        <h1>旅行足迹</h1>
+        <div style="width:34px"></div>
+    </div>
+
+    <!-- Body: edge-to-edge flex row -->
+    <div class="flex flex-1 min-h-0">
+        <!-- Map -->
+        <div class="flex-1 relative min-h-0">
+            <div class="map-shell">
+                <div id="map"></div>
+            </div>
+            <!-- Map controls: view scope + highlight granularity -->
+            <div class="map-ctrls-bar">
+                <div class="map-ctrls">
+                    <button class="map-ctrl-btn active" data-view="china">中国</button>
+                    <button class="map-ctrl-btn" data-view="world">世界</button>
+                </div>
+                <div class="map-ctrls">
+                    <button class="map-ctrl-btn active" data-mode="city">城市</button>
+                    <button class="map-ctrl-btn" data-mode="province">省份</button>
+                    <button class="map-ctrl-btn" data-mode="country">国家</button>
+                </div>
+            </div>
+            <!-- Back to overview -->
+            <div class="btn-global-wrap" id="backWrap">
+                <button class="btn-global" id="btnGlobal">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
+                    返回全局视图
+                </button>
+            </div>
+            <div id="loaderCover" class="loader-cover"><div class="loader-ring"></div></div>
+            <button id="btnMob" class="btn-mob" aria-label="列表" title="列表">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/></svg>
+            </button>
+        </div>
+
+        <!-- Sidebar -->
+        <div id="sidebarCol" class="sidebar-col min-h-0 flex-shrink-0" style="width:var(--sidebar-w)">
+            <div class="sidebar">
+                <div class="sidebar-top">
+                    <h2>时间线</h2>
+                    <div class="sub" id="statsSummary"></div>
+                </div>
+                <div class="sidebar-scroll">
+                    <div class="tl" id="timeline"><p style="color:var(--muted);font-size:0.84rem;text-align:center;padding:2rem 0;">加载中…</p></div>
+                    <button class="back-top-btn" id="btnBackTop" title="回到顶部">↑ 回到顶部</button>
+                </div>
+                <div class="sidebar-foot" id="statsBar">
+                    <div class="stats-row"></div>
+                    <div class="prov-bar-wrap"><div class="prov-bar-fill" id="provBar" style="width:0%"></div></div>
+                    <div class="legend" id="legend"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../../scripts/travel-map.js"></script>
+</body>
+</html>

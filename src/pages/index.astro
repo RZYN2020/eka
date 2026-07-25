@@ -1,0 +1,302 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { formatDate, plainExcerpt, sortNotes, sortWriting, writingKindLabel, writingSlug, noteSlug } from '../lib/content';
+
+const writing = sortWriting((await getCollection('writing')).filter((entry) => !entry.data.draft));
+const notes = sortNotes((await getCollection('notes')).filter((entry) => !entry.data.draft));
+const featured = writing.filter((entry) => entry.data.featured).slice(0, 5);
+const recentNotes = notes.slice(0, 4);
+---
+
+<BaseLayout>
+	<section class="home-hero">
+		<div class="hero-number" aria-hidden="true">E</div>
+		<div class="hero-copy">
+			<div class="eyebrow">Eka · Personal Publication</div>
+			<h1>在秩序与<br /><em>幻光</em>之间。</h1>
+			<p>写技术、社会与个人经验。理解系统如何运转，也寻找人在其中保持自由的可能。</p>
+		</div>
+		<div class="hero-aside">
+			<span>赵勇臻</span>
+			<span>Engineer & Writer</span>
+			<span>Nanjing / Beijing</span>
+		</div>
+	</section>
+
+	<section class="manifesto">
+		<p>“理解机器，理解社会，也理解一个人为何仍要向前。”</p>
+		<span>关于技术的理性，与关于生活的不甘。</span>
+	</section>
+
+	<section style="margin-top:6rem">
+		<div class="section-rule">
+			<h2>Selected Writing</h2>
+			<a href="/writing/">全部文章 →</a>
+		</div>
+		<div class="content-list">
+			{featured.map((entry, index) => (
+				<a class="content-row" href={`/writing/${writingSlug(entry.id)}/`}>
+					<span class="content-index">{String(index + 1).padStart(2, '0')}</span>
+					<div class="content-main">
+						<h2>{entry.data.title}</h2>
+						<p>{plainExcerpt(entry.body ?? '', entry.data.description)}</p>
+					</div>
+					<div class="content-meta">
+						<div class="tagline">{writingKindLabel[entry.data.kind]}</div>
+						<div>{formatDate(entry.data.publishedAt)}</div>
+					</div>
+				</a>
+			))}
+		</div>
+	</section>
+
+	<section class="tracks">
+		<div>
+			<span>01</span>
+			<h2>技术与系统</h2>
+			<p>编译器、后端、人工智能，以及复杂系统背后的结构。</p>
+		</div>
+		<div>
+			<span>02</span>
+			<h2>人与社会</h2>
+			<p>现代性、历史与共同生活——理解我们置身其中的世界。</p>
+		</div>
+		<div>
+			<span>03</span>
+			<h2>生活与远方</h2>
+			<p>个人经验、城市、旅行，以及那些没有熄灭的幻光。</p>
+		</div>
+	</section>
+
+	<section style="margin-top:6rem">
+		<div class="section-rule">
+			<h2>Working Notes</h2>
+			<a href="/notes/">进入笔记 →</a>
+		</div>
+		<div class="notes-grid">
+			{recentNotes.map((entry) => (
+				<a href={`/notes/${noteSlug(entry.id)}/`}>
+					<span>{entry.data.topic}</span>
+					<h3>{entry.data.title}</h3>
+					<p>{plainExcerpt(entry.body ?? '', entry.data.description, 80)}</p>
+				</a>
+			))}
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.home-hero {
+		position: relative;
+		display: grid;
+		grid-template-columns: 1fr auto;
+		min-height: 610px;
+		padding: 6.5rem 0 4rem;
+		border-bottom: 1px solid var(--line);
+		overflow: hidden;
+	}
+
+	.hero-number {
+		position: absolute;
+		right: 7rem;
+		bottom: -8.5rem;
+		color: color-mix(in srgb, var(--ember) 10%, transparent);
+		font-family: var(--font-serif);
+		font-size: 37rem;
+		line-height: 1;
+		pointer-events: none;
+	}
+
+	.hero-copy {
+		position: relative;
+		z-index: 1;
+		align-self: center;
+	}
+
+	.hero-copy h1 {
+		margin: 1.3rem 0 1.75rem;
+		font-family: var(--font-serif);
+		font-size: clamp(4.3rem, 10vw, 8rem);
+		font-weight: 500;
+		letter-spacing: -0.075em;
+		line-height: 0.88;
+	}
+
+	.hero-copy h1 em {
+		color: var(--ember);
+		font-weight: 400;
+	}
+
+	.hero-copy p {
+		max-width: 540px;
+		margin: 0;
+		color: var(--muted);
+		font-family: var(--font-serif);
+		font-size: 1.12rem;
+		line-height: 1.85;
+	}
+
+	.hero-aside {
+		position: relative;
+		z-index: 1;
+		display: flex;
+		align-self: end;
+		flex-direction: column;
+		gap: 0.3rem;
+		padding-bottom: 0.5rem;
+		color: var(--muted);
+		font-family: var(--font-mono);
+		font-size: 0.62rem;
+		letter-spacing: 0.08em;
+		text-align: right;
+		text-transform: uppercase;
+	}
+
+	.manifesto {
+		display: grid;
+		grid-template-columns: 1.25fr 0.75fr;
+		gap: 3rem;
+		align-items: end;
+		padding: 3rem 0;
+		border-bottom: 1px solid var(--line);
+	}
+
+	.manifesto p {
+		margin: 0;
+		font-family: var(--font-serif);
+		font-size: clamp(1.4rem, 3vw, 2.15rem);
+		line-height: 1.55;
+	}
+
+	.manifesto span {
+		color: var(--muted);
+		font-size: 0.78rem;
+		text-align: right;
+	}
+
+	.tracks {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		margin-top: 6rem;
+		border-top: 1px solid var(--line);
+		border-bottom: 1px solid var(--line);
+	}
+
+	.tracks > div {
+		padding: 2rem 2rem 2.5rem 0;
+	}
+
+	.tracks > div + div {
+		padding-left: 2rem;
+		border-left: 1px solid var(--line);
+	}
+
+	.tracks span {
+		color: var(--ember);
+		font-family: var(--font-mono);
+		font-size: 0.65rem;
+	}
+
+	.tracks h2 {
+		margin: 2.8rem 0 0.65rem;
+		font-family: var(--font-serif);
+		font-size: 1.4rem;
+		font-weight: 500;
+	}
+
+	.tracks p {
+		margin: 0;
+		color: var(--muted);
+		font-size: 0.8rem;
+		line-height: 1.7;
+	}
+
+	.notes-grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		border-top: 1px solid var(--line);
+		border-left: 1px solid var(--line);
+	}
+
+	.notes-grid a {
+		min-height: 190px;
+		padding: 1.5rem;
+		border-right: 1px solid var(--line);
+		border-bottom: 1px solid var(--line);
+		transition: background 160ms ease;
+	}
+
+	.notes-grid a:hover {
+		background: var(--paper-raised);
+	}
+
+	.notes-grid span {
+		color: var(--ember);
+		font-family: var(--font-mono);
+		font-size: 0.63rem;
+		text-transform: uppercase;
+	}
+
+	.notes-grid h3 {
+		margin: 2rem 0 0.5rem;
+		font-family: var(--font-serif);
+		font-size: 1.25rem;
+		font-weight: 500;
+	}
+
+	.notes-grid p {
+		margin: 0;
+		color: var(--muted);
+		font-size: 0.76rem;
+		line-height: 1.65;
+	}
+
+	@media (max-width: 680px) {
+		.home-hero {
+			display: block;
+			min-height: 560px;
+			padding: 5rem 0 3rem;
+		}
+
+		.hero-number {
+			right: -2rem;
+			bottom: -4rem;
+			font-size: 24rem;
+		}
+
+		.hero-copy h1 {
+			font-size: clamp(4rem, 20vw, 6rem);
+		}
+
+		.hero-aside {
+			position: absolute;
+			right: 0;
+			bottom: 2.5rem;
+		}
+
+		.manifesto {
+			grid-template-columns: 1fr;
+		}
+
+		.manifesto span {
+			text-align: left;
+		}
+
+		.tracks,
+		.notes-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.tracks > div,
+		.tracks > div + div {
+			padding: 1.5rem 0;
+			border-left: 0;
+			border-bottom: 1px solid var(--line);
+		}
+
+		.tracks h2 {
+			margin-top: 1.2rem;
+		}
+	}
+</style>

@@ -1,0 +1,104 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { noteSlug, plainExcerpt, sortNotes } from '../../lib/content';
+
+const entries = sortNotes((await getCollection('notes')).filter((entry) => !entry.data.draft));
+const groups = Map.groupBy(entries, (entry) => entry.data.topic);
+---
+
+<BaseLayout title="Notes" description="算法、系统、编程语言与人工智能的长期学习笔记。">
+	<header class="page-heading">
+		<div class="eyebrow">A growing knowledge archive</div>
+		<h1>Notes</h1>
+		<p>这里不是结论的陈列室，而是思考仍在发生的地方。笔记会被修订、连接，也可能被推翻。</p>
+	</header>
+
+	<div class="note-groups">
+		{[...groups.entries()].map(([topic, topicEntries]) => (
+			<section>
+				<div class="section-rule">
+					<h2>{topic}</h2>
+					<span>{String(topicEntries.length).padStart(2, '0')}</span>
+				</div>
+				<div class="note-group-grid">
+					{topicEntries.map((entry) => (
+						<a href={`/notes/${noteSlug(entry.id)}/`}>
+							<h3>{entry.data.title}</h3>
+							<p>{plainExcerpt(entry.body ?? '', entry.data.description, 105)}</p>
+							<span>{entry.data.source === 'algorithm' ? 'Algorithm' : 'Knowledge'} →</span>
+						</a>
+					))}
+				</div>
+			</section>
+		))}
+	</div>
+</BaseLayout>
+
+<style>
+	.note-groups {
+		display: grid;
+		gap: 4.5rem;
+	}
+
+	.section-rule span {
+		color: var(--faint);
+		font-family: var(--font-mono);
+		font-size: 0.65rem;
+	}
+
+	.note-group-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		border-top: 1px solid var(--line);
+		border-left: 1px solid var(--line);
+	}
+
+	.note-group-grid a {
+		display: flex;
+		min-height: 210px;
+		flex-direction: column;
+		padding: 1.4rem;
+		border-right: 1px solid var(--line);
+		border-bottom: 1px solid var(--line);
+	}
+
+	.note-group-grid a:hover {
+		background: var(--paper-raised);
+	}
+
+	.note-group-grid h3 {
+		margin: 0;
+		font-family: var(--font-serif);
+		font-size: 1.18rem;
+		font-weight: 500;
+		line-height: 1.4;
+	}
+
+	.note-group-grid p {
+		margin: 0.8rem 0 1.5rem;
+		color: var(--muted);
+		font-size: 0.76rem;
+		line-height: 1.65;
+	}
+
+	.note-group-grid span {
+		margin-top: auto;
+		color: var(--ember);
+		font-family: var(--font-mono);
+		font-size: 0.62rem;
+		text-transform: uppercase;
+	}
+
+	@media (max-width: 840px) {
+		.note-group-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (max-width: 560px) {
+		.note-group-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

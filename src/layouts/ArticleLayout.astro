@@ -1,0 +1,44 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import { formatDate, writingKindLabel } from '../lib/content';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+	entry: CollectionEntry<'writing'>;
+	headings: { depth: number; slug: string; text: string }[];
+}
+
+const { entry, headings } = Astro.props;
+const toc = headings.filter((heading) => heading.depth === 2 || heading.depth === 3);
+---
+
+<BaseLayout title={entry.data.title} description={entry.data.description} article>
+	<article>
+		<header class="article-header">
+			<div class="eyebrow" style="justify-content:center">{writingKindLabel[entry.data.kind]}</div>
+			<h1>{entry.data.title}</h1>
+			{entry.data.description && <p class="article-deck">{entry.data.description}</p>}
+			<div class="article-meta">
+				<time datetime={entry.data.publishedAt.toISOString()}>{formatDate(entry.data.publishedAt)}</time>
+				{entry.data.topics.slice(0, 3).map((topic) => <span>{topic}</span>)}
+			</div>
+		</header>
+		<div class="article-shell">
+			<div class="prose prose-eka">
+				<slot />
+			</div>
+			{toc.length > 0 && (
+				<aside class="article-aside" aria-label="文章目录">
+					<strong>Contents</strong>
+					<ul>
+						{toc.map((heading) => (
+							<li style={heading.depth === 3 ? 'padding-left:.8rem' : undefined}>
+								<a href={`#${heading.slug}`}>{heading.text}</a>
+							</li>
+						))}
+					</ul>
+				</aside>
+			)}
+		</div>
+	</article>
+</BaseLayout>
