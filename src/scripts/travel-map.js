@@ -800,7 +800,7 @@ function stats() {
 // =============================================================================
 // Events
 // =============================================================================
-document.getElementById('btnBack').addEventListener('click', ()=>{ window.location.href='/writing/'; });
+document.getElementById('btnBack').addEventListener('click', ()=>{ window.location.href='/about/'; });
 
 document.querySelectorAll('.map-ctrl-btn[data-view]').forEach(b => {
     b.addEventListener('click', () => switchView(b.dataset.view));
@@ -834,4 +834,3 @@ document.addEventListener('DOMContentLoaded', async ()=>{
         if (t.classList.contains('leaflet-tile') || t.closest('.leaflet-tile-pane')) { clearSel(); map.closePopup(); }
     });
 });
-

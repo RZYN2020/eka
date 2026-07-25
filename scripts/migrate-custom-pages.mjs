@@ -19,7 +19,7 @@ mapScript = mapScript
 	.replace("const GEO_PROVINCE = '/journal/geojson/china.json';", "const GEO_PROVINCE = '/geojson/china.json';")
 	.replace("const GEO_WORLD = '/journal/geojson/world.json';", "const GEO_WORLD = '/geojson/world.json';")
 	.replaceAll('href="/journal/posts/${slug}/"', 'href="/writing/${slug}/"')
-	.replace("window.location.href='/journal';", "window.location.href='/writing/';");
+	.replace("window.location.href='/journal';", "window.location.href='/about/';");
 
 await fs.mkdir(path.join(projectRoot, 'src/styles'), { recursive: true });
 await fs.mkdir(path.join(projectRoot, 'src/scripts'), { recursive: true });
@@ -30,15 +30,28 @@ await fs.writeFile(
 	path.join(projectRoot, 'src/pages/map/index.astro'),
 	`---
 import '../../styles/global.css';
-import '../../styles/map.css';
 import 'leaflet/dist/leaflet.css';
+import '../../styles/map.css';
+import '../../styles/map-theme.css';
 ---
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="light">
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width" />
+	<meta name="theme-color" content="#ffffff" />
+	<script is:inline>
+		const savedTheme = localStorage.getItem('eka-theme');
+		const theme = savedTheme === 'light' || savedTheme === 'dark'
+			? savedTheme
+			: matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+		document.documentElement.dataset.theme = theme;
+		document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#111111' : '#ffffff');
+	</script>
 	<link rel="icon" type="image/webp" href="/favicon.webp" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600&display=swap" />
 	<title>旅行足迹 · Eka</title>
 </head>
 <body>
