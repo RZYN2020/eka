@@ -7,7 +7,7 @@ const bases = [
     {
         period: "2002 — 2017", summary: "童年与中学时代",
         city: "庆阳", province: "甘肃",
-        color: "#e88d2e", slug: "",
+        color: "#9a6a50", slug: "",
         trips: [
             { city:"西安", province:"陕西", dates:"2010夏", year:2010, slug:"" },
             { city:"银川", province:"宁夏", dates:"2012秋", year:2012, slug:"" },
@@ -16,7 +16,7 @@ const bases = [
     },{
         period: "2017.9 — 2020.6", summary: "高中时代",
         city: "兰州", province: "甘肃",
-        color: "#4d9e7b", slug: "",
+        color: "#62796e", slug: "",
         trips: [
             { city:"成都", province:"四川", dates:"2017夏", year:2017, slug:"" },
             { city:"庆阳", province:"甘肃", dates:"2018.1", year:2018, slug:"", note:"寒假回家" },
@@ -28,7 +28,7 @@ const bases = [
     },{
         period: "2020.9 — 2026", summary: "本科与研究生时代",
         city: "南京", province: "江苏",
-        color: "#5b8cc9", slug: "qinhuai",
+        color: "#61758c", slug: "qinhuai",
         trips: [
             { city:"庆阳", province:"甘肃", dates:"2021.1", year:2021, slug:"", note:"寒假回家" },
             { city:"庆阳", province:"甘肃", dates:"2021.7", year:2021, slug:"", note:"暑假回家" },
@@ -104,6 +104,8 @@ const GEO_WORLD = '/geojson/world.json';
 // Helpers
 // =============================================================================
 const hexRGBA = (h,a) => `rgba(${parseInt(h.slice(1,3),16)},${parseInt(h.slice(3,5),16)},${parseInt(h.slice(5,7),16)},${a})`;
+const tone = (name, fallback) =>
+    getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
 
 function normCity(n) {
     return (n||'')
@@ -180,7 +182,7 @@ async function init() {
     map = L.map('map', {
         center: saved ? [saved.lat, saved.lng] : [34,108],
         zoom: saved ? saved.zoom : 5,
-        zoomControl: true, attributionControl: false
+        zoomControl: true, attributionControl: true
     });
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OSM', maxZoom: 18
@@ -214,19 +216,15 @@ window.addEventListener('beforeunload', () => {
 // China GeoJSON
 // =============================================================================
 function styleCity(f) {
-    const n = f.properties.name;
-    if (isVisitedCity(n)) {
-        return {
-            fillColor: 'transparent', fillOpacity: 0,
-            color: '#e8912e', weight: 2, opacity: 0.9,
-            className: 'pv', interactive: true
-        };
-    }
-    // Unvisited: dark veil — visited cities shine through as clear "holes"
+    const visited = isVisitedCity(f.properties.name);
     return {
-        fillColor: '#1e242c', fillOpacity: 0.48,
-        color: '#3a3f47', weight: 0.3, opacity: 0.5,
-        interactive: false
+        fillColor: visited ? tone('--map-visited-fill', '#68788a') : 'transparent',
+        fillOpacity: visited ? 0.18 : 0,
+        color: visited ? tone('--map-visited-line', '#536170') : tone('--map-boundary', '#aaa7a0'),
+        weight: visited ? 1.2 : 0.45,
+        opacity: visited ? 0.9 : 0.55,
+        className: visited ? 'pv' : '',
+        interactive: visited
     };
 }
 function onCity(f,layer) {
@@ -281,12 +279,17 @@ async function loadCityLayer() {
 function styleProvince(f) {
     const n = f.properties.name;
     if (n==='十段线'||n==='南海诸岛') {
-        return { fillColor:'transparent',fillOpacity:0, color:'#555',weight:0.5,dashArray:'3 5',interactive:false };
+        return { fillColor:'transparent', fillOpacity:0, color:tone('--map-boundary', '#aaa7a0'), weight:0.4, dashArray:'3 5', interactive:false };
     }
-    if (isVisitedProvince(n)) {
-        return { fillColor:'transparent',fillOpacity:0, color:'#e8912e',weight:2,opacity:0.9, className:'pv',interactive:true };
-    }
-    return { fillColor:'#1e242c',fillOpacity:0.48, color:'#3a3f47',weight:0.5,interactive:false };
+    const visited = isVisitedProvince(n);
+    return {
+        fillColor: visited ? tone('--map-visited-fill', '#68788a') : 'transparent',
+        fillOpacity: visited ? 0.16 : 0,
+        color: visited ? tone('--map-visited-line', '#536170') : tone('--map-boundary', '#aaa7a0'),
+        weight: visited ? 1.2 : 0.5,
+        opacity: visited ? 0.9 : 0.55,
+        interactive: visited
+    };
 }
 function onProvince(f,layer) {
     const n = f.properties.name;
@@ -328,10 +331,15 @@ async function loadProvinceLayer() {
 // World GeoJSON
 // =============================================================================
 function styleWorld(f) {
-    if (isVisitedCountry(f)) {
-        return { fillColor:'transparent', fillOpacity:0, color:'#e8912e', weight:1.8, opacity:0.9, className:'pv', interactive:true };
-    }
-    return { fillColor:'#1e242c', fillOpacity:0.48, color:'#3a3f47', weight:0.3, interactive:false };
+    const visited = isVisitedCountry(f);
+    return {
+        fillColor: visited ? tone('--map-visited-fill', '#68788a') : 'transparent',
+        fillOpacity: visited ? 0.16 : 0,
+        color: visited ? tone('--map-visited-line', '#536170') : tone('--map-boundary', '#aaa7a0'),
+        weight: visited ? 1.1 : 0.4,
+        opacity: visited ? 0.9 : 0.5,
+        interactive: visited
+    };
 }
 function onWorld(f, layer) {
     if (isVisitedCountry(f)) {
@@ -358,14 +366,21 @@ async function loadWorld() {
 // =============================================================================
 function switchView(view) {
     currentView = view;
+    if (view === 'world') highlightMode = 'country';
+    else if (highlightMode === 'country') highlightMode = 'city';
     document.querySelectorAll('.map-ctrl-btn[data-view]').forEach(b => {
-        b.classList.toggle('active', b.dataset.view === view);
+        const active = b.dataset.view === view;
+        b.classList.toggle('active', active);
+        b.setAttribute('aria-pressed', String(active));
     });
-    if (view === 'china') {
-        map.flyTo([34, 108], 5, { duration: 0.8 });
-    } else {
-        map.flyTo([20, 0], 2, { duration: 0.8 });
-    }
+    document.querySelectorAll('.map-ctrl-btn[data-mode]').forEach(b => {
+        const active = b.dataset.mode === highlightMode;
+        b.classList.toggle('active', active);
+        b.setAttribute('aria-pressed', String(active));
+    });
+    document.getElementById('modeControls').hidden = view === 'world';
+    map.flyTo(view === 'china' ? [34, 108] : [20, 0], view === 'china' ? 5 : 2, { duration: 0.7 });
+    applyHighlightMode();
     updateLayerStyles();
 }
 
@@ -400,7 +415,9 @@ function applyHighlightMode() {
 function switchHighlight(mode) {
     highlightMode = mode;
     document.querySelectorAll('.map-ctrl-btn[data-mode]').forEach(b => {
-        b.classList.toggle('active', b.dataset.mode === mode);
+        const active = b.dataset.mode === mode;
+        b.classList.toggle('active', active);
+        b.setAttribute('aria-pressed', String(active));
     });
     applyHighlightMode();
 }
@@ -427,7 +444,7 @@ function showBack(on) {
 // =============================================================================
 function blogLinkHTML(slug) {
     if (!slug) return '';
-    return `<a href="/writing/${slug}/" target="_blank" rel="noopener" class="blink" onclick="event.stopPropagation()">@${blogTitles[slug] ?? '文章'} <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>`;
+    return `<a href="/writing/${slug}/" target="_blank" rel="noopener" class="blink" onclick="event.stopPropagation()">${blogTitles[slug] ?? '相关文章'} <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>`;
 }
 
 function addMarkers() {
@@ -532,7 +549,7 @@ function fly(lat,lng,z,cb) {
 // =============================================================================
 function blink(slug) {
     if(!slug) return '';
-    return `<a href="/writing/${slug}/" target="_blank" rel="noopener" class="blink" onclick="event.stopPropagation()" title="相关文章">@${blogTitles[slug] ?? '文章'}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>`;
+    return `<a href="/writing/${slug}/" target="_blank" rel="noopener" class="blink" onclick="event.stopPropagation()" title="相关文章">${blogTitles[slug] ?? '相关文章'}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>`;
 }
 
 const tgSVG = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>`;
@@ -824,6 +841,8 @@ const btnMob = document.getElementById('btnMob');
 const sideCol = document.getElementById('sidebarCol');
 btnMob.addEventListener('click', ()=>{
     sideCol.classList.toggle('open');
+    document.body.classList.toggle('map-sidebar-open', sideCol.classList.contains('open'));
+    btnMob.setAttribute('aria-expanded', String(sideCol.classList.contains('open')));
     btnMob.innerHTML = sideCol.classList.contains('open')
         ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 18L18 6M6 6l12 12"/></svg>`
         : `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/></svg>`;

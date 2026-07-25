@@ -45,7 +45,9 @@ tags:
 order: 999
 draft: false
 featured: false
+toc: true
 legacyUrls: []
 ```
 
 Only `title` and `category` are required. Dates are optional so continuously maintained and imported algorithm articles use the same model.
+The table of contents appears automatically when an article has at least three level-two or level-three headings. Set `toc: false` to disable it for an individual article.

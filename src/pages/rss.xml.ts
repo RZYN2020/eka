@@ -5,7 +5,7 @@ import { sortWriting, writingSlug } from '../lib/content';
 export async function GET(context: { site: URL }) {
 	const entries = sortWriting((await getCollection('writing')).filter((entry) => !entry.data.draft));
 	return rss({
-		title: 'Eka · 赵勇臻',
+		title: 'Eka',
 		description: '',
 		site: context.site,
 		items: entries.map((entry) => ({

@@ -20,6 +20,12 @@ export default defineConfig({
 				light: 'github-light',
 				dark: 'github-dark-default',
 			},
+			langAlias: {
+				py: 'python',
+				Python: 'python',
+				Java: 'java',
+				Assembly: 'asm',
+			},
 			wrap: true,
 		},
 	},

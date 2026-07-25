@@ -15,6 +15,7 @@ const writing = defineCollection({
 		order: z.number().default(999),
 		draft: z.boolean().default(false),
 		featured: z.boolean().default(false),
+		toc: z.boolean().default(true),
 		legacyUrls: z.array(z.string()).default([]),
 	}),
 });

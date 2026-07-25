@@ -402,7 +402,7 @@ A, A, A, Ctrl A, Ctrl C, Ctrl V, Ctrl V
 
 **关键是找出最后一步可能的前继**
 
-```py
+```python
 class Solution:
     def maxA(self, n: int) -> int:
         best = [0, 1]

@@ -14,7 +14,8 @@ const writing = sortWriting((await getCollection('writing')).filter((entry) => !
 
 	<section class="home-section">
 		<div class="section-rule">
-			<h2>Writing</h2>
+			<h2>Recent blogs</h2>
+			<a href="/writing/">All writing</a>
 		</div>
 		<WritingList entries={writing} limit={20} showTags={false} />
 	</section>

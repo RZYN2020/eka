@@ -13,18 +13,18 @@ const { headings } = Astro.props;
 const items = headings.filter((heading) => heading.depth === 2 || heading.depth === 3);
 ---
 
-{items.length > 1 && (
+{items.length >= 3 && (
 	<>
-		<aside class="article-toc" aria-label="文章目录">
-			<div class="article-toc-label">Contents</div>
-			<nav>
+		<details class="article-toc" open>
+			<summary>Contents</summary>
+			<nav aria-label="文章目录">
 				{items.map((heading) => (
 					<a href={`#${heading.slug}`} data-depth={heading.depth}>
 						{heading.text}
 					</a>
 				))}
 			</nav>
-		</aside>
+		</details>
 
 		<details class="article-toc-mobile">
 			<summary>Contents</summary>
@@ -38,7 +38,7 @@ const items = headings.filter((heading) => heading.depth === 2 || heading.depth 
 		</details>
 
 		<script>
-			const tocLinks = [...document.querySelectorAll<HTMLAnchorElement>('.article-toc a')];
+			const tocLinks = [...document.querySelectorAll<HTMLAnchorElement>('.article-toc nav a')];
 			const sections = tocLinks
 				.map((link) => document.getElementById(decodeURIComponent(link.hash.slice(1))))
 				.filter((section): section is HTMLElement => Boolean(section));

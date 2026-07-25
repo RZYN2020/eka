@@ -113,7 +113,7 @@ const algorithmEntries = [
 	},
 	{
 		slug: 'gugu-interview',
-		title: 'Google 面试准备记录',
+		title: '算法面试准备',
 		sources: ['gugu-interview.md'],
 		publishedAt: '2025-07-01T00:00:00+08:00',
 		updatedAt: '2025-07-29T00:00:00+08:00',
@@ -297,6 +297,7 @@ async function writeAlgorithmArticles() {
 		if (entry.transform === 'shift-headings') {
 			body = body.replace(/^(#{1,5}) /gm, '#$1 ');
 		}
+		body = body.replace(/^```py$/gm, '```python');
 		body = body.replace(/[ \t]+$/gm, '');
 
 		const sourceSlugs = entry.sources.map((file) => path.basename(file, '.md'));

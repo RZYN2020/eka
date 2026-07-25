@@ -23,7 +23,7 @@ legacyUrls:
 1. 可以把**子数组的元素和转换成两个前缀和的差** -> [121. 买卖股票的最佳时机](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock/) -> 贪心求解
 2. 动态规划 -> 注意本题也有两种写法（是否多一个动态规划数组）
 
-```py
+```python
     def maxSubArray(self, nums: List[int]) -> int:
         ans = -inf
         min_pre_sum = pre_sum = 0
@@ -48,7 +48,7 @@ legacyUrls:
 
 首先想到的是$O(N^2)$复杂度的简单做法
 
-```py
+```python
     def merge(self, intervals: List[List[int]]) -> List[List[int]]:
         def inverve(i1, i2):
             return not (i1[1] < i2[0] or i1[0] > i2[1])
@@ -197,7 +197,7 @@ legacyUrls:
 
 > 我们可以用矩阵的第一行和第一列代替方法一中的两个标记数组，以达到 O(1) 的额外空间。但这样会导致原数组的第一行和第一列被修改，无法记录它们是否原本包含 0。因此我们需要额外使用两个标记变量分别记录第一行和第一列是否原本包含 0。
 
-```py
+```python
     def setZeroes(self, matrix: List[List[int]]) -> None:
         m, n = len(matrix), len(matrix[0])
         flag_col0 = any(matrix[i][0] == 0 for i in range(m))
@@ -374,7 +374,7 @@ class Solution:
 
 ![lc160-3-c.png](./assets/1729473968-TLOxoH-lc160-3-c.png)
 
-```py
+```python
 class Solution:
     def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> Optional[ListNode]:
         p, q = headA, headB

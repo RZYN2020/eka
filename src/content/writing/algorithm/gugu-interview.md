@@ -1,5 +1,5 @@
 ---
-title: Google 面试准备记录
+title: 算法面试准备
 description: ''
 category: Tech
 subcategories:

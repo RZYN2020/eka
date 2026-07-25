@@ -45,13 +45,12 @@ import '../../styles/map-theme.css';
             <!-- Map controls: view scope + highlight granularity -->
             <div class="map-ctrls-bar">
                 <div class="map-ctrls">
-                    <button class="map-ctrl-btn active" data-view="china">中国</button>
-                    <button class="map-ctrl-btn" data-view="world">世界</button>
+                    <button class="map-ctrl-btn active" data-view="china" aria-pressed="true">中国</button>
+                    <button class="map-ctrl-btn" data-view="world" aria-pressed="false">世界</button>
                 </div>
-                <div class="map-ctrls">
-                    <button class="map-ctrl-btn active" data-mode="city">城市</button>
-                    <button class="map-ctrl-btn" data-mode="province">省份</button>
-                    <button class="map-ctrl-btn" data-mode="country">国家</button>
+                <div class="map-ctrls" id="modeControls">
+                    <button class="map-ctrl-btn active" data-mode="city" aria-pressed="true">城市</button>
+                    <button class="map-ctrl-btn" data-mode="province" aria-pressed="false">省份</button>
                 </div>
             </div>
             <!-- Back to overview -->
@@ -62,7 +61,7 @@ import '../../styles/map-theme.css';
                 </button>
             </div>
             <div id="loaderCover" class="loader-cover"><div class="loader-ring"></div></div>
-            <button id="btnMob" class="btn-mob" aria-label="列表" title="列表">
+            <button id="btnMob" class="btn-mob" aria-label="列表" aria-expanded="false" title="列表">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/></svg>
             </button>
         </div>

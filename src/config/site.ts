@@ -1,6 +1,6 @@
 export const site = {
 	title: 'Eka',
-	fullTitle: 'Eka · 赵勇臻',
+	fullTitle: 'Eka',
 	nav: [
 		{ href: '/', label: 'Home' },
 		{ href: '/writing/', label: 'Writing' },

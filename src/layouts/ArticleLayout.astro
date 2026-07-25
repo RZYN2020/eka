@@ -35,7 +35,7 @@ const { entry, headings } = Astro.props;
 			<TagList tags={entry.data.tags} />
 		</header>
 		<div class="article-shell">
-			<TableOfContents headings={headings} />
+			{entry.data.toc && <TableOfContents headings={headings} />}
 			<div class="prose prose-eka">
 				<slot />
 			</div>

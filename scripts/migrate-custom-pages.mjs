@@ -34,14 +34,119 @@ mapScript = mapScript
 	)
 	.replace(
 		'style="display:inline-flex;align-items:center;gap:2px;font-size:0.72rem;color:#b0a590;text-decoration:none;margin-top:2px;" onclick="event.stopPropagation()">游记 ',
-		'class="blink" onclick="event.stopPropagation()">@${blogTitles[slug] ?? \'文章\'} ',
+		'class="blink" onclick="event.stopPropagation()">${blogTitles[slug] ?? \'相关文章\'} ',
 	)
 	.replace(
 		'title="游记">游记<svg',
-		'title="相关文章">@${blogTitles[slug] ?? \'文章\'}<svg',
+		'title="相关文章">${blogTitles[slug] ?? \'相关文章\'}<svg',
 	)
 	.replaceAll('href="/journal/posts/${slug}/"', 'href="/writing/${slug}/"')
 	.replace("window.location.href='/journal';", "window.location.href='/about/';");
+
+mapScript = mapScript
+	.replaceAll('#e88d2e', '#9a6a50')
+	.replaceAll('#4d9e7b', '#62796e')
+	.replaceAll('#5b8cc9', '#61758c')
+	.replace('zoomControl: true, attributionControl: false', 'zoomControl: true, attributionControl: true')
+	.replace(
+		"const hexRGBA = (h,a) => `rgba(${parseInt(h.slice(1,3),16)},${parseInt(h.slice(3,5),16)},${parseInt(h.slice(5,7),16)},${a})`;",
+		`const hexRGBA = (h,a) => \`rgba(\${parseInt(h.slice(1,3),16)},\${parseInt(h.slice(3,5),16)},\${parseInt(h.slice(5,7),16)},\${a})\`;
+const tone = (name, fallback) =>
+    getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;`,
+	)
+	.replace(
+		/function styleCity\(f\) \{[\s\S]*?\n\}\nfunction onCity/,
+		`function styleCity(f) {
+    const visited = isVisitedCity(f.properties.name);
+    return {
+        fillColor: visited ? tone('--map-visited-fill', '#68788a') : 'transparent',
+        fillOpacity: visited ? 0.18 : 0,
+        color: visited ? tone('--map-visited-line', '#536170') : tone('--map-boundary', '#aaa7a0'),
+        weight: visited ? 1.2 : 0.45,
+        opacity: visited ? 0.9 : 0.55,
+        className: visited ? 'pv' : '',
+        interactive: visited
+    };
+}
+function onCity`,
+	)
+	.replace(
+		/function styleProvince\(f\) \{[\s\S]*?\n\}\nfunction onProvince/,
+		`function styleProvince(f) {
+    const n = f.properties.name;
+    if (n==='十段线'||n==='南海诸岛') {
+        return { fillColor:'transparent', fillOpacity:0, color:tone('--map-boundary', '#aaa7a0'), weight:0.4, dashArray:'3 5', interactive:false };
+    }
+    const visited = isVisitedProvince(n);
+    return {
+        fillColor: visited ? tone('--map-visited-fill', '#68788a') : 'transparent',
+        fillOpacity: visited ? 0.16 : 0,
+        color: visited ? tone('--map-visited-line', '#536170') : tone('--map-boundary', '#aaa7a0'),
+        weight: visited ? 1.2 : 0.5,
+        opacity: visited ? 0.9 : 0.55,
+        interactive: visited
+    };
+}
+function onProvince`,
+	)
+	.replace(
+		/function styleWorld\(f\) \{[\s\S]*?\n\}\nfunction onWorld/,
+		`function styleWorld(f) {
+    const visited = isVisitedCountry(f);
+    return {
+        fillColor: visited ? tone('--map-visited-fill', '#68788a') : 'transparent',
+        fillOpacity: visited ? 0.16 : 0,
+        color: visited ? tone('--map-visited-line', '#536170') : tone('--map-boundary', '#aaa7a0'),
+        weight: visited ? 1.1 : 0.4,
+        opacity: visited ? 0.9 : 0.5,
+        interactive: visited
+    };
+}
+function onWorld`,
+	)
+	.replace(
+		/function switchView\(view\) \{[\s\S]*?\n\}\n\nfunction updateLayerStyles/,
+		`function switchView(view) {
+    currentView = view;
+    if (view === 'world') highlightMode = 'country';
+    else if (highlightMode === 'country') highlightMode = 'city';
+    document.querySelectorAll('.map-ctrl-btn[data-view]').forEach(b => {
+        const active = b.dataset.view === view;
+        b.classList.toggle('active', active);
+        b.setAttribute('aria-pressed', String(active));
+    });
+    document.querySelectorAll('.map-ctrl-btn[data-mode]').forEach(b => {
+        const active = b.dataset.mode === highlightMode;
+        b.classList.toggle('active', active);
+        b.setAttribute('aria-pressed', String(active));
+    });
+    document.getElementById('modeControls').hidden = view === 'world';
+    map.flyTo(view === 'china' ? [34, 108] : [20, 0], view === 'china' ? 5 : 2, { duration: 0.7 });
+    applyHighlightMode();
+    updateLayerStyles();
+}
+
+function updateLayerStyles`,
+	)
+	.replace(
+		"sideCol.classList.toggle('open');\n    btnMob.innerHTML",
+		"sideCol.classList.toggle('open');\n    document.body.classList.toggle('map-sidebar-open', sideCol.classList.contains('open'));\n    btnMob.setAttribute('aria-expanded', String(sideCol.classList.contains('open')));\n    btnMob.innerHTML",
+	)
+	.replace(
+		"b.classList.toggle('active', b.dataset.mode === mode);\n    });\n    applyHighlightMode();",
+		"const active = b.dataset.mode === mode;\n        b.classList.toggle('active', active);\n        b.setAttribute('aria-pressed', String(active));\n    });\n    applyHighlightMode();",
+	);
+
+const personalizedMapBody = mapBody
+	.replace(
+		'<div class="map-ctrls">\n                    <button class="map-ctrl-btn active" data-mode="city">',
+		'<div class="map-ctrls" id="modeControls">\n                    <button class="map-ctrl-btn active" data-mode="city" aria-pressed="true">',
+	)
+	.replace('<button class="map-ctrl-btn" data-mode="province">', '<button class="map-ctrl-btn" data-mode="province" aria-pressed="false">')
+	.replace('                    <button class="map-ctrl-btn" data-mode="country">国家</button>\n', '')
+	.replace('<button class="map-ctrl-btn active" data-view="china">', '<button class="map-ctrl-btn active" data-view="china" aria-pressed="true">')
+	.replace('<button class="map-ctrl-btn" data-view="world">', '<button class="map-ctrl-btn" data-view="world" aria-pressed="false">')
+	.replace('id="btnMob" class="btn-mob" aria-label="列表"', 'id="btnMob" class="btn-mob" aria-label="列表" aria-expanded="false"');
 
 await fs.mkdir(path.join(projectRoot, 'src/styles'), { recursive: true });
 await fs.mkdir(path.join(projectRoot, 'src/scripts'), { recursive: true });
@@ -77,7 +182,7 @@ import '../../styles/map-theme.css';
 	<title>旅行足迹 · Eka</title>
 </head>
 <body>
-${mapBody.trim()}
+${personalizedMapBody.trim()}
 <script src="../../scripts/travel-map.js"></script>
 </body>
 </html>
