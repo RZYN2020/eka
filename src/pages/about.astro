@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../config/site';
 ---
 
 <BaseLayout title="About">
@@ -10,5 +11,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 	<div class="about-panel">
 		<a href="/map/">Map</a>
 		<a href="/resume/">Résumé</a>
+		<a href={site.links.github} rel="me noopener" target="_blank">GitHub</a>
 	</div>
 </BaseLayout>
