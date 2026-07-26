@@ -1,5 +1,5 @@
 {
-  "syncedAt": "2026-07-26T10:14:54.580Z",
+  "syncedAt": "2026-07-26T21:13:02.937Z",
   "source": "https://neodb.social",
   "shelves": {
     "progress": [
@@ -1867,6 +1867,18 @@
       }
     ],
     "wishlist": [
+      {
+        "createdTime": "2026-07-26T15:02:00.853Z",
+        "comment": "",
+        "ratingGrade": null,
+        "item": {
+          "uuid": "5NQCxjnsb4YamxVpVJ8qUu",
+          "url": "https://neodb.social/book/5NQCxjnsb4YamxVpVJ8qUu",
+          "category": "book",
+          "title": "因子投资：方法与实践",
+          "cover": "https://neodb.social/m/book/2022/05/010a157b2d-ce89-42e5-80f5-6c4de097b839.jpg"
+        }
+      },
       {
         "createdTime": "2026-06-25T03:44:12.106Z",
         "comment": "",
@@ -4792,7 +4804,7 @@
           "url": "https://neodb.social/movie/6bLbOk0scJtJ0wjIEbtCzM",
           "category": "movie",
           "title": "Trilogy: The Weeping Meadow",
-          "cover": "https://neodb.social/m/movie/2021/09/1693cb872e-5323-40d9-a80b-f9b57f407a7e.jpg"
+          "cover": "https://neodb.social/m/item/movie/2026/07/26/43728e87-0fe8-4862-88a6-bcee47a00eed.jpeg"
         }
       },
       {
