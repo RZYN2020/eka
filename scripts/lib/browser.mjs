@@ -1,10 +1,14 @@
-import { existsSync } from 'node:fs';
 import { spawn } from 'node:child_process';
-import puppeteer from 'puppeteer';
+import { existsSync } from 'node:fs';
+import { homedir } from 'node:os';
+import { join } from 'node:path';
 
 const MACOS_CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+process.env.PUPPETEER_CACHE_DIR ??= join(homedir(), '.pnpm-store', 'puppeteer');
 
-function getExecutablePath() {
+const { default: puppeteer } = await import('puppeteer');
+
+async function getExecutablePath() {
 	if (
 		process.env.PUPPETEER_EXECUTABLE_PATH
 		&& existsSync(process.env.PUPPETEER_EXECUTABLE_PATH)
@@ -17,14 +21,14 @@ function getExecutablePath() {
 	}
 
 	try {
-		return puppeteer.executablePath();
+		return await puppeteer.executablePath();
 	} catch {
 		return undefined;
 	}
 }
 
 export async function ensureBrowser() {
-	const executablePath = getExecutablePath();
+	const executablePath = await getExecutablePath();
 	if (executablePath && existsSync(executablePath)) {
 		return;
 	}
@@ -45,10 +49,10 @@ export async function ensureBrowser() {
 	});
 }
 
-export function launchBrowser() {
+export async function launchBrowser() {
 	return puppeteer.launch({
 		headless: true,
-		executablePath: getExecutablePath(),
+		executablePath: await getExecutablePath(),
 		args: ['--no-sandbox', '--disable-setuid-sandbox'],
 	});
 }
