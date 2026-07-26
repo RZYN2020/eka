@@ -9,7 +9,6 @@ tags:
   - BitTorrent
   - Knowledge
 draft: false
-featured: false
 legacyUrls:
   - /posts/bittorrent-protocol/
 ---

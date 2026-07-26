@@ -1,5 +1,6 @@
 import L from 'leaflet';
 import { bases } from '../data/travel.js';
+import { readMapView, writeMapView } from '../lib/map-storage.js';
 import { buildJourneyStops } from '../lib/travel-journey.js';
 import {
     assertTravelTree,
@@ -88,10 +89,9 @@ function injectCoords() {
 }
 function visitedCityNames() {
     const s = new Set();
-    walkPlaces(bases, place => s.add(place.city));
+    walkPlaces(bases, place => s.add(normCity(place.city)));
     return s;
 }
-function isVisitedCity(name) { return visitedCityNames().has(normCity(name)); }
 
 function normProv(n) {
     return (n||'')
@@ -104,7 +104,10 @@ function visitedProvinceNames() {
     walkPlaces(bases, place => s.add(normProv(place.province)));
     return s;
 }
-function isVisitedProvince(name) { return visitedProvinceNames().has(normProv(name)); }
+const visitedCities = visitedCityNames();
+const visitedProvinces = visitedProvinceNames();
+function isVisitedCity(name) { return visitedCities.has(normCity(name)); }
+function isVisitedProvince(name) { return visitedProvinces.has(normProv(name)); }
 
 function mkKey(lat,lng) { return `${lat}|${lng}`; }
 
@@ -127,7 +130,7 @@ function isVisitedCountry(f) {
 // Map init
 // =============================================================================
 async function init() {
-    const saved = JSON.parse(sessionStorage.getItem('mv')||'null');
+    const saved = readMapView();
     map = L.map('map', {
         center: saved ? [saved.lat, saved.lng] : [34,108],
         zoom: saved ? saved.zoom : 5,
@@ -155,10 +158,12 @@ async function init() {
         stats();
         document.getElementById('btnJourney').disabled = false;
         document.getElementById('map').classList.add('on');
+        return true;
     } catch(e) {
         console.error(e);
         document.getElementById('map').innerHTML =
             '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#c44;">地图加载失败</div>';
+        return false;
     } finally {
         document.getElementById('loaderCover').classList.add('off');
     }
@@ -166,7 +171,7 @@ async function init() {
 window.addEventListener('beforeunload', () => {
     if (!map) return;
     const c = map.getCenter();
-    sessionStorage.setItem('mv', JSON.stringify({lat:c.lat, lng:c.lng, zoom:map.getZoom()}));
+    writeMapView(undefined, {lat:c.lat, lng:c.lng, zoom:map.getZoom()});
 });
 
 // =============================================================================
@@ -1322,7 +1327,7 @@ btnMob.addEventListener('click', ()=>{
 });
 
 document.addEventListener('DOMContentLoaded', async ()=>{
-    await init();
+    if (!(await init())) return;
     map.on('popupopen', e => {
         const m = e.popup._source; if(m&&m._cm&&!ui.noSync) syncFromMap(m._cm);
     });

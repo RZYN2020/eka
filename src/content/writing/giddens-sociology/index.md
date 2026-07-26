@@ -8,7 +8,6 @@ subcategories:
 tags:
   - Book
 draft: false
-featured: true
 neodbIds:
   - 0aRMIDLyWn2RbDgk6IXTyu
 legacyUrls:

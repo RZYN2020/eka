@@ -7,7 +7,6 @@ subcategories:
   - Journal
 tags: []
 draft: false
-featured: false
 legacyUrls:
   - /journal/posts/扬州游记/
   - /journal/posts/yangzhou/

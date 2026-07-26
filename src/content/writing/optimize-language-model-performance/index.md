@@ -10,7 +10,6 @@ tags:
   - Code
   - Performance
 draft: false
-featured: false
 legacyUrls:
   - /posts/optimize-language-model-performance/
 ---

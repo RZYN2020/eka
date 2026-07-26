@@ -9,7 +9,6 @@ tags:
   - Reflection
   - Compiler
 draft: false
-featured: false
 legacyUrls:
   - /posts/compiler-reflections/
 ---

@@ -9,7 +9,6 @@ tags:
   - Share
   - Agent
 draft: true
-featured: false
 legacyUrls:
   - /posts/agent-social-simulation/
 ---

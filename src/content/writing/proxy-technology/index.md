@@ -10,7 +10,6 @@ tags:
   - Network
   - Proxy
 draft: false
-featured: false
 legacyUrls:
   - /posts/proxy-technology/
 ---

@@ -7,9 +7,7 @@ subcategories:
   - Journal
 tags: []
 draft: false
-featured: true
 legacyUrls:
-  - /journal/posts/posts/
   - /journal/posts/phantom-light/
 ---
 昨天晚上和孙宇喝了点酒。酒意慢慢上来，头脑发热，身体发轻，连情绪也被托得有些发飘。人一微醺，就很容易被旧日子拽回去。恍惚之间，我忽然想起 18 岁那年，和他一起去网吧通宵的那个晚上。算起来，从那时到现在，已经过去六年了。

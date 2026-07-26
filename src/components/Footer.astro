@@ -1,10 +1,10 @@
+---
+import { site } from '../config/site';
+---
+
 <footer class="site-footer">
 	<nav aria-label="页脚导航">
-		<a href="/">Home</a>
-		<a href="/writing/">Writing</a>
-		<a href="/categories/">Categories</a>
-		<a href="/tags/">Tags</a>
-		<a href="/about/">About</a>
+		{site.nav.map((item) => <a href={item.href}>{item.label}</a>)}
 	</nav>
 	<span>Copyright © {new Date().getFullYear()}</span>
 </footer>

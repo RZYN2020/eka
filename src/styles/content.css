@@ -1,6 +1,6 @@
 .writing-list {
 	display: grid;
-	gap: 10px;
+	gap: 14px;
 }
 
 .writing-row {
@@ -8,10 +8,7 @@
 	grid-template-columns: 100px minmax(0, 1fr);
 	gap: 20px;
 	align-items: baseline;
-}
-
-.writing-row {
-	padding: 3px 0;
+	padding: 2px 0;
 }
 
 .writing-row > time {
@@ -27,7 +24,20 @@
 	margin: 0;
 	font-size: 15px;
 	font-weight: 400;
-	line-height: 1.6;
+	letter-spacing: -0.005em;
+	line-height: 1.55;
+	text-wrap: pretty;
+}
+
+.writing-row h2 a {
+	text-decoration-color: transparent;
+	transition:
+		color 150ms ease,
+		text-decoration-color 150ms ease;
+}
+
+.writing-row h2 a:hover {
+	text-decoration-color: currentcolor;
 }
 
 .taxonomy-path {
@@ -579,9 +589,18 @@
 }
 
 @media (max-width: 700px) {
+	.writing-list {
+		gap: 18px;
+	}
+
 	.writing-row {
 		grid-template-columns: 1fr;
 		gap: 0;
+		padding: 0;
+	}
+
+	.writing-row > time {
+		margin-bottom: 1px;
 	}
 
 	.tag-index {

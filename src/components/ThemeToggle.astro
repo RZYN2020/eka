@@ -1,59 +1,55 @@
+---
+import {
+	themeNames,
+	themePreferences,
+} from '../config/theme';
+---
+
 <details class="theme-picker">
 	<summary class="theme-toggle" aria-label="选择主题">
-		<span>Paper</span>
+		<span>Auto</span>
 	</summary>
 	<div class="theme-menu" role="group" aria-label="网站主题">
-		<button type="button" data-theme-value="light"><i aria-hidden="true"></i>Paper</button>
-		<button type="button" data-theme-value="sepia"><i aria-hidden="true"></i>Sepia</button>
-		<button type="button" data-theme-value="dark"><i aria-hidden="true"></i>Night</button>
-		<button type="button" data-theme-value="graphite"><i aria-hidden="true"></i>Graphite</button>
+		{themePreferences.map((preference) => (
+			<button
+				type="button"
+				data-theme-value={preference}
+				style={preference === 'auto' ? '--theme-swatch: linear-gradient(135deg, #fbfbfa 50%, #1e1e1e 50%)' : undefined}
+			>
+				<i aria-hidden="true"></i>{themeNames[preference]}
+			</button>
+		))}
 	</div>
 </details>
 
-<script>
-	const picker = document.querySelector<HTMLDetailsElement>('.theme-picker');
-	const label = picker?.querySelector<HTMLElement>('.theme-toggle span');
-	const buttons = [...document.querySelectorAll<HTMLButtonElement>('[data-theme-value]')];
-	const names: Record<string, string> = {
-		light: 'Paper',
-		sepia: 'Sepia',
-		dark: 'Night',
-		graphite: 'Graphite',
-	};
-	const colors: Record<string, string> = {
-		light: '#fbfbfa',
-		sepia: '#f7f3e9',
-		dark: '#1e1e1e',
-		graphite: '#17191c',
-	};
-
+<script is:inline define:vars={{ themeNames }}>
+	const picker = document.querySelector('.theme-picker');
+	const label = picker?.querySelector('.theme-toggle span');
+	const buttons = [...document.querySelectorAll('[data-theme-value]')];
 	function updateLabel() {
-		const theme = document.documentElement.dataset.theme ?? 'light';
-		if (label) label.textContent = names[theme] ?? names.light;
+		const preference = document.documentElement.dataset.themePreference ?? 'auto';
+		if (label) label.textContent = themeNames[preference] ?? themeNames.auto;
 		buttons.forEach((button) => {
-			button.setAttribute('aria-pressed', String(button.dataset.themeValue === theme));
+			button.setAttribute('aria-pressed', String(button.dataset.themeValue === preference));
 		});
 	}
 
 	buttons.forEach((button) => {
 		button.addEventListener('click', () => {
-			const theme = button.dataset.themeValue ?? 'light';
-			document.documentElement.dataset.theme = theme;
-			localStorage.setItem('eka-theme', theme);
-			document.querySelector('meta[name="theme-color"]')?.setAttribute('content', colors[theme] ?? colors.light);
-			window.dispatchEvent(new CustomEvent('eka-theme-change', { detail: { theme } }));
+			const preference = button.dataset.themeValue ?? 'auto';
+			window.ekaTheme?.apply(preference);
 			picker?.removeAttribute('open');
-			updateLabel();
 		});
 	});
 
 	document.addEventListener('click', (event) => {
-		if (picker?.open && !picker.contains(event.target as Node)) picker.removeAttribute('open');
+		if (picker?.open && !picker.contains(event.target)) picker.removeAttribute('open');
 	});
 
 	document.addEventListener('keydown', (event) => {
 		if (event.key === 'Escape') picker?.removeAttribute('open');
 	});
 
+	window.addEventListener('eka-theme-change', updateLabel);
 	updateLabel();
 </script>

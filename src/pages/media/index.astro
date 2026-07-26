@@ -48,8 +48,6 @@ const categoryLabels: Record<string, string> = {
 
 const statuses = Object.keys(statusLabels) as Array<keyof typeof statusLabels>;
 const allowedCategories = ['book', 'movie', 'tv', 'performance'];
-const defaultStatus = 'progress';
-const defaultCategory = 'book';
 const items = statuses
 	.flatMap((status) => shelfData.shelves[status].map((mark) => ({
 		...mark,
@@ -79,6 +77,13 @@ for (const review of shelfData.reviews ?? []) {
 	neodbReviews.set(review.itemUuid, reviews);
 }
 const categories = allowedCategories.filter((category) => items.some((mark) => mark.item.category === category));
+const defaultStatus = statuses.find((status) => items.some((mark) => mark.shelfType === status)) ?? 'progress';
+const initialCategories = categories.filter((category) =>
+	items.some((mark) => mark.shelfType === defaultStatus && mark.item.category === category)
+);
+const defaultCategory = initialCategories.includes('book')
+	? 'book'
+	: initialCategories[0] ?? categories[0] ?? 'all';
 const syncedAt = shelfData.syncedAt
 	? new Intl.DateTimeFormat('zh-CN', {
 		year: 'numeric',
@@ -151,7 +156,12 @@ const syncedAt = shelfData.syncedAt
 		</div>
 	</div>
 
-	<div class="media-grid" data-media-grid>
+	<div
+		class="media-grid"
+		data-media-grid
+		data-default-status={defaultStatus}
+		data-default-category={defaultCategory}
+	>
 		{items.map((mark) => (
 			<article
 				class="media-card"
@@ -160,7 +170,10 @@ const syncedAt = shelfData.syncedAt
 				data-rating={mark.ratingGrade ?? 'unrated'}
 				data-commented={mark.comment ? 'true' : 'false'}
 				data-reviewed={neodbReviews.has(mark.item.uuid) ? 'true' : 'false'}
-				hidden={mark.shelfType !== defaultStatus || mark.item.category !== defaultCategory}
+				hidden={
+					mark.shelfType !== defaultStatus
+					|| (defaultCategory !== 'all' && mark.item.category !== defaultCategory)
+				}
 			>
 				<div class="media-cover">
 					<a href={mark.item.url} target="_blank" rel="noreferrer" aria-label={`在 NeoDB 查看《${mark.item.title}》`}>
@@ -197,7 +210,13 @@ const syncedAt = shelfData.syncedAt
 	<p class="media-empty" data-media-empty hidden>没有符合当前筛选条件的条目。</p>
 
 	<script>
-		const filters = { status: 'progress', category: 'book', rating: 'any', review: 'any' };
+		const grid = document.querySelector<HTMLElement>('[data-media-grid]');
+		const filters = {
+			status: grid?.dataset.defaultStatus ?? 'progress',
+			category: grid?.dataset.defaultCategory ?? 'all',
+			rating: 'any',
+			review: 'any',
+		};
 		const cards = Array.from(document.querySelectorAll<HTMLElement>('.media-card'));
 		const emptyState = document.querySelector<HTMLElement>('[data-media-empty]');
 		const completeFilters = document.querySelector<HTMLElement>('[data-complete-filters]');
@@ -217,7 +236,7 @@ const syncedAt = shelfData.syncedAt
 			const isComplete = filters.status === 'complete';
 			return cards.filter((card) =>
 				(filters.status === 'all' || card.dataset.status === filters.status)
-				&& card.dataset.category === filters.category
+				&& (filters.category === 'all' || card.dataset.category === filters.category)
 				&& (!isComplete || matchesRating(card))
 				&& (!isComplete || filters.review !== 'short' || card.dataset.commented === 'true')
 				&& (!isComplete || filters.review !== 'long' || card.dataset.reviewed === 'true')

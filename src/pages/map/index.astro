@@ -3,32 +3,31 @@ import '../../styles/global.css';
 import 'leaflet/dist/leaflet.css';
 import '../../styles/map.css';
 import '../../styles/map-theme.css';
+import ThemeBootstrap from '../../components/ThemeBootstrap.astro';
 import ThemeToggle from '../../components/ThemeToggle.astro';
+import { site } from '../../config/site';
+const canonical = new URL('/map/', Astro.site);
 ---
 <!doctype html>
 <html lang="zh-CN" data-theme="light">
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width" />
-	<meta name="theme-color" content="#ffffff" />
-	<script is:inline>
-		const savedTheme = localStorage.getItem('eka-theme');
-		const themes = ['light', 'sepia', 'dark', 'graphite'];
-		const theme = themes.includes(savedTheme)
-			? savedTheme
-			: matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-		const themeColors = { light: '#fbfbfa', sepia: '#f7f3e9', dark: '#1e1e1e', graphite: '#17191c' };
-		document.documentElement.dataset.theme = theme;
-		document.querySelector('meta[name="theme-color"]')?.setAttribute('content', themeColors[theme]);
-	</script>
+	<meta name="description" content="以地图与时间线记录走过的城市和旅程。" />
+	<ThemeBootstrap />
 	<link rel="icon" type="image/webp" href="/favicon.webp" />
-	<link rel="preconnect" href="https://fonts.googleapis.com" />
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600&display=swap" />
+	<link rel="canonical" href={canonical} />
+	<meta property="og:type" content="website" />
+	<meta property="og:locale" content="zh_CN" />
+	<meta property="og:site_name" content={site.title} />
+	<meta property="og:title" content="人生足迹 · Eka" />
+	<meta property="og:description" content="以地图与时间线记录走过的城市和旅程。" />
+	<meta property="og:url" content={canonical} />
+	<meta name="twitter:card" content="summary" />
 	<title>人生足迹 · Eka</title>
 </head>
 <body>
-<div class="flex flex-col h-screen">
+<div class="map-page">
     <!-- Header -->
     <div class="topbar">
         <button id="btnBack" class="btn-back" aria-label="返回" title="返回首页">
@@ -39,9 +38,9 @@ import ThemeToggle from '../../components/ThemeToggle.astro';
     </div>
 
     <!-- Body: edge-to-edge flex row -->
-    <div class="flex flex-1 min-h-0">
+    <div class="map-body">
         <!-- Map -->
-        <div class="flex-1 relative min-h-0">
+        <div class="map-main">
             <div class="map-shell">
                 <div id="map"></div>
             </div>
@@ -103,7 +102,7 @@ import ThemeToggle from '../../components/ThemeToggle.astro';
         </div>
 
         <!-- Sidebar -->
-        <div id="sidebarCol" class="sidebar-col min-h-0 flex-shrink-0" style="width:var(--sidebar-w)">
+        <div id="sidebarCol" class="sidebar-col" style="width:var(--sidebar-w)">
             <div class="sidebar">
                 <div class="sidebar-top">
                     <h2>时间线</h2>

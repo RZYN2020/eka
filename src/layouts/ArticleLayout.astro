@@ -4,8 +4,9 @@ import CategoryPath from '../components/CategoryPath.astro';
 import TagList from '../components/TagList.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import ArticleImages from '../components/ArticleImages.astro';
-import { formatDate } from '../lib/content';
+import { formatDate, writingDescription } from '../lib/content';
 import type { CollectionEntry } from 'astro:content';
+import 'katex/dist/katex.min.css';
 
 interface Props {
 	entry: CollectionEntry<'writing'>;
@@ -13,9 +14,10 @@ interface Props {
 }
 
 const { entry, headings } = Astro.props;
+const description = writingDescription(entry);
 ---
 
-<BaseLayout title={entry.data.title} description={entry.data.description} article>
+<BaseLayout title={entry.data.title} description={description} article>
 	<article>
 		<header class="article-header">
 			<div class="article-kicker">

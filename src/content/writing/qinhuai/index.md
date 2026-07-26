@@ -7,7 +7,6 @@ subcategories:
   - Journal
 tags: []
 draft: false
-featured: false
 legacyUrls:
   - /journal/posts/秦淮/
   - /journal/posts/qinhuai/

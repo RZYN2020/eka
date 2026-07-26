@@ -16,11 +16,12 @@ Node.js 22+ and pnpm are required.
 
 ```sh
 pnpm install
-pnpm migrate
 pnpm dev
 ```
 
-Content migration reads the sibling legacy repositories in the parent directory. Migrated Markdown and assets are committed to this repository, so Cloudflare Pages does not need those legacy repositories at build time.
+文章直接维护在 `src/content/writing/`；分类定义在
+`src/config/taxonomy.ts`。新增文章时复制同目录下现有文章的 frontmatter，
+然后运行下方验证命令。历史站点迁移已经完成，当前仓库是唯一内容源。
 
 ## Validation
 
@@ -28,8 +29,10 @@ Content migration reads the sibling legacy repositories in the parent directory.
 pnpm check
 pnpm build
 pnpm verify
-pnpm check:map
 ```
+
+`pnpm verify` 已包含内容模型、内部链接、构建产物和真实浏览器地图验证；
+`pnpm check:map` 可用于只重跑地图验证。
 
 `pnpm build` 会从唯一的中文 Markdown 简历同时生成网页与
 `dist/resume/resume.pdf`。

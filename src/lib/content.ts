@@ -1,7 +1,37 @@
 import type { CollectionEntry } from 'astro:content';
+import { site } from '../config/site';
 import { taxonomySlug } from '../config/taxonomy';
 
 export type WritingEntry = CollectionEntry<'writing'>;
+
+function markdownToPlainText(markdown: string) {
+	return markdown
+		.replace(/```[\s\S]*?```|~~~[\s\S]*?~~~/g, ' ')
+		.replace(/!\[[^\]]*]\([^)]*\)/g, ' ')
+		.replace(/\[([^\]]+)]\([^)]*\)/g, '$1')
+		.replace(/<[^>]+>/g, ' ')
+		.replace(/^\s*#{1,6}\s+/gm, '')
+		.replace(/^\s*>\s?/gm, '')
+		.replace(/^\s*[-*+]\s+/gm, '')
+		.replace(/`([^`]+)`/g, '$1')
+		.replace(/[*_~]/g, '')
+		.replace(/\\([\\`*_[\]{}()#+\-.!])/g, '$1')
+		.replace(/\s+/g, ' ')
+		.trim();
+}
+
+export function writingDescription(entry: WritingEntry, maxLength = 160) {
+	const explicit = entry.data.description.trim();
+	if (explicit) return explicit;
+
+	const plainText = markdownToPlainText(entry.body ?? '');
+	if (!plainText) return site.description;
+
+	const characters = Array.from(plainText);
+	return characters.length > maxLength
+		? `${characters.slice(0, maxLength - 1).join('').trimEnd()}…`
+		: plainText;
+}
 
 export function writingSlug(id: string) {
 	return id
@@ -30,7 +60,7 @@ export function formatDate(date?: Date, locale = 'zh-CN') {
 }
 
 export function sortWriting(entries: WritingEntry[]) {
-	return entries.sort((a, b) => {
+	return entries.toSorted((a, b) => {
 		const dateOrder = (b.data.publishedAt?.getTime() ?? 0) - (a.data.publishedAt?.getTime() ?? 0);
 		if (dateOrder !== 0) return dateOrder;
 		const manualOrder = a.data.order - b.data.order;
