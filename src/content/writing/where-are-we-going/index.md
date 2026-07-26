@@ -6,7 +6,6 @@ category: Human
 subcategories: []
 tags: []
 draft: true
-featured: false
 legacyUrls:
   - /posts/where-are-we-going/
 ---

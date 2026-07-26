@@ -63,6 +63,12 @@
 			let dragged = false;
 			let pressedImage: HTMLImageElement | null = null;
 
+			const cancelDrag = () => {
+				dragged = false;
+				pressedImage = null;
+				gallery.classList.remove('is-dragging');
+			};
+
 			gallery.addEventListener('pointerdown', (event) => {
 				if (event.pointerType === 'touch') return;
 				startX = event.clientX;
@@ -82,6 +88,10 @@
 			});
 			gallery.addEventListener('pointerup', (event) => {
 				if (gallery.hasPointerCapture(event.pointerId)) gallery.releasePointerCapture(event.pointerId);
+				gallery.classList.remove('is-dragging');
+			});
+			gallery.addEventListener('pointercancel', cancelDrag);
+			gallery.addEventListener('lostpointercapture', () => {
 				gallery.classList.remove('is-dragging');
 			});
 			gallery.addEventListener('click', (event) => {
@@ -120,7 +130,7 @@
 			const destination = source.getBoundingClientRect();
 			const current = clone.getBoundingClientRect();
 			stage.classList.remove('is-open');
-			clone.animate(
+			const animation = clone.animate(
 				[
 					{
 						top: `${current.top}px`,
@@ -136,13 +146,15 @@
 					},
 				],
 				{ duration: 260, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'forwards' },
-			).finished.finally(() => {
+			);
+			const finishClosing = () => {
 				source.style.visibility = '';
 				stage.remove();
 				document.documentElement.classList.remove('image-zoom-active');
 				active = undefined;
 				source.focus({ preventScroll: true });
-			});
+			};
+			void animation.finished.then(finishClosing, finishClosing);
 		};
 
 		const openZoom = (source: HTMLImageElement) => {
@@ -217,6 +229,10 @@
 		window.addEventListener('resize', closeZoom, { passive: true });
 		document.addEventListener('keydown', (event) => {
 			if (event.key === 'Escape') closeZoom();
+			if (event.key === 'Tab' && active) {
+				event.preventDefault();
+				active.stage.focus({ preventScroll: true });
+			}
 		});
 	}
 </script>

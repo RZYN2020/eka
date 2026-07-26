@@ -24,31 +24,66 @@ const documents = writing.map((entry) => ({
 	<p class="search-count" id="search-count">共 {documents.length} 条内容</p>
 	<div class="content-list" id="search-results"></div>
 
-	<script is:inline type="application/json" id="search-data" set:html={JSON.stringify(documents)} />
+	<script
+		is:inline
+		type="application/json"
+		id="search-data"
+		set:html={JSON.stringify(documents).replace(/</g, '\\u003c')}
+	/>
 </BaseLayout>
 
 <script>
-	const data = JSON.parse(document.querySelector('#search-data')?.textContent ?? '[]');
+	interface SearchDocument {
+		title: string;
+		meta: string;
+		type: string;
+		url: string;
+	}
+
+	const rawData: unknown = JSON.parse(document.querySelector('#search-data')?.textContent ?? '[]');
+	const data: SearchDocument[] = Array.isArray(rawData)
+		? rawData.filter((item): item is SearchDocument => (
+			typeof item === 'object'
+			&& item !== null
+			&& typeof item.title === 'string'
+			&& typeof item.meta === 'string'
+			&& typeof item.type === 'string'
+			&& typeof item.url === 'string'
+		))
+		: [];
 	const input = document.querySelector<HTMLInputElement>('#search-input');
 	const results = document.querySelector<HTMLElement>('#search-results');
 	const count = document.querySelector<HTMLElement>('#search-count');
 
-	function escapeHtml(value: string) {
-		return value.replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[char] ?? char);
+	function resultRow(item: SearchDocument, index: number) {
+		const link = document.createElement('a');
+		link.className = 'content-row';
+		link.href = item.url;
+
+		const itemIndex = document.createElement('span');
+		itemIndex.className = 'content-index';
+		itemIndex.textContent = String(index + 1).padStart(2, '0');
+
+		const main = document.createElement('div');
+		main.className = 'content-main';
+		const heading = document.createElement('h2');
+		heading.textContent = item.title;
+		main.append(heading);
+
+		const meta = document.createElement('div');
+		meta.className = 'content-meta';
+		meta.textContent = item.type;
+		link.append(itemIndex, main, meta);
+		return link;
 	}
 
 	function render(query = '') {
 		const term = query.trim().toLocaleLowerCase();
 		const matches = term
-			? data.filter((item: any) => `${item.title} ${item.meta}`.toLocaleLowerCase().includes(term))
+			? data.filter((item) => `${item.title} ${item.meta}`.toLocaleLowerCase().includes(term))
 			: data.slice(0, 12);
 		if (count) count.textContent = term ? `找到 ${matches.length} 条内容` : `最近展示 ${matches.length} / ${data.length} 条内容`;
-		if (results) results.innerHTML = matches.map((item: any, index: number) => `
-			<a class="content-row" href="${encodeURI(item.url)}">
-				<span class="content-index">${String(index + 1).padStart(2, '0')}</span>
-				<div class="content-main"><h2>${escapeHtml(item.title)}</h2></div>
-				<div class="content-meta">${escapeHtml(item.type)}</div>
-			</a>`).join('');
+		results?.replaceChildren(...matches.map(resultRow));
 	}
 
 	input?.addEventListener('input', () => render(input.value));

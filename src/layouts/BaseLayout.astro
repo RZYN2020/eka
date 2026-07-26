@@ -2,10 +2,10 @@
 import { getCollection } from 'astro:content';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import ThemeBootstrap from '../components/ThemeBootstrap.astro';
 import { site } from '../config/site';
 import { renderTerminal } from '../lib/terminal';
 import '../styles/global.css';
-import 'katex/dist/katex.min.css';
 
 interface Props {
 	title?: string;
@@ -15,9 +15,10 @@ interface Props {
 
 const {
 	title = site.fullTitle,
-	description = '',
+	description = site.description,
 	article = false,
 } = Astro.props;
+const effectiveDescription = description.trim() || site.description;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const pageTitle = title === site.fullTitle ? title : `${title} · ${site.title}`;
 const terminalCard = renderTerminal(await getCollection('writing'));
@@ -29,32 +30,20 @@ const terminalCard = renderTerminal(await getCollection('writing'));
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		{description && <meta name="description" content={description} />}
-		<meta name="theme-color" content="#ffffff" />
-		<script is:inline>
-			const savedTheme = localStorage.getItem('eka-theme');
-			const themes = ['light', 'sepia', 'dark', 'graphite'];
-			const theme = themes.includes(savedTheme)
-				? savedTheme
-				: matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-			const themeColors = { light: '#fbfbfa', sepia: '#f7f3e9', dark: '#1e1e1e', graphite: '#17191c' };
-			document.documentElement.dataset.theme = theme;
-			document.querySelector('meta[name="theme-color"]')?.setAttribute('content', themeColors[theme]);
-		</script>
+		<meta name="description" content={effectiveDescription} />
+		<ThemeBootstrap />
 		<link rel="canonical" href={canonical} />
 		<link rel="icon" type="image/webp" href="/favicon.webp" />
 		<link rel="alternate" type="application/rss+xml" title="Eka" href="/rss.xml" />
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			rel="stylesheet"
-			href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600&display=swap"
-		/>
 		<meta property="og:type" content={article ? 'article' : 'website'} />
+		<meta property="og:locale" content="zh_CN" />
+		<meta property="og:site_name" content={site.title} />
 		<meta property="og:title" content={pageTitle} />
-		{description && <meta property="og:description" content={description} />}
+		<meta property="og:description" content={effectiveDescription} />
 		<meta property="og:url" content={canonical} />
 		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:title" content={pageTitle} />
+		<meta name="twitter:description" content={effectiveDescription} />
 		<title>{pageTitle}</title>
 	</head>
 	<body>

@@ -8,7 +8,6 @@ subcategories:
 tags:
   - Knowledge
 draft: false
-featured: false
 legacyUrls:
   - /posts/brainwaves-and-signal-processing/
 ---

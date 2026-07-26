@@ -8,7 +8,6 @@ subcategories:
 tags:
   - CheatSheet
 draft: false
-featured: false
 legacyUrls:
   - /posts/digital-intuition/
 ---

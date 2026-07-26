@@ -41,6 +41,8 @@ const htmlFiles = files.filter((file) => file.endsWith('.html'));
 const broken = [];
 const missingAlt = [];
 const leakedShortcodes = [];
+const missingWritingDescriptions = [];
+const unresponsiveWritingImages = [];
 
 for (const file of htmlFiles) {
 	const html = await fs.readFile(file, 'utf8');
@@ -59,16 +61,42 @@ for (const file of htmlFiles) {
 		if (!/\balt=["'][^"']*["']/.test(match[1])) {
 			missingAlt.push(path.relative(dist, file));
 		}
+		if (
+			file.includes(`${path.sep}writing${path.sep}`)
+			&& /\bdata-astro-image=/.test(match[1])
+			&& (!/\bsrcset=/.test(match[1]) || !/\bsizes=/.test(match[1]))
+		) {
+			unresponsiveWritingImages.push(path.relative(dist, file));
+		}
+	}
+	if (
+		file.includes(`${path.sep}writing${path.sep}`)
+		&& !/<meta name="robots" content="noindex">/.test(html)
+		&& !/<meta name="description" content="[^"]+">/.test(html)
+	) {
+		missingWritingDescriptions.push(path.relative(dist, file));
 	}
 	if (/\{\{(?:&#x3C;|&lt;|<)\s*\/?(?:comment|rawhtml)\b/i.test(html)) {
 		leakedShortcodes.push(path.relative(dist, file));
 	}
 }
 
-if (broken.length || missingAlt.length || leakedShortcodes.length) {
+if (
+	broken.length
+	|| missingAlt.length
+	|| leakedShortcodes.length
+	|| missingWritingDescriptions.length
+	|| unresponsiveWritingImages.length
+) {
 	if (broken.length) console.error(`Broken internal references:\n${[...new Set(broken)].join('\n')}`);
 	if (missingAlt.length) console.error(`Images missing alt text:\n${[...new Set(missingAlt)].join('\n')}`);
 	if (leakedShortcodes.length) console.error(`Unprocessed Hugo shortcodes:\n${[...new Set(leakedShortcodes)].join('\n')}`);
+	if (missingWritingDescriptions.length) {
+		console.error(`Writing pages missing meta descriptions:\n${[...new Set(missingWritingDescriptions)].join('\n')}`);
+	}
+	if (unresponsiveWritingImages.length) {
+		console.error(`Writing images missing responsive attributes:\n${[...new Set(unresponsiveWritingImages)].join('\n')}`);
+	}
 	process.exit(1);
 }
 

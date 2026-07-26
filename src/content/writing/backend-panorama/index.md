@@ -9,7 +9,6 @@ tags:
   - Code
   - Architecture
 draft: false
-featured: true
 legacyUrls:
   - /posts/backend-panorama/
 ---

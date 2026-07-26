@@ -13,9 +13,6 @@ const { Content } = await render(entry);
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="robots" content="noindex" />
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600&display=swap" />
 		<title>{entry.data.title}</title>
 	</head>
 	<body>
@@ -37,7 +34,7 @@ const { Content } = await render(entry);
 		--faint: #929499;
 		--line: #d9dadd;
 		--link: #315d8f;
-		--font-ui: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+		--font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
 		--resume-font-size: 8.9pt;
 		--resume-line-height: 1.48;
 		--resume-section-margin: 5.2mm 0 2mm;

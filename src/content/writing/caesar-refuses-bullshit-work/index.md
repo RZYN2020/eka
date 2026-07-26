@@ -7,9 +7,7 @@ subcategories:
   - Journal
 tags: []
 draft: false
-featured: false
 legacyUrls:
-  - /journal/posts/posts/
   - /journal/posts/caesar-refuses-bullshit-work/
 ---
 这个世界上的工作，很多都是狗屁工作。

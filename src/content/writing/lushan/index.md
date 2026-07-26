@@ -7,7 +7,6 @@ subcategories:
   - Journal
 tags: []
 draft: false
-featured: false
 legacyUrls:
   - /journal/posts/庐山游记/
   - /journal/posts/lushan/

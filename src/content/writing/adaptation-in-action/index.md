@@ -9,7 +9,6 @@ tags:
   - LLM
   - RL
 draft: false
-featured: false
 legacyUrls:
   - /posts/adaptation-in-action/
 ---

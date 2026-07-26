@@ -1,11 +1,22 @@
-@import "tailwindcss";
-
 @import "./tokens.css";
 @import "./layout.css";
 @import "./content.css";
 
 * {
 	box-sizing: border-box;
+}
+
+button,
+input,
+select,
+textarea {
+	color: inherit;
+	font: inherit;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
 }
 
 html {

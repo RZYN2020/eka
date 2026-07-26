@@ -9,7 +9,6 @@ tags:
   - LLM
   - Code
 draft: false
-featured: true
 legacyUrls:
   - /posts/building-a-transformer-lm/
 ---
