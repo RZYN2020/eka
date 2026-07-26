@@ -1,6 +1,6 @@
 import { mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
-import { launchBrowser } from './lib/browser.mjs';
+import { ensureBrowser, launchBrowser } from './lib/browser.mjs';
 import { startStaticServer } from './lib/static-server.mjs';
 
 const DIST_DIR = join(process.cwd(), 'dist');
@@ -9,6 +9,7 @@ const server = await startStaticServer(DIST_DIR);
 let browser;
 
 try {
+	await ensureBrowser();
 	browser = await launchBrowser();
 	const page = await browser.newPage();
 	await page.goto(`${server.origin}/resume/print/`, {
