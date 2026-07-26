@@ -1,0 +1,153 @@
+---
+import { getEntry, render } from 'astro:content';
+import ResumeDocument from '../../components/ResumeDocument.astro';
+
+const entry = await getEntry('resume', 'zh');
+if (!entry) throw new Error('未找到中文简历内容');
+const { Content } = await render(entry);
+---
+
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="robots" content="noindex" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600&display=swap" />
+		<title>{entry.data.title}</title>
+	</head>
+	<body>
+		<main class="print-sheet">
+			<header class="print-title">
+				<h1>{entry.data.title}</h1>
+				<button type="button" onclick="window.print()">打印 / 导出 PDF</button>
+			</header>
+			<ResumeDocument {Content} />
+		</main>
+	</body>
+</html>
+
+<style is:global>
+	:root {
+		--paper: #ffffff;
+		--ink: #202124;
+		--muted: #686a6d;
+		--faint: #929499;
+		--line: #d9dadd;
+		--link: #315d8f;
+		--font-ui: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+		--resume-font-size: 8.9pt;
+		--resume-line-height: 1.48;
+		--resume-section-margin: 5.2mm 0 2mm;
+		--resume-section-padding: 1.2mm;
+		--resume-section-size: 11pt;
+		--resume-list-margin: 1.4mm 0 2.7mm;
+		--resume-list-indent: 4.5mm;
+		--resume-item-margin: 0.75mm 0;
+		background: #ececea;
+	}
+
+	* {
+		box-sizing: border-box;
+	}
+
+	body {
+		margin: 0;
+		background: #ececea;
+		color: var(--ink);
+		font-family: var(--font-ui);
+		-webkit-font-smoothing: antialiased;
+		text-rendering: optimizeLegibility;
+	}
+
+	.print-sheet {
+		width: 210mm;
+		min-height: 297mm;
+		margin: 24px auto;
+		padding: 14mm 17mm;
+		background: var(--paper);
+		box-shadow: 0 10px 38px rgb(0 0 0 / 10%);
+	}
+
+	.print-title {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		margin-bottom: 8mm;
+		padding-bottom: 4mm;
+		border-bottom: 1px solid var(--ink);
+	}
+
+	.print-title h1 {
+		margin: 0;
+		font-size: 23px;
+		font-weight: 600;
+		letter-spacing: -0.02em;
+	}
+
+	.print-title button {
+		padding: 0;
+		border: 0;
+		background: transparent;
+		color: var(--muted);
+		cursor: pointer;
+		font: inherit;
+		font-size: 12px;
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
+	}
+
+	.resume-document :where(h2) {
+		break-after: avoid;
+	}
+
+	.resume-document :where(p) {
+		orphans: 3;
+		widows: 3;
+	}
+
+	.resume-document :where(a) {
+		color: inherit;
+		text-decoration-color: #8b8d91;
+	}
+
+	@page {
+		size: A4;
+		margin: 0;
+	}
+
+	@media print {
+		:root,
+		body {
+			background: #fff;
+		}
+
+		.print-sheet {
+			width: auto;
+			min-height: 0;
+			margin: 0;
+			box-shadow: none;
+			break-after: avoid-page;
+		}
+
+		.print-title button {
+			display: none;
+		}
+
+		.resume-document h2:last-of-type {
+			break-before: page;
+		}
+	}
+
+	@media screen and (max-width: 820px) {
+		.print-sheet {
+			width: 100%;
+			min-height: 100vh;
+			margin: 0;
+			padding: 28px 22px 48px;
+			box-shadow: none;
+		}
+	}
+</style>

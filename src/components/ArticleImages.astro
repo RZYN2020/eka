@@ -1,0 +1,222 @@
+<script>
+	const prose = document.querySelector<HTMLElement>('.prose-eka');
+
+	if (prose) {
+		const imageCount = (element: Element) => element.querySelectorAll('img').length;
+		const isImageOnly = (element: Element) => {
+			if (element.tagName !== 'P') return false;
+
+			return [...element.childNodes].every((node) => {
+				if (node.nodeType === Node.TEXT_NODE) return !node.textContent?.trim();
+				if (node.nodeType !== Node.ELEMENT_NODE) return false;
+
+				const child = node as Element;
+				if (child.tagName === 'IMG' || child.tagName === 'BR') return true;
+				return child.tagName === 'A'
+					&& imageCount(child) === 1
+					&& [...child.childNodes].every((item) =>
+						item.nodeType === Node.TEXT_NODE ? !item.textContent?.trim() : (item as Element).tagName === 'IMG'
+					);
+			});
+		};
+
+		// A run of image-only Markdown paragraphs becomes one horizontal gallery.
+		const children = [...prose.children];
+		for (let index = 0; index < children.length;) {
+			const first = children[index];
+			if (!isImageOnly(first)) {
+				index += 1;
+				continue;
+			}
+
+			const run: Element[] = [];
+			let totalImages = 0;
+			while (index < children.length && isImageOnly(children[index])) {
+				run.push(children[index]);
+				totalImages += imageCount(children[index]);
+				index += 1;
+			}
+
+			if (totalImages < 2) continue;
+
+			const gallery = document.createElement('div');
+			gallery.className = 'image-gallery';
+			gallery.setAttribute('role', 'region');
+			gallery.setAttribute('aria-label', `图片画廊，共 ${totalImages} 张`);
+			gallery.tabIndex = 0;
+			run[0].before(gallery);
+
+			for (const paragraph of run) {
+				for (const node of [...paragraph.childNodes]) {
+					if (node.nodeType === Node.TEXT_NODE && !node.textContent?.trim()) continue;
+					if (node instanceof HTMLBRElement) continue;
+					gallery.append(node);
+				}
+				paragraph.remove();
+			}
+		}
+
+		const galleries = prose.querySelectorAll<HTMLElement>('.image-gallery');
+		for (const gallery of galleries) {
+			let startX = 0;
+			let startScroll = 0;
+			let dragged = false;
+			let pressedImage: HTMLImageElement | null = null;
+
+			gallery.addEventListener('pointerdown', (event) => {
+				if (event.pointerType === 'touch') return;
+				startX = event.clientX;
+				startScroll = gallery.scrollLeft;
+				dragged = false;
+				pressedImage = (event.target as Element).closest('img');
+			});
+			gallery.addEventListener('pointermove', (event) => {
+				const delta = event.clientX - startX;
+				if (!dragged && Math.abs(delta) > 4 && event.buttons === 1) {
+					dragged = true;
+					gallery.classList.add('is-dragging');
+					gallery.setPointerCapture(event.pointerId);
+				}
+				if (!dragged) return;
+				gallery.scrollLeft = startScroll - delta;
+			});
+			gallery.addEventListener('pointerup', (event) => {
+				if (gallery.hasPointerCapture(event.pointerId)) gallery.releasePointerCapture(event.pointerId);
+				gallery.classList.remove('is-dragging');
+			});
+			gallery.addEventListener('click', (event) => {
+				if (dragged) {
+					event.preventDefault();
+					event.stopPropagation();
+					dragged = false;
+					pressedImage = null;
+					return;
+				}
+
+				// Pointer capture can retarget a click to the gallery. Preserve the
+				// originally pressed image so a normal click still opens zoom.
+				if (pressedImage && !(event.target instanceof HTMLImageElement)) {
+					event.preventDefault();
+					openZoom(pressedImage);
+				}
+				pressedImage = null;
+			}, true);
+		}
+
+		let active:
+			| {
+				source: HTMLImageElement;
+				stage: HTMLElement;
+				clone: HTMLImageElement;
+				closing: boolean;
+			}
+			| undefined;
+
+		const closeZoom = () => {
+			if (!active || active.closing) return;
+			active.closing = true;
+
+			const { source, stage, clone } = active;
+			const destination = source.getBoundingClientRect();
+			const current = clone.getBoundingClientRect();
+			stage.classList.remove('is-open');
+			clone.animate(
+				[
+					{
+						top: `${current.top}px`,
+						left: `${current.left}px`,
+						width: `${current.width}px`,
+						height: `${current.height}px`,
+					},
+					{
+						top: `${destination.top}px`,
+						left: `${destination.left}px`,
+						width: `${destination.width}px`,
+						height: `${destination.height}px`,
+					},
+				],
+				{ duration: 260, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'forwards' },
+			).finished.finally(() => {
+				source.style.visibility = '';
+				stage.remove();
+				document.documentElement.classList.remove('image-zoom-active');
+				active = undefined;
+				source.focus({ preventScroll: true });
+			});
+		};
+
+		const openZoom = (source: HTMLImageElement) => {
+			if (active || source.naturalWidth === 0) return;
+
+			const origin = source.getBoundingClientRect();
+			const viewportWidth = window.innerWidth * 0.92;
+			const viewportHeight = window.innerHeight * 0.9;
+			const scale = Math.min(
+				1,
+				viewportWidth / source.naturalWidth,
+				viewportHeight / source.naturalHeight,
+			);
+			const width = source.naturalWidth * scale;
+			const height = source.naturalHeight * scale;
+			const left = (window.innerWidth - width) / 2;
+			const top = (window.innerHeight - height) / 2;
+
+			const stage = document.createElement('div');
+			stage.className = 'image-zoom-stage';
+			stage.setAttribute('role', 'dialog');
+			stage.setAttribute('aria-modal', 'true');
+			stage.setAttribute('aria-label', source.alt || '放大的图片');
+			stage.tabIndex = -1;
+
+			const clone = source.cloneNode() as HTMLImageElement;
+			clone.className = 'image-zoom-clone';
+			clone.removeAttribute('loading');
+			Object.assign(clone.style, {
+				top: `${origin.top}px`,
+				left: `${origin.left}px`,
+				width: `${origin.width}px`,
+				height: `${origin.height}px`,
+			});
+			stage.append(clone);
+			document.body.append(stage);
+			source.style.visibility = 'hidden';
+			document.documentElement.classList.add('image-zoom-active');
+			active = { source, stage, clone, closing: false };
+			stage.focus({ preventScroll: true });
+
+			requestAnimationFrame(() => stage.classList.add('is-open'));
+			clone.animate(
+				[
+					{ top: `${origin.top}px`, left: `${origin.left}px`, width: `${origin.width}px`, height: `${origin.height}px` },
+					{ top: `${top}px`, left: `${left}px`, width: `${width}px`, height: `${height}px` },
+				],
+				{ duration: 340, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'forwards' },
+			);
+
+			stage.addEventListener('click', closeZoom);
+		};
+
+		for (const image of prose.querySelectorAll<HTMLImageElement>('img')) {
+			if (image.closest('a')?.getAttribute('href') && !image.closest('.image-gallery')) continue;
+			image.classList.add('is-zoomable');
+			image.tabIndex = 0;
+			image.setAttribute('role', 'button');
+			image.setAttribute('aria-label', image.alt ? `放大图片：${image.alt}` : '放大图片');
+			image.addEventListener('click', (event) => {
+				event.preventDefault();
+				openZoom(image);
+			});
+			image.addEventListener('keydown', (event) => {
+				if (event.key !== 'Enter' && event.key !== ' ') return;
+				event.preventDefault();
+				openZoom(image);
+			});
+		}
+
+		window.addEventListener('scroll', closeZoom, { passive: true });
+		window.addEventListener('resize', closeZoom, { passive: true });
+		document.addEventListener('keydown', (event) => {
+			if (event.key === 'Escape') closeZoom();
+		});
+	}
+</script>

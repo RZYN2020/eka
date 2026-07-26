@@ -247,6 +247,119 @@
 	max-width: 100%;
 	max-height: 82vh;
 	margin: 2em auto;
+	border-radius: 5px;
+	box-shadow: var(--image-shadow);
+}
+
+.prose-eka img.is-zoomable {
+	cursor: zoom-in;
+	transition:
+		filter 180ms ease,
+		box-shadow 180ms ease;
+}
+
+.prose-eka img.is-zoomable:hover {
+	filter: brightness(0.985) saturate(0.97);
+	box-shadow: 0 2px 4px rgb(32 33 36 / 8%), 0 12px 36px rgb(32 33 36 / 8%);
+}
+
+.prose-eka img.is-zoomable:focus-visible {
+	outline: 2px solid var(--link);
+	outline-offset: 4px;
+}
+
+.prose-eka .image-gallery {
+	display: flex;
+	gap: 12px;
+	justify-content: safe center;
+	width: min(100vw - 32px, 920px);
+	margin: 2em 50%;
+	overflow-x: auto;
+	padding: 4px 3px 14px;
+	scroll-behavior: smooth;
+	scroll-snap-type: x mandatory;
+	scrollbar-color: var(--line) transparent;
+	scrollbar-width: thin;
+	transform: translateX(-50%);
+	cursor: grab;
+	overscroll-behavior-inline: contain;
+	touch-action: pan-x pan-y;
+}
+
+.prose-eka .image-gallery.is-dragging {
+	cursor: grabbing;
+	scroll-behavior: auto;
+	scroll-snap-type: none;
+	user-select: none;
+}
+
+.prose-eka .image-gallery > :where(img, a, figure) {
+	flex: 0 0 auto;
+	scroll-snap-align: center;
+}
+
+.prose-eka .image-gallery > a {
+	display: block;
+}
+
+.prose-eka .image-gallery img {
+	display: block;
+	width: auto;
+	height: clamp(220px, 46vw, 480px);
+	max-width: min(82vw, 680px);
+	margin: 0;
+	border-radius: 7px;
+	object-fit: cover;
+}
+
+.image-zoom-active {
+	overflow: hidden;
+}
+
+.image-zoom-stage {
+	position: fixed;
+	z-index: 1000;
+	inset: 0;
+	cursor: zoom-out;
+	background: transparent;
+	backdrop-filter: blur(0) saturate(1);
+	transition:
+		background 300ms ease,
+		backdrop-filter 300ms ease;
+}
+
+.image-zoom-stage.is-open {
+	background: var(--zoom-backdrop);
+	backdrop-filter: blur(12px) saturate(0.82);
+}
+
+.image-zoom-clone {
+	position: fixed;
+	max-width: none;
+	max-height: none;
+	margin: 0;
+	border-radius: 5px;
+	object-fit: contain;
+	box-shadow: 0 0 0 rgb(0 0 0 / 0%);
+	transition:
+		border-radius 300ms ease,
+		box-shadow 300ms ease;
+	will-change: top, left, width, height;
+}
+
+.image-zoom-stage.is-open .image-zoom-clone {
+	border-radius: 8px;
+	box-shadow: var(--zoom-shadow);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.image-zoom-stage {
+		transition-duration: 1ms;
+	}
+
+	.image-zoom-clone {
+		transition-duration: 1ms;
+	}
 }
 
 :root[data-theme="dark"] .prose-eka img,
@@ -477,5 +590,15 @@
 
 	.article-header {
 		margin-bottom: 40px;
+	}
+
+	.prose-eka .image-gallery {
+		width: calc(100vw - 20px);
+		gap: 8px;
+		padding-bottom: 10px;
+	}
+
+	.prose-eka .image-gallery img {
+		height: min(58vw, 360px);
 	}
 }

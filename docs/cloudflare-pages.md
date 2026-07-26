@@ -32,3 +32,10 @@ Suggested order:
 5. Verify canonical URLs, RSS, sitemap and representative old links.
 
 Do not remove the legacy sites before the redirects have been checked.
+
+## Daily NeoDB sync
+
+The `Sync NeoDB` GitHub Actions workflow runs at 04:20 Asia/Shanghai and commits
+only the generated public shelf data. Add `NEODB_ACCESS_TOKEN` as a repository
+Actions secret. The resulting commit uses the same Pages Git deployment path as
+normal content updates.

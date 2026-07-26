@@ -9,7 +9,6 @@ export const site = {
 		{ href: '/about/', label: 'About' },
 	],
 	links: {
-		github: 'https://github.com/RZYN2020',
 		rss: '/rss.xml',
 	},
 } as const;

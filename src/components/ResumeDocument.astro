@@ -1,0 +1,61 @@
+---
+const { Content } = Astro.props;
+---
+
+<article class="resume-document">
+	<Content />
+</article>
+
+<style>
+	.resume-document {
+		color: var(--ink);
+		font-family: var(--font-ui);
+		font-size: var(--resume-font-size, 14px);
+		line-height: var(--resume-line-height, 1.72);
+	}
+
+	.resume-document :global(p) {
+		margin: 0.55rem 0;
+	}
+
+	.resume-document :global(p:first-child) {
+		color: var(--muted);
+	}
+
+	.resume-document :global(h2) {
+		margin: var(--resume-section-margin, 2.7rem 0 1rem);
+		padding-bottom: var(--resume-section-padding, 0.45rem);
+		border-bottom: 1px solid var(--line);
+		color: var(--ink);
+		font-size: var(--resume-section-size, 16px);
+		font-weight: 600;
+		letter-spacing: 0.02em;
+	}
+
+	.resume-document :global(strong) {
+		color: var(--ink);
+		font-weight: 600;
+	}
+
+	.resume-document :global(ul) {
+		margin: var(--resume-list-margin, 0.65rem 0 1.35rem);
+		padding-left: var(--resume-list-indent, 1.2rem);
+		list-style: disc;
+	}
+
+	.resume-document :global(li) {
+		margin: var(--resume-item-margin, 0.32rem 0);
+		padding-left: 0.2rem;
+	}
+
+	.resume-document :global(li::marker) {
+		color: var(--faint);
+		font-size: 0.75em;
+	}
+
+	.resume-document :global(a) {
+		color: var(--link);
+		text-decoration: underline;
+		text-decoration-color: color-mix(in srgb, var(--link) 45%, transparent);
+	}
+</style>

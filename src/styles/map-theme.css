@@ -186,7 +186,7 @@ body {
 
 .journey-status {
 	position: absolute;
-	bottom: 22px;
+	bottom: 82px;
 	left: 22px;
 	z-index: 900;
 	display: grid;
@@ -196,6 +196,128 @@ body {
 	background: var(--map-control);
 	box-shadow: 0 6px 20px rgb(0 0 0 / 8%);
 	backdrop-filter: blur(8px);
+}
+
+.journey-timeline {
+	position: absolute;
+	bottom: 20px;
+	left: 50%;
+	z-index: 900;
+	width: min(calc(100% - 44px), 680px);
+	padding: 9px 12px 11px;
+	transform: translateX(-50%);
+	border: 1px solid var(--line);
+	background: var(--map-control);
+	backdrop-filter: blur(8px);
+}
+
+.journey-timeline[hidden] {
+	display: none;
+}
+
+.journey-time-meta {
+	display: grid;
+	grid-template-columns: 1fr auto 1fr;
+	align-items: baseline;
+	gap: 12px;
+	margin-bottom: 8px;
+	color: var(--muted);
+	font-size: 9px;
+	font-variant-numeric: tabular-nums;
+}
+
+.journey-time-meta strong {
+	color: var(--text);
+	font-size: 11px;
+	font-weight: 500;
+}
+
+.journey-time-meta span:last-child {
+	text-align: right;
+}
+
+.journey-time-track {
+	position: relative;
+	height: 9px;
+	cursor: ew-resize;
+	touch-action: none;
+}
+
+.journey-time-track.is-scrubbing {
+	cursor: grabbing;
+}
+
+.journey-time-track::before,
+.journey-time-fill {
+	position: absolute;
+	top: 4px;
+	left: 0;
+	height: 1px;
+	content: "";
+}
+
+.journey-time-track::before {
+	width: 100%;
+	background: var(--line);
+}
+
+.journey-time-fill {
+	z-index: 1;
+	width: 0;
+	background: var(--journey-line);
+	transition: width 240ms ease;
+}
+
+.journey-time-ticks {
+	position: absolute;
+	inset: 0;
+}
+
+.journey-time-ticks button {
+	position: absolute;
+	top: 3px;
+	width: 1px;
+	height: 3px;
+	padding: 0;
+	transform: translateX(-50%);
+	border: 0;
+	background: var(--line);
+	cursor: pointer;
+}
+
+.journey-time-ticks button:hover,
+.journey-time-ticks button:focus-visible {
+	background: var(--text);
+	outline: none;
+}
+
+.journey-time-ticks button.is-stay {
+	top: 1px;
+	width: 2px;
+	height: 7px;
+	background: var(--muted);
+}
+
+.journey-time-ticks button.is-phase {
+	top: 0;
+	width: 3px;
+	height: 9px;
+	background: var(--text);
+}
+
+.journey-time-cursor {
+	position: absolute;
+	top: 1px;
+	left: 0;
+	z-index: 2;
+	width: 7px;
+	height: 7px;
+	transform: translateX(-50%);
+	border: 1px solid var(--card);
+	border-radius: 50%;
+	background: var(--journey-line);
+	box-shadow: 0 0 0 1px var(--journey-line);
+	transition: left 240ms ease;
 }
 
 .journey-status.is-changing > :not(.journey-actions) {
@@ -425,6 +547,12 @@ body {
 
 .leaflet-marker-icon > div {
 	box-shadow: 0 0 0 2px rgb(255 255 255 / 75%) !important;
+	transform-origin: center;
+	transition: scale 150ms ease;
+}
+
+.leaflet-marker-icon.is-pulsing > div {
+	scale: 1.4;
 }
 
 .leaflet-control-zoom {
@@ -469,6 +597,11 @@ body {
 	background: color-mix(in srgb, var(--bg) 78%, transparent);
 }
 
+.map-ctrl-btn:disabled {
+	cursor: progress;
+	opacity: 0.55;
+}
+
 .loader-ring {
 	width: 28px;
 	height: 28px;
@@ -489,8 +622,13 @@ body {
 	}
 
 	.journey-status {
-		bottom: 14px;
+		bottom: 76px;
 		left: 10px;
+	}
+
+	.journey-timeline {
+		bottom: 10px;
+		width: calc(100% - 20px);
 	}
 
 	.btn-mob {
@@ -518,7 +656,8 @@ body {
 @media (prefers-reduced-motion: reduce) {
 	#map,
 	.loader-cover,
-	.tl-trips {
+	.tl-trips,
+	.leaflet-marker-icon > div {
 		transition: none;
 	}
 

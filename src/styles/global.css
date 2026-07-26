@@ -45,8 +45,43 @@ a:hover {
 	background: color-mix(in srgb, var(--link) 30%, transparent);
 }
 
+.developer-toast {
+	position: fixed;
+	right: 1.25rem;
+	bottom: 1.25rem;
+	z-index: 100;
+	display: flex;
+	gap: 0.55rem;
+	align-items: center;
+	padding: 0.65rem 0.85rem;
+	border: 1px solid color-mix(in srgb, var(--ink) 20%, transparent);
+	border-radius: 0.35rem;
+	background: var(--paper);
+	box-shadow: 0 0.75rem 2rem color-mix(in srgb, #000 16%, transparent);
+	color: var(--ink);
+	font: 500 0.85rem/1.2 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	opacity: 1;
+	transform: translateY(0);
+	transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.developer-toast > span {
+	color: var(--link);
+	font-weight: 700;
+}
+
+.developer-toast[aria-hidden='true'] {
+	pointer-events: none;
+	opacity: 0;
+	transform: translateY(0.5rem);
+}
+
 @media (prefers-reduced-motion: reduce) {
 	html {
 		scroll-behavior: auto;
+	}
+
+	.developer-toast {
+		transition: none;
 	}
 }

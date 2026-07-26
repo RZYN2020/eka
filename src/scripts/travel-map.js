@@ -1,90 +1,12 @@
 import L from 'leaflet';
-// =============================================================================
-// 数据 —— 在这里编辑你的旅行记录
-// 结构: 驻地(bases) → 旅行地(trips)，均可选 slug 指向博客
-// =============================================================================
-const bases = [
-    {
-        period: "2002 — 2017", summary: "童年与中学时代",
-        city: "庆阳", province: "甘肃",
-        color: "#9a6a50", slug: "",
-        trips: [
-            { city:"西安", province:"陕西", dates:"2010夏", year:2010, slug:"" },
-            { city:"银川", province:"宁夏", dates:"2012秋", year:2012, slug:"" },
-            { city:"西安", province:"陕西", dates:"2014冬", year:2014, slug:"" }
-        ]
-    },{
-        period: "2017.9 — 2020.6", summary: "高中时代",
-        city: "兰州", province: "甘肃",
-        color: "#62796e", slug: "",
-        trips: [
-            { city:"成都", province:"四川", dates:"2017夏", year:2017, slug:"" },
-            { city:"庆阳", province:"甘肃", dates:"2018.1", year:2018, slug:"", note:"寒假回家" },
-            { city:"庆阳", province:"甘肃", dates:"2018.7", year:2018, slug:"", note:"暑假回家" },
-            { city:"庆阳", province:"甘肃", dates:"2019.1", year:2019, slug:"", note:"寒假回家" },
-            { city:"庆阳", province:"甘肃", dates:"2019.7", year:2019, slug:"", note:"暑假回家" },
-            { city:"庆阳", province:"甘肃", dates:"2020.1", year:2020, slug:"", note:"寒假回家" }
-        ]
-    },{
-        period: "2020.9 — 2026.6", summary: "本科与研究生时代",
-        city: "南京", province: "江苏",
-        color: "#61758c", slug: "qinhuai",
-        trips: [
-            { city:"庆阳", province:"甘肃", dates:"2021.1", year:2021, slug:"", note:"寒假回家" },
-            { city:"庆阳", province:"甘肃", dates:"2021.7", year:2021, slug:"", note:"暑假回家" },
-            { city:"庆阳", province:"甘肃", dates:"2022.1", year:2022, slug:"", note:"寒假回家" },
-            { city:"庆阳", province:"甘肃", dates:"2022.7", year:2022, slug:"", note:"暑假回家" },
-            { city:"庆阳", province:"甘肃", dates:"2023.1", year:2023, slug:"", note:"寒假回家" },
-            { city:"滁州", province:"安徽", dates:"2023春", year:2023, slug:"" },
-            { city:"杭州", province:"浙江", dates:"2023.6–9", year:2023, slug:"", baseLike:true, subtrips:[] },
-            { city:"庆阳", province:"甘肃", dates:"2023.7", year:2023, slug:"", note:"暑假回家" },
-            { city:"青岛", province:"山东", dates:"2023秋", year:2023, slug:"" },
-            { city:"淄博", province:"山东", dates:"2023秋", year:2023, slug:"" },
-            { city:"泰安", province:"山东", dates:"2023秋", year:2023, slug:"" },
-            { city:"北京", province:"北京", dates:"2023秋", year:2023, slug:"" },
-            { city:"庆阳", province:"甘肃", dates:"2024.1", year:2024, slug:"", note:"寒假回家" },
-            { city:"黄山", province:"安徽", dates:"2024春", year:2024, slug:"" },
-            { city:"西双版纳", province:"云南", dates:"2024夏", year:2024, slug:"" },
-            { city:"大理", province:"云南", dates:"2024夏", year:2024, slug:"" },
-            { city:"丽江", province:"云南", dates:"2024夏", year:2024, slug:"" },
-            { city:"昆明", province:"云南", dates:"2024夏", year:2024, slug:"" },
-            { city:"无锡", province:"江苏", dates:"2024夏", year:2024, slug:"" },
-            { city:"镇江", province:"江苏", dates:"2024夏", year:2024, slug:"" },
-            { city:"庆阳", province:"甘肃", dates:"2025.1", year:2025, slug:"", note:"寒假回家" },
-            { city:"扬州", province:"江苏", dates:"2025.5", year:2025, slug:"yangzhou" },
-            { city:"深圳", province:"广东", dates:"2025.6–9", year:2025, slug:"", baseLike:true, subtrips:[
-                { city:"香港", province:"香港", dates:"2025.8", year:2025, slug:"" },
-                { city:"广州", province:"广东", dates:"2025.8", year:2025, slug:"" },
-                { city:"珠海", province:"广东", dates:"2025.8", year:2025, slug:"" },
-                { city:"澳门", province:"澳门", dates:"2025.8", year:2025, slug:"" }
-            ]},
-            { city:"苏州", province:"江苏", dates:"2025冬", year:2025, slug:"", note:"与女友同行" },
-            { city:"上海", province:"上海", dates:"2025冬", year:2025, slug:"", note:"与女友同行" },
-            { city:"庆阳", province:"甘肃", dates:"2025.12", year:2025, slug:"" },
-            { city:"北京", province:"北京", dates:"2025.12–2026.5", year:2025, slug:"", baseLike:true, subtrips:[
-                { city:"大同", province:"山西", dates:"2026.1", year:2026, slug:"" },
-                { city:"珠海", province:"广东", dates:"2026.3", year:2026, slug:"" },
-                { city:"香港", province:"香港", dates:"2026.3", year:2026, slug:"" },
-                { city:"哈尔滨", province:"黑龙江", dates:"2026.5", year:2026, slug:"" },
-                { city:"长春", province:"吉林", dates:"2026.5", year:2026, slug:"" },
-                { city:"沈阳", province:"辽宁", dates:"2026.5", year:2026, slug:"" }
-            ]},
-            { city:"庆阳", province:"甘肃", dates:"2026.5–6", year:2026, slug:"" },
-            { city:"西安", province:"陕西", dates:"2026.6", year:2026, slug:"" },
-            { city:"广州", province:"广东", dates:"2026.6", year:2026, slug:"" },
-            { city:"珠海", province:"广东", dates:"2026.6", year:2026, slug:"" },
-            { city:"惠州", province:"广东", dates:"2026.6", year:2026, slug:"" },
-            { city:"南昌", province:"江西", dates:"2026.6", year:2026, slug:"" },
-            { city:"九江", province:"江西", dates:"2026.6", year:2026, slug:"lushan" }
-        ]
-    },{
-        period: "2026.6.27 — 至今", summary: "开始工作",
-        city: "北京", province: "北京",
-        color: "#75677d", slug: "", note: "主基地",
-        trips: []
-    }
-];
-
+import { bases } from '../data/travel.js';
+import { buildJourneyStops } from '../lib/travel-journey.js';
+import {
+    assertTravelTree,
+    compareTravelDates,
+    formatTravelDate,
+    sortByTravelDate
+} from '../lib/travel-time.js';
 const blogTitles = {
     qinhuai: '秦淮',
     yangzhou: '扬州游记',
@@ -95,12 +17,14 @@ const blogTitles = {
 // State
 // =============================================================================
 let map, cityLayer, provinceLayer, worldLayer;
+let provinceLayerRequest, worldLayerRequest;
 let markerEntries = [];
 let markerByKey = new Map();
 const cityCoord = new Map();
 const ui = { selBase: null, selTrip: null, noSync: false };
 let currentView = 'china';
 let highlightMode = 'city';
+let resizeFrame = 0;
 const journey = {
     active: false,
     playing: false,
@@ -138,26 +62,33 @@ function buildCoordLookup(geo) {
         if (!cityCoord.has(name)) cityCoord.set(name, { lat: c[1], lng: c[0] });
     });
 }
-function getCoords(city) {
-    const key = normCity(city);
+function getCoords(place) {
+    if (place.coordinates) return place.coordinates;
+    const key = normCity(place.city);
     const c = cityCoord.get(key);
-    if (!c) throw new Error(`未找到城市坐标: ${city} (${key})`);
+    if (!c) throw new Error(`未找到城市坐标: ${place.city} (${key})`);
     return c;
 }
-function injectCoords() {
-    bases.forEach(b => {
-        try { Object.assign(b, getCoords(b.city)); } catch(e) { console.warn(e.message); }
-        b.trips.forEach(t => {
-            try { Object.assign(t, getCoords(t.city)); } catch(e) { console.warn(e.message); }
-            if (t.subtrips) t.subtrips.forEach(st => {
-                try { Object.assign(st, getCoords(st.city)); } catch(e) { console.warn(e.message); }
-            });
-        });
+function childrenOf(place) {
+    return place.children || [];
+}
+function walkPlaces(places, visit) {
+    places.forEach(place => {
+        visit(place);
+        walkPlaces(childrenOf(place), visit);
     });
+}
+function injectCoords() {
+    const missing = [];
+    walkPlaces(bases, place => {
+        try { Object.assign(place, getCoords(place)); }
+        catch(e) { missing.push(e.message); }
+    });
+    if (missing.length) throw new Error([...new Set(missing)].join('\n'));
 }
 function visitedCityNames() {
     const s = new Set();
-    bases.forEach(b => { s.add(b.city); b.trips.forEach(t => { s.add(t.city); if(t.subtrips) t.subtrips.forEach(st=>s.add(st.city)); }); });
+    walkPlaces(bases, place => s.add(place.city));
     return s;
 }
 function isVisitedCity(name) { return visitedCityNames().has(normCity(name)); }
@@ -170,7 +101,7 @@ function normProv(n) {
 }
 function visitedProvinceNames() {
     const s = new Set();
-    bases.forEach(b => { s.add(normProv(b.province)); b.trips.forEach(t => { s.add(normProv(t.province)); if(t.subtrips) t.subtrips.forEach(st=>s.add(normProv(st.province))); }); });
+    walkPlaces(bases, place => s.add(normProv(place.province)));
     return s;
 }
 function isVisitedProvince(name) { return visitedProvinceNames().has(normProv(name)); }
@@ -200,17 +131,24 @@ async function init() {
     map = L.map('map', {
         center: saved ? [saved.lat, saved.lng] : [34,108],
         zoom: saved ? saved.zoom : 5,
-        zoomControl: true, attributionControl: true
+        zoomControl: true,
+        attributionControl: true
     });
+    const mapElement = document.getElementById('map');
+    const resizeObserver = new ResizeObserver(() => {
+        cancelAnimationFrame(resizeFrame);
+        resizeFrame = requestAnimationFrame(() => map.invalidateSize({ pan: false }));
+    });
+    resizeObserver.observe(mapElement);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OSM', maxZoom: 18
     }).addTo(map);
 
     try {
-        await loadWorld();
         await loadCityLayer();
-        await loadProvinceLayer();
+        assertTravelTree(bases);
         injectCoords();
+        map.invalidateSize({ pan: false });
         applyHighlightMode();
         addMarkers();
         renderTL();
@@ -252,12 +190,16 @@ function onCity(f,layer) {
         const nc = normCity(n);
         const visits = [];
         bases.forEach(b => {
-            if (normCity(b.city)===nc) visits.push({ period:b.period, note:b.note, type:'驻地', color:b.color });
-            b.trips.forEach(t => {
-                if (normCity(t.city)===nc) visits.push({ period:t.dates||b.period, note:t.note, type: t.baseLike?'实习':'旅行', color:b.color });
-                if (t.subtrips) { t.subtrips.forEach(st => {
-                    if (normCity(st.city)===nc) visits.push({ period:t.dates, note:st.note, type:'短途', color:b.color });
-                });}
+            if (normCity(b.city)===nc) visits.push({ period:formatTravelDate(b), note:b.note, type:'驻地', color:b.color });
+            walkPlaces(childrenOf(b), place => {
+                if (normCity(place.city)===nc) {
+                    visits.push({
+                        period: formatTravelDate(place),
+                        note: place.note,
+                        type: place.kind === 'stay' ? '驻留' : '旅行',
+                        color: b.color
+                    });
+                }
             });
         });
         let h = `<span class="pu-city">${n.replace(/市|自治州|地区|盟|特别行政区|傣族|白族|藏族|回族|壮族|维吾尔|蒙古族自治州/g,'')}</span>`;
@@ -318,9 +260,8 @@ function onProvince(f,layer) {
         const cs = new Set();
         bases.forEach(b => {
             if (normProv(b.province)===np) cs.add(b.city);
-            b.trips.forEach(t => {
-                if (normProv(t.province)===np) cs.add(t.city);
-                if (t.subtrips) t.subtrips.forEach(st => { if (normProv(st.province)===np) cs.add(st.city); });
+            walkPlaces(childrenOf(b), place => {
+                if (normProv(place.province)===np) cs.add(place.city);
             });
         });
         let h = `<span class="pu-city">${n}</span>`;
@@ -341,9 +282,18 @@ async function loadProvinceLayer() {
     const r = await fetch(GEO_PROVINCE); if(!r.ok) throw new Error('Province geo');
     const d = await r.json();
     buildCoordLookup(d);
-    if(provinceLayer) map.removeLayer(provinceLayer);
     provinceLayer = L.geoJSON(d, { style:styleProvince, onEachFeature:onProvince, pane:'overlayPane' }).addTo(map);
     map.removeLayer(provinceLayer); // Hidden by default (city mode)
+}
+
+async function ensureProvinceLayer() {
+    if (provinceLayer) return provinceLayer;
+    provinceLayerRequest ??= loadProvinceLayer().catch(error => {
+        provinceLayerRequest = undefined;
+        throw error;
+    });
+    await provinceLayerRequest;
+    return provinceLayer;
 }
 
 // =============================================================================
@@ -376,14 +326,44 @@ function onWorld(f, layer) {
 async function loadWorld() {
     const r = await fetch(GEO_WORLD); if(!r.ok) throw new Error('World geo');
     const d = await r.json();
-    if(worldLayer) map.removeLayer(worldLayer);
     worldLayer = L.geoJSON(d, { style:styleWorld, onEachFeature:onWorld, pane:'overlayPane' }).addTo(map);
+    map.removeLayer(worldLayer);
+}
+
+async function ensureWorldLayer() {
+    if (worldLayer) return worldLayer;
+    worldLayerRequest ??= loadWorld().catch(error => {
+        worldLayerRequest = undefined;
+        throw error;
+    });
+    await worldLayerRequest;
+    return worldLayer;
 }
 
 // =============================================================================
 // View toggle
 // =============================================================================
-function switchView(view) {
+function setLayerControlsBusy(busy) {
+    document.querySelectorAll('.map-ctrl-btn[data-view], .map-ctrl-btn[data-mode]').forEach(button => {
+        button.disabled = busy;
+    });
+    document.getElementById('map').setAttribute('aria-busy', String(busy));
+    document.getElementById('loaderCover').classList.toggle('off', !busy);
+}
+
+async function switchView(view) {
+    if (view === currentView) return;
+    setLayerControlsBusy(true);
+    try {
+        if (view === 'world') await ensureWorldLayer();
+        else if (highlightMode === 'province') await ensureProvinceLayer();
+    } catch (error) {
+        console.error(error);
+        return;
+    } finally {
+        setLayerControlsBusy(false);
+    }
+
     currentView = view;
     if (view === 'world') highlightMode = 'country';
     else if (highlightMode === 'country') highlightMode = 'city';
@@ -422,16 +402,28 @@ function applyHighlightMode() {
     // Remove all China-specific layers, then add the active one
     if (cityLayer) map.removeLayer(cityLayer);
     if (provinceLayer) map.removeLayer(provinceLayer);
+    if (worldLayer) map.removeLayer(worldLayer);
     if (highlightMode === 'city') {
         if (cityLayer) map.addLayer(cityLayer);
     } else if (highlightMode === 'province') {
         if (provinceLayer) map.addLayer(provinceLayer);
+    } else if (highlightMode === 'country') {
+        if (worldLayer) map.addLayer(worldLayer);
     }
-    // 'country' mode: neither city nor province layer — world layer alone
-    // shows country-level fog-of-war
 }
 
-function switchHighlight(mode) {
+async function switchHighlight(mode) {
+    if (mode === highlightMode) return;
+    setLayerControlsBusy(true);
+    try {
+        if (mode === 'province') await ensureProvinceLayer();
+    } catch (error) {
+        console.error(error);
+        return;
+    } finally {
+        setLayerControlsBusy(false);
+    }
+
     highlightMode = mode;
     document.querySelectorAll('.map-ctrl-btn[data-mode]').forEach(b => {
         const active = b.dataset.mode === mode;
@@ -475,24 +467,30 @@ function addMarkers() {
     bases.forEach((b,bi) => {
         const k = mkKey(b.lat,b.lng);
         if(!lm.has(k)) lm.set(k, { contexts:[], bestColor:b.color, bestBi:bi });
-        lm.get(k).contexts.push({ type:'base',bi, data:b, period:b.period });
+        lm.get(k).contexts.push({ type:'phase',bi, data:b, period:formatTravelDate(b) });
     });
     bases.forEach((b,bi) => {
-        b.trips.forEach((t,ti) => {
+        childrenOf(b).forEach((t,ti) => {
             const k = mkKey(t.lat,t.lng);
             if(!lm.has(k)) lm.set(k, { contexts:[], bestColor:b.color, bestBi:bi });
             const e = lm.get(k);
-            e.contexts.push({ type: t.baseLike?'sublike':'trip', bi, ti, data:t, period:t.dates||b.period });
-            const prevYear = Math.max(0,...e.contexts.slice(0,-1).map(c=>c.data.year||0));
-            if ((t.year||0) > prevYear) { e.bestColor = b.color; e.bestBi = bi; }
-            if (t.subtrips) {
-                t.subtrips.forEach((st,si) => {
+            const previousLatest = e.contexts.reduce((latest, context) =>
+                !latest || compareTravelDates(context.data, latest.data) > 0 ? context : latest, null);
+            e.contexts.push({ type:t.kind, bi, ti, data:t, period:formatTravelDate(t) });
+            if (!previousLatest || compareTravelDates(t, previousLatest.data) > 0) {
+                e.bestColor = b.color; e.bestBi = bi;
+            }
+            if (childrenOf(t).length) {
+                childrenOf(t).forEach((st,si) => {
                     const sk = mkKey(st.lat,st.lng);
                     if(!lm.has(sk)) lm.set(sk, { contexts:[], bestColor:b.color, bestBi:bi });
                     const se = lm.get(sk);
-                    se.contexts.push({ type:'subtrip', bi, ti, si, data:st, period:`${t.dates} (${b.city})` });
-                    const spY = Math.max(0,...se.contexts.slice(0,-1).map(c=>c.data.year||0));
-                    if ((st.year||0) > spY) { se.bestColor = b.color; se.bestBi = bi; }
+                    const subPreviousLatest = se.contexts.reduce((latest, context) =>
+                        !latest || compareTravelDates(context.data, latest.data) > 0 ? context : latest, null);
+                    se.contexts.push({ type:'nested-visit', bi, ti, si, data:st, period:`${formatTravelDate(st)} (${t.city})` });
+                    if (!subPreviousLatest || compareTravelDates(st, subPreviousLatest.data) > 0) {
+                        se.bestColor = b.color; se.bestBi = bi;
+                    }
                 });
             }
         });
@@ -500,8 +498,8 @@ function addMarkers() {
 
     lm.forEach((entry, key) => {
         const [lat,lng] = key.split('|').map(Number);
-        const isB = entry.contexts.some(c=>c.type==='base');
-        const isSB = !isB && entry.contexts.some(c=>c.type==='sublike');
+        const isB = entry.contexts.some(c=>c.type==='phase');
+        const isSB = !isB && entry.contexts.some(c=>c.type==='stay');
         const c = entry.bestColor;
         const marker = L.marker([lat,lng], {
             icon: isB ? baseIcon(c) : (isSB ? sublikeIcon(c) : tripIcon(c)),
@@ -513,7 +511,7 @@ function addMarkers() {
         entry.contexts.forEach((ctx,ci) => {
             if (ci>0) h += '<hr class="pu-sep">';
             const d = ctx.data;
-            const tag = ctx.type==='base' ? `<span class="pu-tag" style="background:${c}">驻地</span>` : (ctx.type==='sublike' ? `<span class="pu-tag" style="background:${c}">实习</span>` : '');
+            const tag = ctx.type==='phase' ? `<span class="pu-tag" style="background:${c}">驻地</span>` : (ctx.type==='stay' ? `<span class="pu-tag" style="background:${c}">驻留</span>` : '');
             h += `<div class="pu-item"><div class="pu-city">${d.city}${tag}</div>`;
             h += `<div class="pu-meta">${d.province} · ${ctx.period}</div>`;
             if (d.note) h += `<div class="pu-note">${d.note}</div>`;
@@ -577,35 +575,7 @@ function journeyIcon() {
 }
 
 function getJourneyStops() {
-    const stops = [];
-    bases.forEach(base => {
-        stops.push({
-            city: base.city,
-            province: base.province,
-            dates: base.period,
-            action: [base.summary, base.note].filter(Boolean).join(' · ')
-        });
-        [...base.trips]
-            .map((trip, order) => ({ ...trip, order }))
-            .sort((a, b) => (a.year || 0) - (b.year || 0) || a.order - b.order)
-            .forEach(trip => {
-                stops.push({
-                    city: trip.city,
-                    province: trip.province,
-                    dates: trip.dates || String(trip.year || ''),
-                    action: trip.note || (trip.baseLike ? '实习' : '旅行')
-                });
-                trip.subtrips?.forEach(subtrip => {
-                    stops.push({
-                        city: subtrip.city,
-                        province: subtrip.province,
-                        dates: subtrip.dates || String(subtrip.year || ''),
-                        action: subtrip.note || '短途'
-                    });
-                });
-            });
-    });
-    return stops.map(stop => ({ ...stop, ...getCoords(stop.city) }));
+    return buildJourneyStops(bases).map(stop => ({ ...stop, ...getCoords(stop) }));
 }
 
 function updateJourneyStatus(stop) {
@@ -614,10 +584,129 @@ function updateJourneyStatus(stop) {
     status.classList.remove('is-changing');
     void status.offsetWidth;
     status.classList.add('is-changing');
-    document.getElementById('journeyPeriod').textContent = stop.dates;
+    document.getElementById('journeyPeriod').textContent = stop.dateLabel;
     document.getElementById('journeyCity').textContent = stop.city;
     document.getElementById('journeySummary').textContent = stop.action;
     document.getElementById('journeyProgress').textContent = `${journey.index + 1} / ${journey.stops.length}`;
+    updateJourneyTimeline(stop);
+}
+
+function journeyTimelinePosition(index) {
+    if (journey.stops.length <= 1) return 0;
+    return index / (journey.stops.length - 1) * 100;
+}
+
+function journeyDestinations() {
+    return journey.stops
+        .map((stop, index) => ({ stop, index }))
+        .filter(({ stop }) => !stop.derived);
+}
+
+function seekAdjacentJourney(direction) {
+    const destinations = journeyDestinations();
+    const target = direction < 0
+        ? destinations.filter(({ index }) => index < journey.index).at(-1) || destinations[0]
+        : destinations.find(({ index }) => index > journey.index) || destinations.at(-1);
+    if (!target) return false;
+    seekJourneyIndex(target.index);
+    return true;
+}
+
+function currentJourneyLabel() {
+    const stop = journey.stops[Math.max(0, journey.index)];
+    return stop ? `${stop.dateLabel} · ${stop.city}` : '';
+}
+
+function seekJourneyIndex(index) {
+    const stop = journey.stops[index];
+    if (!stop) return;
+
+    journey.token += 1;
+    clearTimeout(journey.timer);
+    journey.active = true;
+    journey.playing = false;
+    journey.moving = false;
+    journey.index = index;
+    journey.completed = journey.stops
+        .slice(0, index + 1)
+        .map(item => [item.lat, item.lng]);
+
+    const button = document.getElementById('btnJourney');
+    button.textContent = '退出轨迹';
+    button.setAttribute('aria-pressed', 'true');
+    if (!journey.person) {
+        journey.person = L.marker([stop.lat, stop.lng], {
+            icon: journeyIcon(),
+            interactive: false,
+            zIndexOffset: 2000
+        }).addTo(map);
+    } else {
+        journey.person.setLatLng([stop.lat, stop.lng]);
+    }
+    journey.line.setLatLngs(journey.completed);
+    map.stop();
+    map.setView([stop.lat, stop.lng], stop.kind === 'phase' ? 6 : 7, { animate: false });
+    updateJourneyStatus(stop);
+    updateJourneyControls();
+}
+
+function seekJourneyFromPointer(event) {
+    const track = document.getElementById('journeyTimeTrack');
+    const rect = track.getBoundingClientRect();
+    const progress = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
+    const target = journeyDestinations().reduce((nearest, candidate) => {
+        const distance = Math.abs(journeyTimelinePosition(candidate.index) / 100 - progress);
+        return !nearest || distance < nearest.distance ? { ...candidate, distance } : nearest;
+    }, null);
+    if (target) seekJourneyIndex(target.index);
+}
+
+function renderJourneyTimeline() {
+    const timeline = document.getElementById('journeyTimeline');
+    const track = document.getElementById('journeyTimeTrack');
+    const ticks = document.getElementById('journeyTimeTicks');
+    const first = journey.stops[0];
+    const last = journey.stops[journey.stops.length - 1];
+    timeline.hidden = false;
+    document.getElementById('journeyTimeStart').textContent = first.date.start.slice(0, 4);
+    document.getElementById('journeyTimeCurrent').textContent = first.dateLabel;
+    document.getElementById('journeyTimeEnd').textContent = last.date.start.replaceAll('-', '.');
+    track.setAttribute('aria-valuemax', String(journey.stops.length));
+    track.setAttribute('aria-valuenow', '1');
+    ticks.innerHTML = journey.stops
+        .map((stop, index) => {
+            if (stop.derived) return '';
+            const markerClass = stop.kind === 'phase'
+                ? 'is-phase'
+                : stop.kind === 'stay' ? 'is-stay' : 'is-visit';
+            const label = `${stop.dateLabel} · ${stop.city} · ${stop.action}`;
+            return `<button type="button" tabindex="-1" class="${markerClass}" data-index="${index}" data-label="${label}" style="left:${journeyTimelinePosition(index)}%" aria-label="${label}" title="${label}"></button>`;
+        })
+        .join('');
+    ticks.querySelectorAll('button').forEach(marker => {
+        marker.addEventListener('click', event => {
+            event.stopPropagation();
+            seekJourneyIndex(Number(marker.dataset.index));
+        });
+        marker.addEventListener('mouseenter', () => {
+            document.getElementById('journeyTimeCurrent').textContent = marker.dataset.label;
+        });
+        marker.addEventListener('mouseleave', () => {
+            document.getElementById('journeyTimeCurrent').textContent = currentJourneyLabel();
+        });
+    });
+    document.getElementById('journeyTimeFill').style.width = '0%';
+    document.querySelector('.journey-time-cursor').style.left = '0%';
+}
+
+function updateJourneyTimeline(stop) {
+    const position = journeyTimelinePosition(journey.index);
+    const track = document.getElementById('journeyTimeTrack');
+    document.getElementById('journeyTimeCurrent').textContent = `${stop.dateLabel} · ${stop.city}`;
+    document.getElementById('journeyTimeFill').style.width = `${position}%`;
+    document.querySelector('.journey-time-cursor').style.left = `${position}%`;
+    track.setAttribute('aria-valuenow', String(journey.index + 1));
+    track.setAttribute('aria-valuetext', `${stop.dateLabel}，${stop.city}`);
 }
 
 function resetJourneyButton(label = '人生轨迹') {
@@ -651,6 +740,7 @@ function stopJourney() {
     journey.stops = [];
     journey.completed = [];
     document.getElementById('journeyStatus').hidden = true;
+    document.getElementById('journeyTimeline').hidden = true;
     resetJourneyButton();
 }
 
@@ -680,6 +770,39 @@ function scheduleJourneyStep() {
     journey.timer = window.setTimeout(advanceJourney, 950);
 }
 
+function focusJourneySegment(from, to, token) {
+    return new Promise(resolve => {
+        if (token !== journey.token) return resolve(false);
+        const samePlace = from.lat === to.lat && from.lng === to.lng;
+        const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let settled = false;
+        const finish = () => {
+            if (settled) return;
+            settled = true;
+            map.off('moveend', finish);
+            resolve(token === journey.token);
+        };
+
+        map.stop();
+        map.once('moveend', finish);
+        if (samePlace) {
+            map.flyTo([to.lat, to.lng], Math.max(map.getZoom(), 8), {
+                animate: !reducedMotion,
+                duration: reducedMotion ? 0 : 0.45
+            });
+        } else {
+            map.flyToBounds([[from.lat, from.lng], [to.lat, to.lng]], {
+                paddingTopLeft: [72, 92],
+                paddingBottomRight: [72, 92],
+                maxZoom: 8,
+                animate: !reducedMotion,
+                duration: reducedMotion ? 0 : 0.55
+            });
+        }
+        window.setTimeout(finish, reducedMotion ? 80 : 900);
+    });
+}
+
 async function advanceJourney() {
     if (!journey.active || journey.moving || journey.index >= journey.stops.length - 1) return;
     clearTimeout(journey.timer);
@@ -692,6 +815,8 @@ async function advanceJourney() {
     journey.moving = true;
     updateJourneyControls();
     if (!journey.person) {
+        await focusJourneySegment(next, next, token);
+        if (token !== journey.token) return;
         journey.person = L.marker([next.lat, next.lng], {
             icon: journeyIcon(),
             interactive: false,
@@ -700,6 +825,8 @@ async function advanceJourney() {
         journey.completed = [[next.lat, next.lng]];
         journey.line.setLatLngs(journey.completed);
     } else {
+        const focused = await focusJourneySegment(previous, next, token);
+        if (!focused) return;
         const completedSegment = await animateJourneySegment(
             previous,
             next,
@@ -728,6 +855,10 @@ async function advanceJourney() {
 
 function toggleJourneyPlayback() {
     if (!journey.active) return;
+    if (journey.index >= journey.stops.length - 1) {
+        startJourney();
+        return;
+    }
     journey.playing = !journey.playing;
     clearTimeout(journey.timer);
     updateJourneyControls();
@@ -742,6 +873,7 @@ function startJourney() {
     journey.active = true;
     journey.playing = true;
     journey.stops = getJourneyStops();
+    renderJourneyTimeline();
     button.textContent = '退出轨迹';
     button.setAttribute('aria-pressed', 'true');
     clearSel();
@@ -825,14 +957,15 @@ function expandTrips(id) {
 
 function renderTL() {
     const ctr = document.getElementById('timeline'); ctr.innerHTML = '';
-    bases.forEach((b,bi) => {
+    sortByTravelDate(bases).forEach(b => {
+        const bi = bases.indexOf(b);
         // Base card
         const be = document.createElement('div');
         be.className = 'tl-base'; be.id = `b-${bi}`;
         be.style.setProperty('--dot', b.color);
         be.innerHTML = `<div class="tl-dot" style="background:${b.color};box-shadow:0 0 0 2px ${b.color},0 1px 4px rgba(0,0,0,0.15);"></div>
-            ${b.trips.length ? `<button type="button" class="tl-toggle flipped" data-target="tps-${bi}" title="展开" aria-label="展开 ${b.city} 的旅行">${tgSVG}</button>` : ''}
-            <div class="tl-period" style="color:${b.color}">${b.period}</div>
+            ${childrenOf(b).length ? `<button type="button" class="tl-toggle flipped" data-target="tps-${bi}" title="展开" aria-label="展开 ${b.city} 的旅行">${tgSVG}</button>` : ''}
+            <div class="tl-period" style="color:${b.color}">${formatTravelDate(b)}</div>
             <div style="display:flex;align-items:baseline;gap:4px;flex-wrap:wrap;">
                 <span class="tl-city">${b.city}</span><span class="tl-prov">${b.province}</span>${blink(b.slug)}
             </div>
@@ -845,17 +978,17 @@ function renderTL() {
 
         // Trips
         const tl = document.createElement('div'); tl.className = 'tl-trips collapsed'; tl.id = `tps-${bi}`;
-        [...b.trips].sort((a,b)=> (a.year||0)-(b.year||0)).forEach(t => {
-            const oi = b.trips.indexOf(t);
-            if (t.baseLike) {
+        sortByTravelDate(childrenOf(b)).forEach(t => {
+            const oi = childrenOf(b).indexOf(t);
+            if (t.kind === 'stay') {
                 // Sub-base card (hollow diamond)
                 const sub = document.createElement('div');
                 sub.className = 'tl-base-sub'; sub.id = `b-${bi}-sub-${oi}`;
                 sub.style.setProperty('--dot', b.color);
-                const hasSub = t.subtrips && t.subtrips.length;
+                const hasSub = childrenOf(t).length;
                 sub.innerHTML = `<div class="tl-dot-sub"></div>
                     ${hasSub ? `<button type="button" class="tl-toggle flipped" data-target="tps-sub-${bi}-${oi}" title="展开" aria-label="展开 ${t.city} 的旅行" style="top:0.6rem;right:0.4rem;">${tgSVG}</button>` : ''}
-                    <div class="tl-period" style="color:${b.color};font-size:0.68rem;">${t.dates||''}</div>
+                    <div class="tl-period" style="color:${b.color};font-size:0.68rem;">${formatTravelDate(t)}</div>
                     <div style="display:flex;align-items:baseline;gap:4px;flex-wrap:wrap;">
                         <span class="tl-city" style="font-size:0.88rem;">${t.city}</span><span class="tl-prov">${t.province}</span>${blink(t.slug)}
                     </div>`;
@@ -867,16 +1000,17 @@ function renderTL() {
                 tl.appendChild(sub);
 
                 // Sub-base's own trips
-                if (t.subtrips && t.subtrips.length) {
+                if (childrenOf(t).length) {
                     const stl = document.createElement('div'); stl.className = 'tl-trips collapsed'; stl.id = `tps-sub-${bi}-${oi}`;
                     stl.style.marginLeft = '0.5rem';
-                    t.subtrips.forEach((st, si) => {
+                    sortByTravelDate(childrenOf(t)).forEach(st => {
+                        const si = childrenOf(t).indexOf(st);
                         const ste = document.createElement('div');
                         ste.className = 'tl-trip'; ste.id = `t-${bi}-${oi}-sub-${si}`;
                         ste.style.setProperty('--dot', b.color);
                         ste.innerHTML = `<div class="tl-trip-dot" style="background:${b.color};box-shadow:0 0 0 1.5px ${b.color},0 1px 3px rgba(0,0,0,0.12);"></div>
                             <div style="display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;">
-                                <span class="tl-trip-year">${st.dates||st.year||''}</span>
+                                <span class="tl-trip-year">${formatTravelDate(st)}</span>
                                 <span class="tl-trip-city">${st.city}</span><span class="tl-trip-prov">${st.province}</span>${blink(st.slug)}
                             </div>
                             ${st.note?`<div class="tl-trip-note">${st.note}</div>`:''}`;
@@ -894,7 +1028,7 @@ function renderTL() {
                 te.style.setProperty('--dot', b.color);
                 te.innerHTML = `<div class="tl-trip-dot" style="background:${b.color};box-shadow:0 0 0 1.5px ${b.color},0 1px 3px rgba(0,0,0,0.12);"></div>
                     <div style="display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;">
-                        <span class="tl-trip-year">${t.dates||t.year||''}</span>
+                        <span class="tl-trip-year">${formatTravelDate(t)}</span>
                         <span class="tl-trip-city">${t.city}</span><span class="tl-trip-prov">${t.province}</span>${blink(t.slug)}
                     </div>
                     ${t.note?`<div class="tl-trip-note">${t.note}</div>`:''}`;
@@ -912,8 +1046,7 @@ function renderTL() {
 
 function pulse(lat,lng,on) {
     const cm = markerByKey.get(mkKey(lat,lng)); if(!cm||!cm.marker._icon) return;
-    cm.marker._icon.style.transition = 'transform 0.15s ease';
-    cm.marker._icon.style.transform = on ? 'scale(1.4)' : '';
+    cm.marker._icon.classList.toggle('is-pulsing', on);
 }
 
 // =============================================================================
@@ -944,11 +1077,11 @@ function selBase(bi) {
 function selTrip(bi,ti) {
     stopJourney();
     clearSel();
-    const b = bases[bi]; const t = b.trips[ti];
+    const b = bases[bi]; const t = childrenOf(b)[ti];
     expandTrips(`tps-${bi}`);
     const be = document.getElementById(`b-${bi}`);
     if(be) be.classList.add('sel');
-    if (t.baseLike) {
+    if (t.kind === 'stay') {
         const sub = document.getElementById(`b-${bi}-sub-${ti}`);
         if(sub){ sub.classList.add('sel'); sub.scrollIntoView({behavior:'smooth',block:'nearest'}); }
         ui.selTrip = `${bi}-${ti}`;
@@ -969,7 +1102,7 @@ function selTrip(bi,ti) {
 function selSubTrip(bi,ti,si) {
     stopJourney();
     clearSel();
-    const b = bases[bi]; const t = b.trips[ti]; const st = t.subtrips[si];
+    const b = bases[bi]; const t = childrenOf(b)[ti]; const st = childrenOf(t)[si];
     expandTrips(`tps-${bi}`);
     expandTrips(`tps-sub-${bi}-${ti}`);
     const be = document.getElementById(`b-${bi}`);
@@ -992,14 +1125,14 @@ function syncFromMap(cm) {
     stopJourney();
     clearSel();
     const ctx = cm.contexts[0]; if(!ctx) return;
-    if (ctx.type==='base') {
+    if (ctx.type==='phase') {
         expandTrips(`tps-${ctx.bi}`);
         const el = document.getElementById(`b-${ctx.bi}`);
         if(el){ el.classList.add('sel'); el.scrollIntoView({behavior:'smooth',block:'nearest'}); }
         ui.selBase = ctx.bi;
         hiMarker(mkKey(ctx.data.lat,ctx.data.lng), true);
         showBack(true);
-    } else if (ctx.type==='sublike') {
+    } else if (ctx.type==='stay') {
         expandTrips(`tps-${ctx.bi}`);
         const be = document.getElementById(`b-${ctx.bi}`);
         const sub = document.getElementById(`b-${ctx.bi}-sub-${ctx.ti}`);
@@ -1008,7 +1141,7 @@ function syncFromMap(cm) {
         ui.selBase = ctx.bi; ui.selTrip = `${ctx.bi}-${ctx.ti}`;
         hiMarker(mkKey(ctx.data.lat,ctx.data.lng), true);
         showBack(true);
-    } else if (ctx.type==='subtrip') {
+    } else if (ctx.type==='nested-visit') {
         expandTrips(`tps-${ctx.bi}`);
         expandTrips(`tps-sub-${ctx.bi}-${ctx.ti}`);
         const be = document.getElementById(`b-${ctx.bi}`);
@@ -1036,15 +1169,13 @@ function syncFromMap(cm) {
 // Stats
 // =============================================================================
 function stats() {
-    const trips = bases.flatMap(b=>b.trips);
-    const subBases = trips.filter(t=>t.baseLike);
-    const subtrips = trips.filter(t=>t.subtrips).flatMap(t=>t.subtrips);
-    const all = trips.concat(subtrips);
-    const locs = bases.map(b=>({c:b.city,p:b.province})).concat(all.map(t=>({c:t.city,p:t.province})));
+    const places = [];
+    walkPlaces(bases, place => places.push(place));
+    const stays = places.filter(place => place.kind === 'stay');
+    const locs = places.map(place => ({ c:place.city, p:place.province }));
     const uc = new Set(locs.map(l=>`${l.c}|${l.p}`));
-    const pv = new Set();
-    bases.forEach(b => { pv.add(b.province); b.trips.forEach(t => { pv.add(t.province); if(t.subtrips) t.subtrips.forEach(st=>pv.add(st.province)); }); });
-    const totalBases = bases.length + subBases.length;
+    const pv = new Set(places.map(place => place.province));
+    const totalBases = bases.length + stays.length;
     const totalProvinces = 34;
     const pct = Math.round(pv.size / totalProvinces * 100);
     document.getElementById('statsSummary').textContent = `${totalBases} 个驻地 · ${uc.size} 座城市 · ${pv.size}/${totalProvinces} 个省级行政区`;
@@ -1062,15 +1193,15 @@ function stats() {
 document.getElementById('btnBack').addEventListener('click', ()=>{ window.location.href='/about/'; });
 
 document.querySelectorAll('.map-ctrl-btn[data-view]').forEach(b => {
-    b.addEventListener('click', () => {
+    b.addEventListener('click', async () => {
         stopJourney();
-        switchView(b.dataset.view);
+        await switchView(b.dataset.view);
     });
 });
 document.querySelectorAll('.map-ctrl-btn[data-mode]').forEach(b => {
-    b.addEventListener('click', () => {
+    b.addEventListener('click', async () => {
         stopJourney();
-        switchHighlight(b.dataset.mode);
+        await switchHighlight(b.dataset.mode);
     });
 });
 
@@ -1084,6 +1215,92 @@ document.getElementById('btnJourneyPlay').addEventListener('click', () => {
     else startJourney();
 });
 document.getElementById('btnJourneyNext').addEventListener('click', advanceJourney);
+
+const journeyTimeTrack = document.getElementById('journeyTimeTrack');
+let journeyScrubPointer = null;
+journeyTimeTrack.addEventListener('pointerdown', event => {
+    if (!journey.stops.length || event.button !== 0) return;
+    journeyScrubPointer = event.pointerId;
+    journeyTimeTrack.setPointerCapture(event.pointerId);
+    journeyTimeTrack.classList.add('is-scrubbing');
+    seekJourneyFromPointer(event);
+    event.preventDefault();
+});
+journeyTimeTrack.addEventListener('pointermove', event => {
+    if (event.pointerId !== journeyScrubPointer) return;
+    seekJourneyFromPointer(event);
+});
+function finishJourneyScrub(event, seek = true) {
+    if (event.pointerId !== journeyScrubPointer) return;
+    if (seek) seekJourneyFromPointer(event);
+    journeyScrubPointer = null;
+    journeyTimeTrack.classList.remove('is-scrubbing');
+    if (journeyTimeTrack.hasPointerCapture(event.pointerId)) {
+        journeyTimeTrack.releasePointerCapture(event.pointerId);
+    }
+}
+journeyTimeTrack.addEventListener('pointerup', finishJourneyScrub);
+journeyTimeTrack.addEventListener('pointercancel', event => finishJourneyScrub(event, false));
+journeyTimeTrack.addEventListener('keydown', event => {
+    if (!journey.stops.length) return;
+    const destinations = journeyDestinations();
+    let target;
+    if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        seekAdjacentJourney(-1);
+        return;
+    } else if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        seekAdjacentJourney(1);
+        return;
+    }
+    else if (event.key === 'Home') target = destinations[0];
+    else if (event.key === 'End') target = destinations[destinations.length - 1];
+    else return;
+    event.preventDefault();
+    seekJourneyIndex(target.index);
+});
+
+function isInteractiveShortcutTarget(target) {
+    return target instanceof Element && Boolean(target.closest(
+        'a, button, input, textarea, select, [contenteditable="true"], [role="slider"], .leaflet-container'
+    ));
+}
+
+document.addEventListener('keydown', event => {
+    if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.altKey) return;
+    if (isInteractiveShortcutTarget(event.target)) return;
+
+    const key = event.key.toLowerCase();
+    if (key === 'j') {
+        if (!map || document.getElementById('btnJourney').disabled) return;
+        event.preventDefault();
+        if (journey.active) stopJourney();
+        else startJourney();
+        return;
+    }
+    if (event.key === 'Escape' && journey.stops.length) {
+        event.preventDefault();
+        stopJourney();
+        return;
+    }
+    if (event.key === ' ' && journey.stops.length) {
+        event.preventDefault();
+        if (journey.active) toggleJourneyPlayback();
+        else startJourney();
+        return;
+    }
+    if (event.key === 'ArrowLeft' && journey.stops.length) {
+        event.preventDefault();
+        seekAdjacentJourney(-1);
+        return;
+    }
+    if (event.key === 'ArrowRight' && journey.stops.length) {
+        event.preventDefault();
+        seekAdjacentJourney(1);
+    }
+});
+
 window.addEventListener('eka-theme-change', () => {
     updateLayerStyles();
     journey.line?.setStyle({ color: tone('--journey-line', '#536b85') });

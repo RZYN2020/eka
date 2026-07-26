@@ -14,6 +14,9 @@
 	--line: #dededb;
 	--link: #315d8f;
 	--code: #f1f1ef;
+	--zoom-backdrop: rgb(251 251 250 / 90%);
+	--zoom-shadow: 0 24px 80px rgb(32 33 36 / 16%), 0 2px 12px rgb(32 33 36 / 8%);
+	--image-shadow: 0 1px 2px rgb(32 33 36 / 7%), 0 8px 28px rgb(32 33 36 / 4%);
 	--font-ui: "Noto Sans SC", sans-serif;
 	--font-code: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, monospace;
 }
@@ -28,6 +31,9 @@
 	--line: #dcd4c5;
 	--link: #6c5a3b;
 	--code: #eee8dc;
+	--zoom-backdrop: rgb(247 243 233 / 91%);
+	--zoom-shadow: 0 24px 80px rgb(74 61 40 / 18%), 0 2px 12px rgb(74 61 40 / 9%);
+	--image-shadow: 0 1px 2px rgb(74 61 40 / 8%), 0 8px 28px rgb(74 61 40 / 5%);
 }
 
 :root[data-theme="dark"] {
@@ -40,6 +46,9 @@
 	--line: #3b3b39;
 	--link: #8cadd4;
 	--code: #282828;
+	--zoom-backdrop: rgb(24 24 24 / 91%);
+	--zoom-shadow: 0 28px 90px rgb(0 0 0 / 48%), 0 2px 16px rgb(0 0 0 / 28%);
+	--image-shadow: 0 1px 2px rgb(0 0 0 / 30%), 0 10px 32px rgb(0 0 0 / 18%);
 }
 
 :root[data-theme="graphite"] {
@@ -52,4 +61,7 @@
 	--line: #34383e;
 	--link: #8aa7c7;
 	--code: #202328;
+	--zoom-backdrop: rgb(19 21 24 / 92%);
+	--zoom-shadow: 0 28px 90px rgb(0 0 0 / 52%), 0 2px 16px rgb(0 0 0 / 30%);
+	--image-shadow: 0 1px 2px rgb(0 0 0 / 32%), 0 10px 32px rgb(0 0 0 / 20%);
 }

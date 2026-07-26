@@ -16,6 +16,7 @@ const writing = defineCollection({
 		draft: z.boolean().default(false),
 		featured: z.boolean().default(false),
 		toc: z.boolean().default(true),
+		neodbIds: z.array(z.string()).default([]),
 		legacyUrls: z.array(z.string()).default([]),
 	}),
 });
@@ -24,7 +25,7 @@ const resume = defineCollection({
 	loader: glob({ pattern: '*.md', base: './src/content/resume' }),
 	schema: z.object({
 		title: z.string(),
-		lang: z.enum(['zh', 'en', 'ja']),
+		lang: z.literal('zh'),
 	}),
 });
 

@@ -1,0 +1,56 @@
+name: Sync NeoDB
+
+on:
+  schedule:
+    # 04:20 Asia/Shanghai
+    - cron: '20 20 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: neodb-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      NEODB_ACCESS_TOKEN: ${{ secrets.NEODB_ACCESS_TOKEN }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.33.0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.12.0
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Sync public NeoDB data
+        run: pnpm sync:neodb
+
+      - name: Validate synchronized data
+        run: pnpm check
+
+      - name: Commit data changes
+        run: |
+          if git diff --quiet -- src/data/neodb/shelf.json; then
+            echo "NeoDB data is already current."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/neodb/shelf.json
+          git commit -m "Sync NeoDB"
+          git push

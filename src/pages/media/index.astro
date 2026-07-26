@@ -1,0 +1,250 @@
+---
+import { getCollection } from 'astro:content';
+import shelfDataJson from '../../data/neodb/shelf.json';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { writingSlug } from '../../lib/content';
+import { resolveNeoDBUrl } from '../../lib/neodb.js';
+import '../../styles/neodb.css';
+
+interface ShelfMark {
+	createdTime: string;
+	comment: string;
+	ratingGrade: number | null;
+	item: {
+		uuid: string;
+		url: string;
+		category: string;
+		title: string;
+		cover: string;
+	};
+}
+
+interface ShelfData {
+	syncedAt: string | null;
+	source: string;
+	shelves: Record<'progress' | 'complete' | 'wishlist' | 'dropped', ShelfMark[]>;
+	reviews?: Array<{
+		url: string;
+		title: string;
+		createdTime: string;
+		itemUuid: string;
+	}>;
+}
+
+const shelfData = shelfDataJson as ShelfData;
+
+const statusLabels = {
+	progress: '进行中',
+	complete: '已完成',
+	wishlist: '想看',
+} as const;
+
+const categoryLabels: Record<string, string> = {
+	book: '书籍',
+	movie: '电影',
+	tv: '剧集',
+	performance: '演出',
+};
+
+const statuses = Object.keys(statusLabels) as Array<keyof typeof statusLabels>;
+const allowedCategories = ['book', 'movie', 'tv', 'performance'];
+const defaultStatus = 'progress';
+const defaultCategory = 'book';
+const items = statuses
+	.flatMap((status) => shelfData.shelves[status].map((mark) => ({
+		...mark,
+		shelfType: status,
+		item: {
+			...mark.item,
+			url: resolveNeoDBUrl(mark.item.url, shelfData.source),
+		},
+		})))
+	.filter((mark) => allowedCategories.includes(mark.item.category))
+	.sort((a, b) => Date.parse(b.createdTime) - Date.parse(a.createdTime));
+const reviewLinks = new Map<string, Array<{ href: string; title: string }>>();
+for (const entry of (await getCollection('writing')).filter((entry) => !entry.data.draft)) {
+	for (const neodbId of entry.data.neodbIds) {
+		const links = reviewLinks.get(neodbId) ?? [];
+		links.push({
+			href: `/writing/${writingSlug(entry.id)}/`,
+			title: entry.data.title,
+		});
+		reviewLinks.set(neodbId, links);
+	}
+}
+const neodbReviews = new Map<string, NonNullable<ShelfData['reviews']>>();
+for (const review of shelfData.reviews ?? []) {
+	const reviews = neodbReviews.get(review.itemUuid) ?? [];
+	reviews.push(review);
+	neodbReviews.set(review.itemUuid, reviews);
+}
+const categories = allowedCategories.filter((category) => items.some((mark) => mark.item.category === category));
+const syncedAt = shelfData.syncedAt
+	? new Intl.DateTimeFormat('zh-CN', {
+		year: 'numeric',
+		month: '2-digit',
+		day: '2-digit',
+	}).format(new Date(shelfData.syncedAt))
+	: null;
+---
+
+<BaseLayout title="Media" description="我的 NeoDB 书影音收藏与阅读、观影记录">
+	<section class="media-heading">
+		<header class="page-heading">
+			<h1>Media</h1>
+			<p>最近读过和看过的作品。数据来自 NeoDB，页面每日同步。</p>
+		</header>
+
+		<dl class="media-summary" aria-label="书架统计">
+			{statuses.map((status) => (
+				<div>
+					<dt>{statusLabels[status]}</dt>
+					<dd>{shelfData.shelves[status].length}</dd>
+				</div>
+			))}
+		</dl>
+	</section>
+
+	<div class="media-toolbar">
+		<div class="media-filters" aria-label="按状态筛选">
+			{statuses.map((status) => (
+				<button
+					class="media-filter"
+					type="button"
+					data-filter-group="status"
+					data-filter={status}
+					aria-pressed={status === defaultStatus ? 'true' : 'false'}
+				>
+					{statusLabels[status]}
+				</button>
+			))}
+			<button class="media-filter" type="button" data-filter-group="status" data-filter="all" aria-pressed="false">全部</button>
+		</div>
+		<div class="media-filters" aria-label="按类型筛选">
+			{categories.map((category) => (
+				<button
+					class="media-filter"
+					type="button"
+					data-filter-group="category"
+					data-filter={category}
+					aria-pressed={category === defaultCategory ? 'true' : 'false'}
+				>
+					{categoryLabels[category] ?? category}
+				</button>
+			))}
+		</div>
+		<span class="media-updated">{syncedAt ? `更新于 ${syncedAt}` : '等待首次同步'}</span>
+	</div>
+
+	<div class="media-complete-filters" data-complete-filters>
+		<div class="media-filters" aria-label="按个人评分筛选">
+			<button class="media-filter" type="button" data-filter-group="rating" data-filter="any" aria-pressed="true">不限评分</button>
+			<button class="media-filter" type="button" data-filter-group="rating" data-filter="9-10" aria-pressed="false">9–10 分</button>
+			<button class="media-filter" type="button" data-filter-group="rating" data-filter="7-8" aria-pressed="false">7–8 分</button>
+			<button class="media-filter" type="button" data-filter-group="rating" data-filter="1-6" aria-pressed="false">1–6 分</button>
+			<button class="media-filter" type="button" data-filter-group="rating" data-filter="unrated" aria-pressed="false">未评分</button>
+		</div>
+		<div class="media-filters" aria-label="按短评或长评筛选">
+			<button class="media-filter" type="button" data-filter-group="review" data-filter="any" aria-pressed="true">不限短评/长评</button>
+			<button class="media-filter" type="button" data-filter-group="review" data-filter="short" aria-pressed="false">有短评</button>
+			<button class="media-filter" type="button" data-filter-group="review" data-filter="long" aria-pressed="false">有长评</button>
+		</div>
+	</div>
+
+	<div class="media-grid" data-media-grid>
+		{items.map((mark) => (
+			<article
+				class="media-card"
+				data-status={mark.shelfType}
+				data-category={mark.item.category}
+				data-rating={mark.ratingGrade ?? 'unrated'}
+				data-commented={mark.comment ? 'true' : 'false'}
+				data-reviewed={neodbReviews.has(mark.item.uuid) ? 'true' : 'false'}
+				hidden={mark.shelfType !== defaultStatus || mark.item.category !== defaultCategory}
+			>
+				<div class="media-cover">
+					<a href={mark.item.url} target="_blank" rel="noreferrer" aria-label={`在 NeoDB 查看《${mark.item.title}》`}>
+						{mark.item.cover ? (
+							<img src={mark.item.cover} alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
+						) : (
+							<span class="media-cover-placeholder">{mark.item.title}</span>
+						)}
+					</a>
+				</div>
+				<h2><a href={mark.item.url} target="_blank" rel="noreferrer">{mark.item.title}</a></h2>
+				<p class="media-meta">
+					<span>{categoryLabels[mark.item.category] ?? mark.item.category}</span>
+					<span>{statusLabels[mark.shelfType]}</span>
+					{mark.ratingGrade !== null && <span>★ {mark.ratingGrade}</span>}
+				</p>
+				{mark.comment && (
+					<a class="media-comment-link" href={mark.item.url} target="_blank" rel="noreferrer">
+						在 NeoDB 查看短评
+					</a>
+				)}
+				{neodbReviews.get(mark.item.uuid)?.map((review) => (
+					<a class="media-comment-link" href={review.url} target="_blank" rel="noreferrer">
+						在 NeoDB 阅读长评 · {review.title}
+					</a>
+				))}
+				{reviewLinks.get(mark.item.uuid)?.map((review) => (
+					<a class="media-review-link" href={review.href}>阅读笔记 · {review.title}</a>
+				))}
+			</article>
+		))}
+	</div>
+
+	<p class="media-empty" data-media-empty hidden>没有符合当前筛选条件的条目。</p>
+
+	<script>
+		const filters = { status: 'progress', category: 'book', rating: 'any', review: 'any' };
+		const cards = Array.from(document.querySelectorAll<HTMLElement>('.media-card'));
+		const emptyState = document.querySelector<HTMLElement>('[data-media-empty]');
+		const completeFilters = document.querySelector<HTMLElement>('[data-complete-filters]');
+
+		function matchesRating(card: HTMLElement) {
+			if (filters.rating === 'any') return true;
+			if (filters.rating === 'unrated') return card.dataset.rating === 'unrated';
+			const rating = Number(card.dataset.rating);
+			if (!Number.isFinite(rating)) return false;
+			if (filters.rating === '9-10') return rating >= 9;
+			if (filters.rating === '7-8') return rating >= 7 && rating <= 8;
+			if (filters.rating === '1-6') return rating <= 6;
+			return true;
+		}
+
+		function matchingCards() {
+			const isComplete = filters.status === 'complete';
+			return cards.filter((card) =>
+				(filters.status === 'all' || card.dataset.status === filters.status)
+				&& card.dataset.category === filters.category
+				&& (!isComplete || matchesRating(card))
+				&& (!isComplete || filters.review !== 'short' || card.dataset.commented === 'true')
+				&& (!isComplete || filters.review !== 'long' || card.dataset.reviewed === 'true')
+			);
+		}
+
+		function render() {
+			const matches = matchingCards();
+			const visible = new Set(matches);
+			cards.forEach((card) => { card.hidden = !visible.has(card); });
+			if (completeFilters) {
+				completeFilters.hidden = filters.status !== 'complete';
+			}
+			if (emptyState) emptyState.hidden = matches.length > 0;
+		}
+
+		document.querySelectorAll<HTMLButtonElement>('.media-filter').forEach((button) => {
+			button.addEventListener('click', () => {
+				const group = button.dataset.filterGroup as keyof typeof filters;
+				if (!group) return;
+				filters[group] = button.dataset.filter ?? 'all';
+				document.querySelectorAll<HTMLButtonElement>(`.media-filter[data-filter-group="${group}"]`)
+					.forEach((candidate) => candidate.setAttribute('aria-pressed', String(candidate === button)));
+				render();
+			});
+		});
+
+		render();
+	</script>
+</BaseLayout>

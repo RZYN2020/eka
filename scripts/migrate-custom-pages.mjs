@@ -138,6 +138,7 @@ function updateLayerStyles`,
 	);
 
 const personalizedMapBody = mapBody
+	.replaceAll('旅行足迹', '人生足迹')
 	.replace(
 		'<div class="map-ctrls">\n                    <button class="map-ctrl-btn active" data-mode="city">',
 		'<div class="map-ctrls" id="modeControls">\n                    <button class="map-ctrl-btn active" data-mode="city" aria-pressed="true">',
@@ -179,7 +180,7 @@ import '../../styles/map-theme.css';
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600&display=swap" />
-	<title>旅行足迹 · Eka</title>
+	<title>人生足迹 · Eka</title>
 </head>
 <body>
 ${personalizedMapBody.trim()}

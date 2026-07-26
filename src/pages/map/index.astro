@@ -25,7 +25,7 @@ import ThemeToggle from '../../components/ThemeToggle.astro';
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600&display=swap" />
-	<title>旅行足迹 · Eka</title>
+	<title>人生足迹 · Eka</title>
 </head>
 <body>
 <div class="flex flex-col h-screen">
@@ -34,7 +34,7 @@ import ThemeToggle from '../../components/ThemeToggle.astro';
         <button id="btnBack" class="btn-back" aria-label="返回" title="返回首页">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
         </button>
-        <h1>旅行足迹</h1>
+        <h1>人生足迹</h1>
         <ThemeToggle />
     </div>
 
@@ -55,7 +55,7 @@ import ThemeToggle from '../../components/ThemeToggle.astro';
                     <button class="map-ctrl-btn active" data-mode="city" aria-pressed="true">城市</button>
                     <button class="map-ctrl-btn" data-mode="province" aria-pressed="false">省份</button>
                 </div>
-                <button class="journey-button" id="btnJourney" aria-pressed="false" disabled>人生轨迹</button>
+                <button class="journey-button" id="btnJourney" aria-pressed="false" aria-keyshortcuts="J" title="人生轨迹（J）" disabled>人生轨迹</button>
             </div>
             <div class="journey-status" id="journeyStatus" aria-live="polite" hidden>
                 <div class="journey-status-head">
@@ -65,8 +65,28 @@ import ThemeToggle from '../../components/ThemeToggle.astro';
                 <strong id="journeyCity"></strong>
                 <span id="journeySummary"></span>
                 <div class="journey-actions">
-                    <button type="button" id="btnJourneyPlay" aria-pressed="true">暂停</button>
-                    <button type="button" id="btnJourneyNext">下一步</button>
+                    <button type="button" id="btnJourneyPlay" aria-pressed="true" aria-keyshortcuts="Space">暂停</button>
+                    <button type="button" id="btnJourneyNext" aria-keyshortcuts="ArrowRight">下一步</button>
+                </div>
+            </div>
+            <div class="journey-timeline" id="journeyTimeline" hidden>
+                <div class="journey-time-meta">
+                    <span id="journeyTimeStart"></span>
+                    <strong id="journeyTimeCurrent"></strong>
+                    <span id="journeyTimeEnd"></span>
+                </div>
+                <div
+                    class="journey-time-track"
+                    id="journeyTimeTrack"
+                    role="slider"
+                    aria-label="选择人生轨迹时间"
+                    aria-orientation="horizontal"
+                    aria-valuemin="1"
+                    tabindex="0"
+                >
+                    <div class="journey-time-fill" id="journeyTimeFill"></div>
+                    <div class="journey-time-ticks" id="journeyTimeTicks"></div>
+                    <i class="journey-time-cursor" aria-hidden="true"></i>
                 </div>
             </div>
             <!-- Back to overview -->

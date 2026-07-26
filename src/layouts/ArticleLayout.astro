@@ -3,6 +3,7 @@ import BaseLayout from './BaseLayout.astro';
 import CategoryPath from '../components/CategoryPath.astro';
 import TagList from '../components/TagList.astro';
 import TableOfContents from '../components/TableOfContents.astro';
+import ArticleImages from '../components/ArticleImages.astro';
 import { formatDate } from '../lib/content';
 import type { CollectionEntry } from 'astro:content';
 
@@ -39,6 +40,7 @@ const { entry, headings } = Astro.props;
 			<div class="prose prose-eka">
 				<slot />
 			</div>
+			<ArticleImages />
 		</div>
 	</article>
 </BaseLayout>
