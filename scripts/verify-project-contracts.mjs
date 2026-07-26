@@ -12,6 +12,7 @@ const [
 	mapPage,
 	searchPage,
 	articleImages,
+	contentModelVerifier,
 ] = await Promise.all([
 	read('README.md'),
 	read('astro.config.mjs'),
@@ -20,6 +21,7 @@ const [
 	read('src/pages/map/index.astro'),
 	read('src/pages/search.astro'),
 	read('src/components/ArticleImages.astro'),
+	read('scripts/verify-content-model.mjs'),
 ]);
 
 const failures = [];
@@ -45,6 +47,10 @@ requireContract(!searchPage.includes('innerHTML'), 'Search results still render 
 requireContract(!searchPage.includes('item: any'), 'Search documents are not typed.');
 requireContract(articleImages.includes("'pointercancel'"), 'Image gallery drag state is not cleared on pointer cancellation.');
 requireContract(articleImages.includes("'lostpointercapture'"), 'Image gallery drag state is not cleared after lost pointer capture.');
+requireContract(
+	!/\bfrom\s+['"][^'"]+\.ts['"]/.test(contentModelVerifier),
+	'Content verification imports TypeScript directly and is incompatible with the minimum Node version.',
+);
 
 if (failures.length) {
 	console.error(`Project contract violations:\n${failures.join('\n')}`);

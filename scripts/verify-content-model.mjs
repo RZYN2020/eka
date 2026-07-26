@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import matter from 'gray-matter';
-import { categories } from '../src/config/taxonomy.ts';
+import { categories } from '../src/config/taxonomy-data.js';
 
 const contentRoot = path.resolve('src/content/writing');
 const imageExtensions = new Set(['.avif', '.gif', '.jpeg', '.jpg', '.png', '.svg', '.webp']);

@@ -1,19 +1,6 @@
-export const categories = [
-	{ name: 'Tech', subcategories: ['AI', 'System', 'Backend', 'Application', 'Algorithm'] },
-	{ name: 'Human', subcategories: ['Sociology', 'Economics'] },
-	{ name: 'Life', subcategories: ['Instinct', 'Journal'] },
-] as const;
+import { categories, formTags } from './taxonomy-data.js';
 
-export const formTags = [
-	'Book',
-	'Code',
-	'CheatSheet',
-	'Reflection',
-	'Summary',
-	'Interview',
-	'Knowledge',
-	'Share',
-] as const;
+export { categories, formTags };
 
 export function taxonomySlug(value: string) {
 	return value
@@ -27,5 +14,5 @@ export function taxonomySlug(value: string) {
 }
 
 export function isFormTag(tag: string) {
-	return (formTags as readonly string[]).includes(tag);
+	return formTags.includes(tag);
 }
