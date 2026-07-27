@@ -1,24 +1,11 @@
 ---
 import { getCollection } from 'astro:content';
-import WritingList from '../../components/WritingList.astro';
-import { categories } from '../../config/taxonomy';
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import { categorySlug, sortWriting } from '../../lib/content';
+import WritingPage from '../../components/WritingPage.astro';
+import { sortWriting } from '../../lib/content';
 
 const entries = sortWriting((await getCollection('writing')).filter((entry) => !entry.data.draft));
+const pageSize = 10;
+const totalPages = Math.max(1, Math.ceil(entries.length / pageSize));
 ---
 
-<BaseLayout title="Writing">
-	<header class="page-heading">
-		<h1>Writing</h1>
-	</header>
-
-	<nav class="category-filter" aria-label="文章分类">
-		<a href="/writing/" aria-current="page">All</a>
-		{categories.map((category) => (
-			<a href={`/categories/${categorySlug(category.name)}/`}>{category.name}</a>
-		))}
-	</nav>
-
-	<WritingList entries={entries} />
-</BaseLayout>
+<WritingPage entries={entries.slice(0, pageSize)} currentPage={1} totalPages={totalPages} />

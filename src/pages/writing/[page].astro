@@ -1,0 +1,28 @@
+---
+import { getCollection } from 'astro:content';
+import WritingPage from '../../components/WritingPage.astro';
+import { sortWriting } from '../../lib/content';
+
+export async function getStaticPaths() {
+	const entries = sortWriting((await getCollection('writing')).filter((entry) => !entry.data.draft));
+	const pageSize = 10;
+	const totalPages = Math.max(1, Math.ceil(entries.length / pageSize));
+
+	return Array.from({ length: Math.max(0, totalPages - 1) }, (_, index) => {
+		const currentPage = index + 2;
+		const start = (currentPage - 1) * pageSize;
+		return {
+			params: { page: String(currentPage) },
+			props: {
+				entries: entries.slice(start, start + pageSize),
+				currentPage,
+				totalPages,
+			},
+		};
+	});
+}
+
+const { entries, currentPage, totalPages } = Astro.props;
+---
+
+<WritingPage entries={entries} currentPage={currentPage} totalPages={totalPages} />

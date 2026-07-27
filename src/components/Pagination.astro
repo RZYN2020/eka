@@ -1,0 +1,45 @@
+---
+interface Props {
+	currentPage: number;
+	totalPages: number;
+	basePath?: string;
+}
+
+const { currentPage, totalPages, basePath = '/writing' } = Astro.props;
+const pageHref = (page: number) => page === 1 ? `${basePath}/` : `${basePath}/${page}/`;
+const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
+---
+
+{totalPages > 1 && (
+	<nav class="pagination" aria-label="文章分页">
+		<a
+			class:list={['pagination-direction', { disabled: currentPage === 1 }]}
+			href={currentPage > 1 ? pageHref(currentPage - 1) : undefined}
+			aria-disabled={currentPage === 1 ? 'true' : undefined}
+			rel="prev"
+		>
+			<span aria-hidden="true">←</span> Newer
+		</a>
+		<ol>
+			{pages.map((page) => (
+				<li>
+					<a
+						href={pageHref(page)}
+						aria-label={`第 ${page} 页`}
+						aria-current={page === currentPage ? 'page' : undefined}
+					>
+						{page}
+					</a>
+				</li>
+			))}
+		</ol>
+		<a
+			class:list={['pagination-direction', { disabled: currentPage === totalPages }]}
+			href={currentPage < totalPages ? pageHref(currentPage + 1) : undefined}
+			aria-disabled={currentPage === totalPages ? 'true' : undefined}
+			rel="next"
+		>
+			Older <span aria-hidden="true">→</span>
+		</a>
+	</nav>
+)}

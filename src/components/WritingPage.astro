@@ -1,0 +1,36 @@
+---
+import type { WritingEntry } from '../lib/content';
+import { categories } from '../config/taxonomy';
+import { categorySlug } from '../lib/content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Pagination from './Pagination.astro';
+import WritingList from './WritingList.astro';
+
+interface Props {
+	entries: WritingEntry[];
+	currentPage: number;
+	totalPages: number;
+}
+
+const { entries, currentPage, totalPages } = Astro.props;
+const title = currentPage === 1 ? 'Writing' : `Writing · Page ${currentPage}`;
+---
+
+<BaseLayout title={title}>
+	<header class="page-heading writing-heading">
+		<div>
+			<h1>Writing</h1>
+			{totalPages > 1 && <p>Page {currentPage} of {totalPages}</p>}
+		</div>
+	</header>
+
+	<nav class="category-filter" aria-label="文章分类">
+		<a href="/writing/" aria-current="page">All</a>
+		{categories.map((category) => (
+			<a href={`/categories/${categorySlug(category.name)}/`}>{category.name}</a>
+		))}
+	</nav>
+
+	<WritingList entries={entries} />
+	<Pagination currentPage={currentPage} totalPages={totalPages} />
+</BaseLayout>

@@ -45,6 +45,17 @@ const terminalCard = renderTerminal(await getCollection('writing'));
 		<meta name="twitter:title" content={pageTitle} />
 		<meta name="twitter:description" content={effectiveDescription} />
 		<title>{pageTitle}</title>
+		{import.meta.env.PUBLIC_CLOUDFLARE_WEB_ANALYTICS_TOKEN && (
+			<script
+				is:inline
+				defer
+				src="https://static.cloudflareinsights.com/beacon.min.js"
+				data-cf-beacon={JSON.stringify({
+					token: import.meta.env.PUBLIC_CLOUDFLARE_WEB_ANALYTICS_TOKEN,
+					spa: false,
+				})}
+			></script>
+		)}
 	</head>
 	<body>
 		<div class="shell">
