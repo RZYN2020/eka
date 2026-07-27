@@ -4,6 +4,7 @@ import CategoryPath from '../components/CategoryPath.astro';
 import TagList from '../components/TagList.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import ArticleImages from '../components/ArticleImages.astro';
+import Comments from '../components/Comments.astro';
 import { formatDate, writingDescription } from '../lib/content';
 import type { CollectionEntry } from 'astro:content';
 import 'katex/dist/katex.min.css';
@@ -44,5 +45,6 @@ const description = writingDescription(entry);
 			</div>
 			<ArticleImages />
 		</div>
+		<Comments />
 	</article>
 </BaseLayout>

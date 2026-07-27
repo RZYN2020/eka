@@ -73,6 +73,61 @@
 	color: var(--ink);
 }
 
+.writing-heading > div {
+	display: flex;
+	gap: 24px;
+	align-items: baseline;
+}
+
+.writing-heading p {
+	margin: 0;
+	color: var(--faint);
+	font-size: 12px;
+	font-variant-numeric: tabular-nums;
+}
+
+.pagination {
+	display: grid;
+	grid-template-columns: minmax(70px, 1fr) auto minmax(70px, 1fr);
+	gap: 20px;
+	align-items: center;
+	margin-top: 56px;
+	padding-top: 20px;
+	border-top: 1px solid var(--line);
+	color: var(--muted);
+	font-size: 12px;
+}
+
+.pagination ol {
+	display: flex;
+	gap: 4px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.pagination ol a {
+	display: grid;
+	width: 28px;
+	height: 28px;
+	place-items: center;
+	border-radius: 50%;
+	font-variant-numeric: tabular-nums;
+}
+
+.pagination ol a[aria-current="page"] {
+	background: var(--ink);
+	color: var(--paper);
+}
+
+.pagination-direction:last-child {
+	text-align: right;
+}
+
+.pagination .disabled {
+	visibility: hidden;
+}
+
 .category-index {
 	display: grid;
 	gap: 40px;
@@ -157,6 +212,40 @@
 
 .article-header .tag-list {
 	margin-top: 14px;
+}
+
+.comments {
+	width: min(100%, 680px);
+	margin: 72px auto 0;
+	padding-top: 28px;
+	border-top: 1px solid var(--line);
+}
+
+.comments > header {
+	margin-bottom: 24px;
+}
+
+.comments > header p,
+.comments > header h2 {
+	margin: 0;
+}
+
+.comments > header p {
+	color: var(--faint);
+	font-size: 11px;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.comments > header h2 {
+	margin-top: 2px;
+	font-size: 18px;
+	font-weight: 500;
+}
+
+.giscus,
+.giscus-frame {
+	width: 100%;
 }
 
 .prose-eka {
@@ -601,6 +690,20 @@
 
 	.writing-row > time {
 		margin-bottom: 1px;
+	}
+
+	.pagination {
+		gap: 8px;
+		margin-top: 44px;
+	}
+
+	.pagination ol {
+		gap: 0;
+	}
+
+	.pagination ol a {
+		width: 26px;
+		height: 26px;
 	}
 
 	.tag-index {
