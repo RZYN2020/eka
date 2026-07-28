@@ -1,8 +1,32 @@
 {
-  "syncedAt": "2026-07-27T21:31:04.877Z",
+  "syncedAt": "2026-07-28T21:33:10.898Z",
   "source": "https://neodb.social",
   "shelves": {
     "progress": [
+      {
+        "createdTime": "2026-07-28T16:07:18.966Z",
+        "comment": "",
+        "ratingGrade": null,
+        "item": {
+          "uuid": "6qMyccVQzCJfyY9rFP8xff",
+          "url": "https://neodb.social/book/6qMyccVQzCJfyY9rFP8xff",
+          "category": "book",
+          "title": "魏晋南北朝史略",
+          "cover": "https://neodb.social/m/book/2021/09/265ea76988-9131-4c59-9438-9da4efa842d4.jpg"
+        }
+      },
+      {
+        "createdTime": "2026-07-28T15:47:51.555Z",
+        "comment": "",
+        "ratingGrade": null,
+        "item": {
+          "uuid": "2ngF8fAElTPdxO3I8nNJGf",
+          "url": "https://neodb.social/book/2ngF8fAElTPdxO3I8nNJGf",
+          "category": "book",
+          "title": "东晋门阀政治",
+          "cover": "https://neodb.social/m/book/2021/09/1516490b2c-885c-4bb6-a7a6-e3f3a059696d.jpg"
+        }
+      },
       {
         "createdTime": "2026-07-01T12:18:22.077Z",
         "comment": "",
@@ -1868,6 +1892,66 @@
     ],
     "wishlist": [
       {
+        "createdTime": "2026-07-28T16:03:17.192Z",
+        "comment": "",
+        "ratingGrade": null,
+        "item": {
+          "uuid": "1ITlnwIPgYIRFYwGvuGwfO",
+          "url": "https://neodb.social/book/1ITlnwIPgYIRFYwGvuGwfO",
+          "category": "book",
+          "title": "陈寅恪魏晋南北朝史讲演录",
+          "cover": "https://neodb.social/m/book/2021/09/16b6bc7ca4-7292-4a1f-b8de-6b6a9c1bb879.jpg"
+        }
+      },
+      {
+        "createdTime": "2026-07-28T15:56:43.700Z",
+        "comment": "",
+        "ratingGrade": null,
+        "item": {
+          "uuid": "1c81bP5nPcih45jgks7IMg",
+          "url": "https://neodb.social/book/1c81bP5nPcih45jgks7IMg",
+          "category": "book",
+          "title": "玄学与魏晋士人心态",
+          "cover": "https://neodb.social/m/book/2021/12/09e56303d0-ec95-4319-9e52-2978f7d9801f.jpg"
+        }
+      },
+      {
+        "createdTime": "2026-07-28T15:52:32.358Z",
+        "comment": "",
+        "ratingGrade": null,
+        "item": {
+          "uuid": "4Ycabz6shBPQxuMqBs0qh8",
+          "url": "https://neodb.social/book/4Ycabz6shBPQxuMqBs0qh8",
+          "category": "book",
+          "title": "隋唐制度渊源略论稿",
+          "cover": "https://neodb.social/m/book/2021/10/224c69fce0-961e-4634-b744-f3d5ba548bfd.jpg"
+        }
+      },
+      {
+        "createdTime": "2026-07-28T15:51:18.837Z",
+        "comment": "",
+        "ratingGrade": null,
+        "item": {
+          "uuid": "5wURXjcN1HgtuGap9K8ZLJ",
+          "url": "https://neodb.social/book/5wURXjcN1HgtuGap9K8ZLJ",
+          "category": "book",
+          "title": "烽火與流星：蕭梁王朝的文學與文化",
+          "cover": "https://neodb.social/m/book/2021/10/23f866ca8e-9d0c-4b96-9ed3-bcb4db270eb9.jpg"
+        }
+      },
+      {
+        "createdTime": "2026-07-28T15:50:02.252Z",
+        "comment": "",
+        "ratingGrade": null,
+        "item": {
+          "uuid": "7MtZHvD4zstU4OIxleE1Qj",
+          "url": "https://neodb.social/book/7MtZHvD4zstU4OIxleE1Qj",
+          "category": "book",
+          "title": "在汉帝国的阴影下",
+          "cover": "https://neodb.social/m/book/2021/09/17c8b55c73-c512-447c-8620-877360468d85.jpg"
+        }
+      },
+      {
         "createdTime": "2026-07-26T15:02:00.853Z",
         "comment": "",
         "ratingGrade": null,
@@ -2117,18 +2201,6 @@
           "category": "book",
           "title": "万历十五年",
           "cover": "https://neodb.social/m/book/2021/09/1535080f33-7dd8-465f-b924-ace42d2978e0.jpg"
-        }
-      },
-      {
-        "createdTime": "2026-03-27T18:00:44.499Z",
-        "comment": "",
-        "ratingGrade": null,
-        "item": {
-          "uuid": "2ngF8fAElTPdxO3I8nNJGf",
-          "url": "https://neodb.social/book/2ngF8fAElTPdxO3I8nNJGf",
-          "category": "book",
-          "title": "东晋门阀政治",
-          "cover": "https://neodb.social/m/book/2021/09/1516490b2c-885c-4bb6-a7a6-e3f3a059696d.jpg"
         }
       },
       {
