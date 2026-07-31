@@ -1,8 +1,20 @@
 {
-  "syncedAt": "2026-07-28T21:33:10.898Z",
+  "syncedAt": "2026-07-31T21:29:54.637Z",
   "source": "https://neodb.social",
   "shelves": {
     "progress": [
+      {
+        "createdTime": "2026-07-31T03:49:28.761Z",
+        "comment": "",
+        "ratingGrade": null,
+        "item": {
+          "uuid": "7P6eOU4OCUbWE77PrGKb8X",
+          "url": "https://neodb.social/book/7P6eOU4OCUbWE77PrGKb8X",
+          "category": "book",
+          "title": "脑与数学",
+          "cover": "https://neodb.social/m/item/doubanbook/2023/10/10/e4ec89ca-1466-4ada-b934-7c7d76c1a91f.jpg"
+        }
+      },
       {
         "createdTime": "2026-07-28T16:07:18.966Z",
         "comment": "",
@@ -1891,6 +1903,18 @@
       }
     ],
     "wishlist": [
+      {
+        "createdTime": "2026-07-31T03:48:48.018Z",
+        "comment": "",
+        "ratingGrade": null,
+        "item": {
+          "uuid": "1462hsnHpdKEghSXJLrBWy",
+          "url": "https://neodb.social/book/1462hsnHpdKEghSXJLrBWy",
+          "category": "book",
+          "title": "Where Mathematics Come From: How the Embodied Mind Brings Mathematics into Being",
+          "cover": "https://neodb.social/m/book/2022/11/25d5205e71-2804-4113-baca-20789ee480a3.jpg"
+        }
+      },
       {
         "createdTime": "2026-07-28T16:03:17.192Z",
         "comment": "",
@@ -5745,6 +5769,18 @@
       }
     ],
     "dropped": [
+      {
+        "createdTime": "2026-07-31T03:49:21.715Z",
+        "comment": "",
+        "ratingGrade": null,
+        "item": {
+          "uuid": "4IB7d4Gm4Tcvu5RFa0Mse0",
+          "url": "https://neodb.social/book/4IB7d4Gm4Tcvu5RFa0Mse0",
+          "category": "book",
+          "title": "The Number Sense: How the Mind Creates Mathematics",
+          "cover": "https://neodb.social/m/book/2021/11/27d960dc97-aa4a-440d-95e8-9cbb79ca7fb6.jpg"
+        }
+      },
       {
         "createdTime": "2026-05-18T16:24:19.252Z",
         "comment": "",
