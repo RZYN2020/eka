@@ -1,5 +1,5 @@
 {
-  "syncedAt": "2026-07-31T21:29:54.637Z",
+  "syncedAt": "2026-08-01T21:11:33.710Z",
   "source": "https://neodb.social",
   "shelves": {
     "progress": [
@@ -13,18 +13,6 @@
           "category": "book",
           "title": "脑与数学",
           "cover": "https://neodb.social/m/item/doubanbook/2023/10/10/e4ec89ca-1466-4ada-b934-7c7d76c1a91f.jpg"
-        }
-      },
-      {
-        "createdTime": "2026-07-28T16:07:18.966Z",
-        "comment": "",
-        "ratingGrade": null,
-        "item": {
-          "uuid": "6qMyccVQzCJfyY9rFP8xff",
-          "url": "https://neodb.social/book/6qMyccVQzCJfyY9rFP8xff",
-          "category": "book",
-          "title": "魏晋南北朝史略",
-          "cover": "https://neodb.social/m/book/2021/09/265ea76988-9131-4c59-9438-9da4efa842d4.jpg"
         }
       },
       {
@@ -65,6 +53,18 @@
       }
     ],
     "complete": [
+      {
+        "createdTime": "2026-08-01T17:18:06.954Z",
+        "comment": "",
+        "ratingGrade": 7,
+        "item": {
+          "uuid": "6qMyccVQzCJfyY9rFP8xff",
+          "url": "https://neodb.social/book/6qMyccVQzCJfyY9rFP8xff",
+          "category": "book",
+          "title": "魏晋南北朝史略",
+          "cover": "https://neodb.social/m/book/2021/09/265ea76988-9131-4c59-9438-9da4efa842d4.jpg"
+        }
+      },
       {
         "createdTime": "2026-07-26T08:11:58.976Z",
         "comment": "",
