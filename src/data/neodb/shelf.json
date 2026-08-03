@@ -1,8 +1,20 @@
 {
-  "syncedAt": "2026-08-01T21:11:33.710Z",
+  "syncedAt": "2026-08-03T21:31:29.195Z",
   "source": "https://neodb.social",
   "shelves": {
     "progress": [
+      {
+        "createdTime": "2026-08-03T15:24:03.098Z",
+        "comment": "",
+        "ratingGrade": null,
+        "item": {
+          "uuid": "5wURXjcN1HgtuGap9K8ZLJ",
+          "url": "https://neodb.social/book/5wURXjcN1HgtuGap9K8ZLJ",
+          "category": "book",
+          "title": "烽火與流星：蕭梁王朝的文學與文化",
+          "cover": "https://neodb.social/m/book/2021/10/23f866ca8e-9d0c-4b96-9ed3-bcb4db270eb9.jpg"
+        }
+      },
       {
         "createdTime": "2026-07-31T03:49:28.761Z",
         "comment": "",
@@ -13,18 +25,6 @@
           "category": "book",
           "title": "脑与数学",
           "cover": "https://neodb.social/m/item/doubanbook/2023/10/10/e4ec89ca-1466-4ada-b934-7c7d76c1a91f.jpg"
-        }
-      },
-      {
-        "createdTime": "2026-07-28T15:47:51.555Z",
-        "comment": "",
-        "ratingGrade": null,
-        "item": {
-          "uuid": "2ngF8fAElTPdxO3I8nNJGf",
-          "url": "https://neodb.social/book/2ngF8fAElTPdxO3I8nNJGf",
-          "category": "book",
-          "title": "东晋门阀政治",
-          "cover": "https://neodb.social/m/book/2021/09/1516490b2c-885c-4bb6-a7a6-e3f3a059696d.jpg"
         }
       },
       {
@@ -53,6 +53,18 @@
       }
     ],
     "complete": [
+      {
+        "createdTime": "2026-08-03T15:23:34.753Z",
+        "comment": "",
+        "ratingGrade": 7,
+        "item": {
+          "uuid": "2ngF8fAElTPdxO3I8nNJGf",
+          "url": "https://neodb.social/book/2ngF8fAElTPdxO3I8nNJGf",
+          "category": "book",
+          "title": "东晋门阀政治",
+          "cover": "https://neodb.social/m/book/2021/09/1516490b2c-885c-4bb6-a7a6-e3f3a059696d.jpg"
+        }
+      },
       {
         "createdTime": "2026-08-01T17:18:06.954Z",
         "comment": "",
@@ -1949,18 +1961,6 @@
           "category": "book",
           "title": "隋唐制度渊源略论稿",
           "cover": "https://neodb.social/m/book/2021/10/224c69fce0-961e-4634-b744-f3d5ba548bfd.jpg"
-        }
-      },
-      {
-        "createdTime": "2026-07-28T15:51:18.837Z",
-        "comment": "",
-        "ratingGrade": null,
-        "item": {
-          "uuid": "5wURXjcN1HgtuGap9K8ZLJ",
-          "url": "https://neodb.social/book/5wURXjcN1HgtuGap9K8ZLJ",
-          "category": "book",
-          "title": "烽火與流星：蕭梁王朝的文學與文化",
-          "cover": "https://neodb.social/m/book/2021/10/23f866ca8e-9d0c-4b96-9ed3-bcb4db270eb9.jpg"
         }
       },
       {
