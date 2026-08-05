@@ -3,13 +3,20 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="About">
-	<header class="page-heading">
-		<h1>About</h1>
-	</header>
-	<!-- About content intentionally left for Eka to write. -->
 	<div class="about-panel">
-		<a href="/media/">Media</a>
-		<a href="/map/">Map</a>
-		<a href="/resume/">Résumé</a>
+		<p class="about-placeholder" aria-hidden="true">…</p>
+		<nav class="about-explore" aria-label="相关页面">
+			<ul>
+				<li>
+					<a href="/media/">Media</a>
+				</li>
+				<li>
+					<a href="/map/">Map</a>
+				</li>
+				<li>
+					<a href="/resume/">Résumé</a>
+				</li>
+			</ul>
+		</nav>
 	</div>
 </BaseLayout>
