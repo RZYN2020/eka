@@ -46,6 +46,36 @@ try {
 		'移动端 Browse 菜单必须包含分类、标签和关于入口',
 	);
 
+	await page.setViewport({ width: 320, height: 700, deviceScaleFactor: 1 });
+	await page.goto(`${server.origin}/about/`, { waitUntil: 'domcontentloaded' });
+	await page.click('.mobile-nav-toggle');
+	const narrowHeaderState = await page.evaluate(() => {
+		const rect = (selector) => document.querySelector(selector)?.getBoundingClientRect();
+		const overlaps = (first, second) => Boolean(first && second
+			&& first.left < second.right
+			&& first.right > second.left
+			&& first.top < second.bottom
+			&& first.bottom > second.top);
+		const about = [...document.querySelectorAll('.mobile-nav-menu a')]
+			.find((link) => link.textContent?.trim() === 'About')
+			?.getBoundingClientRect();
+		const search = rect('.social-nav a');
+		const theme = rect('.theme-toggle');
+		return {
+			pageFitsViewport: document.documentElement.scrollWidth <= window.innerWidth,
+			aboutOverlapsSearch: overlaps(about, search),
+			aboutOverlapsTheme: overlaps(about, theme),
+			searchOverlapsTheme: overlaps(search, theme),
+		};
+	});
+	assert(narrowHeaderState.pageFitsViewport, '320px 页头不得产生页面级横向溢出');
+	assert(!narrowHeaderState.aboutOverlapsSearch, 'About 菜单项不得与 Search 重合');
+	assert(!narrowHeaderState.aboutOverlapsTheme, 'About 菜单项不得与主题入口重合');
+	assert(!narrowHeaderState.searchOverlapsTheme, 'Search 不得与主题入口重合');
+
+	await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });
+	await page.goto(server.origin, { waitUntil: 'domcontentloaded' });
+
 	await page.click('.theme-toggle');
 	await page.click('[data-theme-value="dark"]');
 	assert.deepEqual(

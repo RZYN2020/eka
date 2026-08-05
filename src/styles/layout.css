@@ -374,6 +374,31 @@ main {
 	}
 }
 
+@media (max-width: 420px) {
+	.site-header {
+		display: grid;
+		grid-template-areas:
+			"navigation"
+			"actions";
+		grid-template-columns: minmax(0, 1fr);
+		gap: 0;
+		padding-block: 6px;
+	}
+
+	.main-nav {
+		grid-area: navigation;
+	}
+
+	.header-actions {
+		grid-area: actions;
+		justify-self: end;
+	}
+
+	.mobile-nav-menu {
+		top: calc(100% + 54px);
+	}
+}
+
 @media (pointer: coarse) {
 	.main-nav a,
 	.social-nav a,
