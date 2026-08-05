@@ -16,10 +16,6 @@ const checks = [
 		name: 'dark-mode article images have a light backing surface',
 		pattern: /:root\[data-theme="dark"\]\s+\.prose-eka\s+img[^{]*\{[^}]*background(?:-color)?:\s*#fff(?:fff)?\b/s,
 	},
-	{
-		name: 'graphite article images have a light backing surface',
-		pattern: /:root\[data-theme="graphite"\]\s+\.prose-eka\s+img\s*\{[^}]*background(?:-color)?:\s*#fff(?:fff)?\b/s,
-	},
 ];
 
 const failures = checks.filter(({ pattern }) => !pattern.test(contentStyles));

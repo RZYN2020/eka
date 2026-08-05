@@ -2,14 +2,18 @@
 import { getCollection, render } from 'astro:content';
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import { writingRedirects } from '../../config/redirects';
-import { writingSlug } from '../../lib/content';
+import { sortWriting, writingSlug } from '../../lib/content';
 
 export async function getStaticPaths() {
-	const entries = (await getCollection('writing')).filter((entry) => !entry.data.draft);
+	const entries = sortWriting((await getCollection('writing')).filter((entry) => !entry.data.draft));
 	return [
-		...entries.map((entry) => ({
+		...entries.map((entry, index) => ({
 			params: { slug: writingSlug(entry.id) },
-			props: { entry },
+			props: {
+				entry,
+				newer: entries[index - 1],
+				older: entries[index + 1],
+			},
 		})),
 		...Object.entries(writingRedirects).map(([slug, destination]) => ({
 			params: { slug },
@@ -18,11 +22,11 @@ export async function getStaticPaths() {
 	];
 }
 
-const { entry, destination } = Astro.props;
+const { entry, destination, newer, older } = Astro.props;
 if (destination) return Astro.redirect(destination, 301);
 const { Content, headings } = await render(entry);
 ---
 
-<ArticleLayout entry={entry} headings={headings}>
+<ArticleLayout entry={entry} headings={headings} newer={newer} older={older}>
 	<Content />
 </ArticleLayout>

@@ -8,6 +8,8 @@ const [
 	readme,
 	astroConfig,
 	globalCss,
+	contentCss,
+	mapCss,
 	baseLayout,
 	mapPage,
 	searchPage,
@@ -17,6 +19,8 @@ const [
 	read('README.md'),
 	read('astro.config.mjs'),
 	read('src/styles/global.css'),
+	read('src/styles/content.css'),
+	read('src/styles/map.css'),
 	read('src/layouts/BaseLayout.astro'),
 	read('src/pages/map/index.astro'),
 	read('src/pages/search.astro'),
@@ -47,6 +51,22 @@ requireContract(!searchPage.includes('innerHTML'), 'Search results still render 
 requireContract(!searchPage.includes('item: any'), 'Search documents are not typed.');
 requireContract(articleImages.includes("'pointercancel'"), 'Image gallery drag state is not cleared on pointer cancellation.');
 requireContract(articleImages.includes("'lostpointercapture'"), 'Image gallery drag state is not cleared after lost pointer capture.');
+requireContract(
+	articleImages.includes('image.draggable = false'),
+	'Image gallery pictures still allow native browser dragging, which interrupts horizontal pointer scrolling.',
+);
+requireContract(
+	/\.prose-eka\s+a\s*\{[^}]*overflow-wrap:\s*anywhere/s.test(contentCss),
+	'Article links do not wrap long URLs on narrow screens.',
+);
+requireContract(
+	/\.prose-eka\s+\.katex-display\s*\{[^}]*overflow-x:\s*auto/s.test(contentCss),
+	'Display equations are not contained by a horizontal scroller on narrow screens.',
+);
+requireContract(
+	/@media\s*\(max-width:\s*767px\)[^{]*\{[\s\S]*?\.sidebar-col\.open\s*\{[^}]*max-width:\s*100vw/s.test(mapCss),
+	'The open mobile map sidebar can exceed the viewport below 360px.',
+);
 requireContract(
 	!/\bfrom\s+['"][^'"]+\.ts['"]/.test(contentModelVerifier),
 	'Content verification imports TypeScript directly and is incompatible with the minimum Node version.',

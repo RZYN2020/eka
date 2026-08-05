@@ -16,21 +16,6 @@
 	--font-code: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, monospace;
 }
 
-:root[data-theme="sepia"] {
-	color-scheme: light;
-	--paper: #f7f3e9;
-	--paper-raised: #eee8db;
-	--ink: #302e29;
-	--muted: #706b61;
-	--faint: #726d64;
-	--line: #dcd4c5;
-	--link: #6c5a3b;
-	--code: #eee8dc;
-	--zoom-backdrop: rgb(247 243 233 / 91%);
-	--zoom-shadow: 0 24px 80px rgb(74 61 40 / 18%), 0 2px 12px rgb(74 61 40 / 9%);
-	--image-shadow: 0 1px 2px rgb(74 61 40 / 8%), 0 8px 28px rgb(74 61 40 / 5%);
-}
-
 :root[data-theme="dark"] {
 	color-scheme: dark;
 	--paper: #1e1e1e;
@@ -44,19 +29,4 @@
 	--zoom-backdrop: rgb(24 24 24 / 91%);
 	--zoom-shadow: 0 28px 90px rgb(0 0 0 / 48%), 0 2px 16px rgb(0 0 0 / 28%);
 	--image-shadow: 0 1px 2px rgb(0 0 0 / 30%), 0 10px 32px rgb(0 0 0 / 18%);
-}
-
-:root[data-theme="graphite"] {
-	color-scheme: dark;
-	--paper: #17191c;
-	--paper-raised: #22252a;
-	--ink: #d8dce2;
-	--muted: #a0a6ae;
-	--faint: #7f8791;
-	--line: #34383e;
-	--link: #8aa7c7;
-	--code: #202328;
-	--zoom-backdrop: rgb(19 21 24 / 92%);
-	--zoom-shadow: 0 28px 90px rgb(0 0 0 / 52%), 0 2px 16px rgb(0 0 0 / 30%);
-	--image-shadow: 0 1px 2px rgb(0 0 0 / 32%), 0 10px 32px rgb(0 0 0 / 20%);
 }

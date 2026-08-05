@@ -48,12 +48,29 @@ a:hover {
 }
 
 :focus-visible {
-	outline: 1px solid var(--link);
+	outline: 2px solid var(--link);
 	outline-offset: 3px;
 }
 
 ::selection {
 	background: color-mix(in srgb, var(--link) 30%, transparent);
+}
+
+.skip-link {
+	position: fixed;
+	top: 12px;
+	left: 12px;
+	z-index: 1000;
+	padding: 9px 13px;
+	border: 1px solid var(--line);
+	background: var(--paper);
+	color: var(--ink);
+	font-size: 14px;
+	transform: translateY(calc(-100% - 20px));
+}
+
+.skip-link:focus-visible {
+	transform: translateY(0);
 }
 
 .developer-toast {

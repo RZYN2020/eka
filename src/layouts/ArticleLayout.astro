@@ -5,6 +5,7 @@ import TagList from '../components/TagList.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import ArticleImages from '../components/ArticleImages.astro';
 import Comments from '../components/Comments.astro';
+import ArticleNavigation from '../components/ArticleNavigation.astro';
 import { formatDate, writingDescription } from '../lib/content';
 import type { CollectionEntry } from 'astro:content';
 import 'katex/dist/katex.min.css';
@@ -12,9 +13,11 @@ import 'katex/dist/katex.min.css';
 interface Props {
 	entry: CollectionEntry<'writing'>;
 	headings: { depth: number; slug: string; text: string }[];
+	newer?: CollectionEntry<'writing'>;
+	older?: CollectionEntry<'writing'>;
 }
 
-const { entry, headings } = Astro.props;
+const { entry, headings, newer, older } = Astro.props;
 const description = writingDescription(entry);
 ---
 
@@ -45,6 +48,7 @@ const description = writingDescription(entry);
 			</div>
 			<ArticleImages />
 		</div>
+		<ArticleNavigation newer={newer} older={older} />
 		<Comments />
 	</article>
 </BaseLayout>

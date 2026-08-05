@@ -32,7 +32,12 @@ pnpm verify
 ```
 
 `pnpm verify` 已包含内容模型、内部链接、构建产物和真实浏览器地图验证；
-`pnpm check:map` 可用于只重跑地图验证。
+`pnpm verify:fast` 只运行不依赖构建产物的快速检查，`pnpm verify:runtime`
+只运行构建产物与浏览器检查，`pnpm check:map` 可用于只重跑地图验证。
+
+仓库对文章图片和地图数据设有体积预算。GeoJSON 源文件更新后运行
+`pnpm optimize:geojson` 再提交；一次性文案和样式调整以提交记录为准，
+`docs/specs/` 只保留需要长期追溯的设计决策或复杂功能方案。
 
 `pnpm build` 会从唯一的中文 Markdown 简历同时生成网页与
 `dist/resume/resume.pdf`。

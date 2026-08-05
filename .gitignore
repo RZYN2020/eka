@@ -25,3 +25,9 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+# Added by CJADK
+.cjadk/
+# Added by CJADK
+log/app.log
+# Added by CJADK
+.codex/

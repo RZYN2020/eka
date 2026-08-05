@@ -58,6 +58,10 @@
 
 		const galleries = prose.querySelectorAll<HTMLElement>('.image-gallery');
 		for (const gallery of galleries) {
+			for (const image of gallery.querySelectorAll('img')) {
+				image.draggable = false;
+			}
+
 			let startX = 0;
 			let startScroll = 0;
 			let dragged = false;
