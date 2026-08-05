@@ -350,6 +350,10 @@
 	box-shadow: var(--image-shadow);
 }
 
+.prose-eka a {
+	overflow-wrap: anywhere;
+}
+
 .prose-eka img.is-zoomable {
 	cursor: zoom-in;
 	transition:
@@ -464,6 +468,12 @@
 :root[data-theme="dark"] .prose-eka img,
 :root[data-theme="graphite"] .prose-eka img {
 	background: #fff;
+}
+
+.prose-eka .katex-display {
+	max-width: 100%;
+	overflow-x: auto;
+	overflow-y: hidden;
 }
 
 .prose-eka pre {

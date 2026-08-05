@@ -677,6 +677,7 @@ body {
 	}
 
 	.sidebar-col.open {
+		max-width: 100vw;
 		padding: 0;
 		background: var(--card);
 	}
