@@ -1,13 +1,15 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { sortWriting, writingSlug } from '../lib/content';
+import { formatDate, sortWriting, writingDescription, writingSlug } from '../lib/content';
 
 const writing = sortWriting((await getCollection('writing')).filter((entry) => !entry.data.draft));
 const documents = writing.map((entry) => ({
 	title: entry.data.title,
 	meta: [entry.data.category, ...entry.data.subcategories, ...entry.data.tags].join(' '),
-	type: 'Writing',
+	description: writingDescription(entry, 110),
+	category: entry.data.category,
+	date: formatDate(entry.data.publishedAt, 'sv-SE'),
 	url: `/writing/${writingSlug(entry.id)}/`,
 }));
 ---
@@ -19,10 +21,10 @@ const documents = writing.map((entry) => ({
 
 	<label class="search-box">
 		<span>Search</span>
-		<input id="search-input" type="search" placeholder="输入关键词…" autocomplete="off" autofocus />
+		<input id="search-input" type="search" placeholder="输入关键词…" autocomplete="off" aria-describedby="search-count" />
 	</label>
 	<p class="search-count" id="search-count">共 {documents.length} 条内容</p>
-	<div class="content-list" id="search-results"></div>
+	<div class="content-list search-results" id="search-results"></div>
 
 	<script
 		is:inline
@@ -36,7 +38,9 @@ const documents = writing.map((entry) => ({
 	interface SearchDocument {
 		title: string;
 		meta: string;
-		type: string;
+		description: string;
+		category: string;
+		date: string;
 		url: string;
 	}
 
@@ -47,7 +51,9 @@ const documents = writing.map((entry) => ({
 			&& item !== null
 			&& typeof item.title === 'string'
 			&& typeof item.meta === 'string'
-			&& typeof item.type === 'string'
+			&& typeof item.description === 'string'
+			&& typeof item.category === 'string'
+			&& typeof item.date === 'string'
 			&& typeof item.url === 'string'
 		))
 		: [];
@@ -68,11 +74,13 @@ const documents = writing.map((entry) => ({
 		main.className = 'content-main';
 		const heading = document.createElement('h2');
 		heading.textContent = item.title;
-		main.append(heading);
+		const description = document.createElement('p');
+		description.textContent = item.description;
+		main.append(heading, description);
 
 		const meta = document.createElement('div');
 		meta.className = 'content-meta';
-		meta.textContent = item.type;
+		meta.textContent = [item.date, item.category].filter(Boolean).join(' · ');
 		link.append(itemIndex, main, meta);
 		return link;
 	}
@@ -80,10 +88,18 @@ const documents = writing.map((entry) => ({
 	function render(query = '') {
 		const term = query.trim().toLocaleLowerCase();
 		const matches = term
-			? data.filter((item) => `${item.title} ${item.meta}`.toLocaleLowerCase().includes(term))
+			? data.filter((item) => `${item.title} ${item.meta} ${item.description}`.toLocaleLowerCase().includes(term))
 			: data.slice(0, 12);
 		if (count) count.textContent = term ? `找到 ${matches.length} 条内容` : `最近展示 ${matches.length} / ${data.length} 条内容`;
-		results?.replaceChildren(...matches.map(resultRow));
+		if (!results) return;
+		if (matches.length === 0) {
+			const empty = document.createElement('p');
+			empty.className = 'search-empty';
+			empty.textContent = '没有匹配的内容，试试更短或不同的关键词。';
+			results.replaceChildren(empty);
+			return;
+		}
+		results.replaceChildren(...matches.map(resultRow));
 	}
 
 	input?.addEventListener('input', () => render(input.value));
@@ -125,5 +141,56 @@ const documents = writing.map((entry) => ({
 		margin: 0 0 32px;
 		color: var(--muted);
 		font-size: 14px;
+	}
+
+	.search-results {
+		gap: 0;
+		width: min(100%, 720px);
+		border-top: 1px solid var(--line);
+	}
+
+	.search-results :global(.content-row) {
+		grid-template-columns: minmax(0, 1fr) auto;
+		gap: 24px;
+		padding: 14px 0;
+		border-bottom: 1px solid var(--line);
+	}
+
+	.search-results :global(.content-index) {
+		display: none;
+	}
+
+	.search-results :global(.content-main p) {
+		display: -webkit-box;
+		overflow: hidden;
+		margin: 4px 0 0;
+		color: var(--muted);
+		font-size: 13px;
+		line-height: 1.55;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 2;
+	}
+
+	.search-results :global(.content-meta) {
+		display: block;
+		color: var(--faint);
+		font-size: 11px;
+		font-variant-numeric: tabular-nums;
+		white-space: nowrap;
+	}
+
+	.search-results :global(.search-empty) {
+		margin: 0;
+		padding: 24px 0;
+		border-bottom: 1px solid var(--line);
+		color: var(--muted);
+		font-size: 14px;
+	}
+
+	@media (max-width: 700px) {
+		.search-results :global(.content-row) {
+			grid-template-columns: 1fr;
+			gap: 5px;
+		}
 	}
 </style>

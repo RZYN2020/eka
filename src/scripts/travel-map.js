@@ -1,7 +1,7 @@
 import L from 'leaflet';
 import { bases } from '../data/travel.js';
 import { readMapView, writeMapView } from '../lib/map-storage.js';
-import { buildJourneyStops } from '../lib/travel-journey.js';
+import { createJourneyController } from '../lib/travel-map-journey.js';
 import {
     assertTravelTree,
     compareTravelDates,
@@ -26,19 +26,6 @@ const ui = { selBase: null, selTrip: null, noSync: false };
 let currentView = 'china';
 let highlightMode = 'city';
 let resizeFrame = 0;
-const journey = {
-    active: false,
-    playing: false,
-    moving: false,
-    index: -1,
-    token: 0,
-    frame: 0,
-    timer: 0,
-    line: null,
-    person: null,
-    stops: [],
-    completed: []
-};
 const GEO_CITY = '/geojson/china-cities.json';
 const GEO_PROVINCE = '/geojson/china.json';
 const GEO_WORLD = '/geojson/world.json';
@@ -110,6 +97,25 @@ function isVisitedCity(name) { return visitedCities.has(normCity(name)); }
 function isVisitedProvince(name) { return visitedProvinces.has(normProv(name)); }
 
 function mkKey(lat,lng) { return `${lat}|${lng}`; }
+
+const journeyController = createJourneyController({
+    getMap: () => map,
+    getCoords,
+    clearSelection: clearSel,
+    ensureChinaView: () => {
+        if (currentView !== 'china') switchView('china');
+    },
+    tone
+});
+const journey = journeyController.state;
+const startJourney = () => journeyController.start();
+const stopJourney = () => journeyController.stop();
+const advanceJourney = () => journeyController.advance();
+const seekJourneyIndex = index => journeyController.seek(index);
+const toggleJourneyPlayback = () => journeyController.togglePlayback();
+const seekAdjacentJourney = direction => journeyController.seekAdjacent(direction);
+const seekJourneyBoundary = edge => journeyController.seekBoundary(edge);
+const seekJourneyFromPointer = event => journeyController.seekFromPointer(event);
 
 // =============================================================================
 // World country detection
@@ -568,339 +574,6 @@ function fly(lat,lng,z,cb) {
 }
 
 // =============================================================================
-// Life journey
-// =============================================================================
-function journeyIcon() {
-    return L.divIcon({
-        className: '',
-        iconSize: [36, 36],
-        iconAnchor: [18, 18],
-        html: '<span class="journey-avatar" aria-hidden="true"></span>'
-    });
-}
-
-function getJourneyStops() {
-    return buildJourneyStops(bases).map(stop => ({ ...stop, ...getCoords(stop) }));
-}
-
-function updateJourneyStatus(stop) {
-    const status = document.getElementById('journeyStatus');
-    status.hidden = false;
-    status.classList.remove('is-changing');
-    void status.offsetWidth;
-    status.classList.add('is-changing');
-    document.getElementById('journeyPeriod').textContent = stop.dateLabel;
-    document.getElementById('journeyCity').textContent = stop.city;
-    document.getElementById('journeySummary').textContent = stop.action;
-    document.getElementById('journeyProgress').textContent = `${journey.index + 1} / ${journey.stops.length}`;
-    updateJourneyTimeline(stop);
-}
-
-function journeyTimelinePosition(index) {
-    if (journey.stops.length <= 1) return 0;
-    return index / (journey.stops.length - 1) * 100;
-}
-
-function journeyDestinations() {
-    return journey.stops
-        .map((stop, index) => ({ stop, index }))
-        .filter(({ stop }) => !stop.derived);
-}
-
-function seekAdjacentJourney(direction) {
-    const destinations = journeyDestinations();
-    const target = direction < 0
-        ? destinations.filter(({ index }) => index < journey.index).at(-1) || destinations[0]
-        : destinations.find(({ index }) => index > journey.index) || destinations.at(-1);
-    if (!target) return false;
-    seekJourneyIndex(target.index);
-    return true;
-}
-
-function currentJourneyLabel() {
-    const stop = journey.stops[Math.max(0, journey.index)];
-    return stop ? `${stop.dateLabel} · ${stop.city}` : '';
-}
-
-function seekJourneyIndex(index) {
-    const stop = journey.stops[index];
-    if (!stop) return;
-
-    journey.token += 1;
-    clearTimeout(journey.timer);
-    journey.active = true;
-    journey.playing = false;
-    journey.moving = false;
-    journey.index = index;
-    journey.completed = journey.stops
-        .slice(0, index + 1)
-        .map(item => [item.lat, item.lng]);
-
-    const button = document.getElementById('btnJourney');
-    button.textContent = '退出轨迹';
-    button.setAttribute('aria-pressed', 'true');
-    if (!journey.person) {
-        journey.person = L.marker([stop.lat, stop.lng], {
-            icon: journeyIcon(),
-            interactive: false,
-            zIndexOffset: 2000
-        }).addTo(map);
-    } else {
-        journey.person.setLatLng([stop.lat, stop.lng]);
-    }
-    journey.line.setLatLngs(journey.completed);
-    map.stop();
-    map.setView([stop.lat, stop.lng], stop.kind === 'phase' ? 6 : 7, { animate: false });
-    updateJourneyStatus(stop);
-    updateJourneyControls();
-}
-
-function seekJourneyFromPointer(event) {
-    const track = document.getElementById('journeyTimeTrack');
-    const rect = track.getBoundingClientRect();
-    const progress = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
-    const target = journeyDestinations().reduce((nearest, candidate) => {
-        const distance = Math.abs(journeyTimelinePosition(candidate.index) / 100 - progress);
-        return !nearest || distance < nearest.distance ? { ...candidate, distance } : nearest;
-    }, null);
-    if (target) seekJourneyIndex(target.index);
-}
-
-function renderJourneyTimeline() {
-    const timeline = document.getElementById('journeyTimeline');
-    const track = document.getElementById('journeyTimeTrack');
-    const ticks = document.getElementById('journeyTimeTicks');
-    const first = journey.stops[0];
-    const last = journey.stops[journey.stops.length - 1];
-    timeline.hidden = false;
-    document.getElementById('journeyTimeStart').textContent = first.date.start.slice(0, 4);
-    document.getElementById('journeyTimeCurrent').textContent = first.dateLabel;
-    document.getElementById('journeyTimeEnd').textContent = last.date.start.replaceAll('-', '.');
-    track.setAttribute('aria-valuemax', String(journey.stops.length));
-    track.setAttribute('aria-valuenow', '1');
-    ticks.innerHTML = journey.stops
-        .map((stop, index) => {
-            if (stop.derived) return '';
-            const markerClass = stop.kind === 'phase'
-                ? 'is-phase'
-                : stop.kind === 'stay' ? 'is-stay' : 'is-visit';
-            const label = `${stop.dateLabel} · ${stop.city} · ${stop.action}`;
-            return `<button type="button" tabindex="-1" class="${markerClass}" data-index="${index}" data-label="${label}" style="left:${journeyTimelinePosition(index)}%" aria-label="${label}" title="${label}"></button>`;
-        })
-        .join('');
-    ticks.querySelectorAll('button').forEach(marker => {
-        marker.addEventListener('click', event => {
-            event.stopPropagation();
-            seekJourneyIndex(Number(marker.dataset.index));
-        });
-        marker.addEventListener('mouseenter', () => {
-            document.getElementById('journeyTimeCurrent').textContent = marker.dataset.label;
-        });
-        marker.addEventListener('mouseleave', () => {
-            document.getElementById('journeyTimeCurrent').textContent = currentJourneyLabel();
-        });
-    });
-    document.getElementById('journeyTimeFill').style.width = '0%';
-    document.querySelector('.journey-time-cursor').style.left = '0%';
-}
-
-function updateJourneyTimeline(stop) {
-    const position = journeyTimelinePosition(journey.index);
-    const track = document.getElementById('journeyTimeTrack');
-    document.getElementById('journeyTimeCurrent').textContent = `${stop.dateLabel} · ${stop.city}`;
-    document.getElementById('journeyTimeFill').style.width = `${position}%`;
-    document.querySelector('.journey-time-cursor').style.left = `${position}%`;
-    track.setAttribute('aria-valuenow', String(journey.index + 1));
-    track.setAttribute('aria-valuetext', `${stop.dateLabel}，${stop.city}`);
-}
-
-function resetJourneyButton(label = '人生轨迹') {
-    const button = document.getElementById('btnJourney');
-    button.textContent = label;
-    button.setAttribute('aria-pressed', 'false');
-}
-
-function updateJourneyControls() {
-    const playButton = document.getElementById('btnJourneyPlay');
-    const finished = journey.stops.length > 0 && journey.index >= journey.stops.length - 1;
-    playButton.textContent = finished ? '重播' : journey.playing ? '暂停' : '自动播放';
-    playButton.setAttribute('aria-pressed', String(journey.playing));
-    document.getElementById('btnJourneyNext').disabled = journey.moving || finished;
-}
-
-function stopJourney() {
-    journey.token += 1;
-    journey.active = false;
-    journey.playing = false;
-    journey.moving = false;
-    journey.index = -1;
-    clearTimeout(journey.timer);
-    journey.frame = 0;
-    if (map) {
-        if (journey.line) map.removeLayer(journey.line);
-        if (journey.person) map.removeLayer(journey.person);
-    }
-    journey.line = null;
-    journey.person = null;
-    journey.stops = [];
-    journey.completed = [];
-    document.getElementById('journeyStatus').hidden = true;
-    document.getElementById('journeyTimeline').hidden = true;
-    resetJourneyButton();
-}
-
-function animateJourneySegment(from, to, completed, duration, token) {
-    return new Promise(resolve => {
-        const startedAt = performance.now();
-        const step = now => {
-            if (token !== journey.token) return resolve(false);
-            const progress = Math.min((now - startedAt) / duration, 1);
-            const eased = 0.5 - Math.cos(Math.PI * progress) / 2;
-            const current = [
-                from.lat + (to.lat - from.lat) * eased,
-                from.lng + (to.lng - from.lng) * eased
-            ];
-            journey.person.setLatLng(current);
-            journey.line.setLatLngs([...completed, current]);
-            if (progress < 1) journey.frame = requestAnimationFrame(step);
-            else resolve(true);
-        };
-        journey.frame = requestAnimationFrame(step);
-    });
-}
-
-function scheduleJourneyStep() {
-    clearTimeout(journey.timer);
-    if (!journey.playing || journey.index >= journey.stops.length - 1) return;
-    journey.timer = window.setTimeout(advanceJourney, 950);
-}
-
-function focusJourneySegment(from, to, token) {
-    return new Promise(resolve => {
-        if (token !== journey.token) return resolve(false);
-        const samePlace = from.lat === to.lat && from.lng === to.lng;
-        const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-        let settled = false;
-        const finish = () => {
-            if (settled) return;
-            settled = true;
-            map.off('moveend', finish);
-            resolve(token === journey.token);
-        };
-
-        map.stop();
-        map.once('moveend', finish);
-        if (samePlace) {
-            map.flyTo([to.lat, to.lng], Math.max(map.getZoom(), 8), {
-                animate: !reducedMotion,
-                duration: reducedMotion ? 0 : 0.45
-            });
-        } else {
-            map.flyToBounds([[from.lat, from.lng], [to.lat, to.lng]], {
-                paddingTopLeft: [72, 92],
-                paddingBottomRight: [72, 92],
-                maxZoom: 8,
-                animate: !reducedMotion,
-                duration: reducedMotion ? 0 : 0.55
-            });
-        }
-        window.setTimeout(finish, reducedMotion ? 80 : 900);
-    });
-}
-
-async function advanceJourney() {
-    if (!journey.active || journey.moving || journey.index >= journey.stops.length - 1) return;
-    clearTimeout(journey.timer);
-    const token = journey.token;
-    const nextIndex = journey.index + 1;
-    const next = journey.stops[nextIndex];
-    const previous = journey.index >= 0 ? journey.stops[journey.index] : next;
-    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    journey.moving = true;
-    updateJourneyControls();
-    if (!journey.person) {
-        await focusJourneySegment(next, next, token);
-        if (token !== journey.token) return;
-        journey.person = L.marker([next.lat, next.lng], {
-            icon: journeyIcon(),
-            interactive: false,
-            zIndexOffset: 2000
-        }).addTo(map);
-        journey.completed = [[next.lat, next.lng]];
-        journey.line.setLatLngs(journey.completed);
-    } else {
-        const focused = await focusJourneySegment(previous, next, token);
-        if (!focused) return;
-        const completedSegment = await animateJourneySegment(
-            previous,
-            next,
-            journey.completed,
-            reducedMotion ? 120 : 720,
-            token
-        );
-        if (!completedSegment) return;
-        journey.completed.push([next.lat, next.lng]);
-    }
-
-    journey.index = nextIndex;
-    journey.moving = false;
-    updateJourneyStatus(next);
-    updateJourneyControls();
-
-    if (journey.index >= journey.stops.length - 1) {
-        journey.playing = false;
-        journey.active = false;
-        resetJourneyButton('重播轨迹');
-        updateJourneyControls();
-        return;
-    }
-    scheduleJourneyStep();
-}
-
-function toggleJourneyPlayback() {
-    if (!journey.active) return;
-    if (journey.index >= journey.stops.length - 1) {
-        startJourney();
-        return;
-    }
-    journey.playing = !journey.playing;
-    clearTimeout(journey.timer);
-    updateJourneyControls();
-    if (journey.playing) scheduleJourneyStep();
-}
-
-function startJourney() {
-    stopJourney();
-    const button = document.getElementById('btnJourney');
-    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    journey.active = true;
-    journey.playing = true;
-    journey.stops = getJourneyStops();
-    renderJourneyTimeline();
-    button.textContent = '退出轨迹';
-    button.setAttribute('aria-pressed', 'true');
-    clearSel();
-    map.closePopup();
-    if (currentView !== 'china') switchView('china');
-
-    map.fitBounds(journey.stops.map(stop => [stop.lat, stop.lng]), {
-        padding: [64, 64],
-        maxZoom: 5,
-        animate: !reducedMotion
-    });
-
-    journey.line = L.polyline([], {
-        color: tone('--journey-line', '#536b85'),
-        weight: 2,
-        opacity: 0.88
-    }).addTo(map);
-    updateJourneyControls();
-    advanceJourney();
-}
-
-// =============================================================================
 // Timeline
 // =============================================================================
 function blink(slug) {
@@ -1248,8 +921,6 @@ journeyTimeTrack.addEventListener('pointerup', finishJourneyScrub);
 journeyTimeTrack.addEventListener('pointercancel', event => finishJourneyScrub(event, false));
 journeyTimeTrack.addEventListener('keydown', event => {
     if (!journey.stops.length) return;
-    const destinations = journeyDestinations();
-    let target;
     if (event.key === 'ArrowLeft') {
         event.preventDefault();
         seekAdjacentJourney(-1);
@@ -1259,11 +930,10 @@ journeyTimeTrack.addEventListener('keydown', event => {
         seekAdjacentJourney(1);
         return;
     }
-    else if (event.key === 'Home') target = destinations[0];
-    else if (event.key === 'End') target = destinations[destinations.length - 1];
+    else if (event.key === 'Home') seekJourneyBoundary('start');
+    else if (event.key === 'End') seekJourneyBoundary('end');
     else return;
     event.preventDefault();
-    seekJourneyIndex(target.index);
 });
 
 function isInteractiveShortcutTarget(target) {
@@ -1308,7 +978,7 @@ document.addEventListener('keydown', event => {
 
 window.addEventListener('eka-theme-change', () => {
     updateLayerStyles();
-    journey.line?.setStyle({ color: tone('--journey-line', '#536b85') });
+    journeyController.updateTheme();
 });
 
 document.getElementById('btnBackTop').addEventListener('click', ()=>{

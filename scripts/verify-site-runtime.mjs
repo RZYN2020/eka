@@ -19,20 +19,32 @@ try {
 
 	const homeState = await page.evaluate(() => {
 		const navigation = document.querySelector('.main-nav');
+		const browseMenu = document.querySelector('.mobile-nav-picker');
 		const themeToggle = document.querySelector('.theme-toggle');
 		return {
 			themePreference: document.documentElement.dataset.themePreference,
-			navigationLinks: navigation?.querySelectorAll('a').length,
-			navigationOverflow: navigation && getComputedStyle(navigation).overflowX,
+			navigationLinks: navigation?.querySelectorAll(':scope > a').length,
+			browseMenuVisible: browseMenu && getComputedStyle(browseMenu).display !== 'none',
 			pageFitsViewport: document.documentElement.scrollWidth <= window.innerWidth,
 			themeToggleVisible: themeToggle?.getBoundingClientRect().right <= window.innerWidth,
 		};
 	});
 	assert.equal(homeState.themePreference, 'auto', '首次访问应默认跟随系统主题');
 	assert.equal(homeState.navigationLinks, 5, '移动端必须保留全部主导航入口');
-	assert.equal(homeState.navigationOverflow, 'auto', '移动端主导航应允许横向滚动');
+	assert(homeState.browseMenuVisible, '移动端必须显示 Browse 折叠菜单');
 	assert(homeState.pageFitsViewport, '移动端首页不得产生页面级横向溢出');
 	assert(homeState.themeToggleVisible, '移动端主题入口必须保持可见');
+	await page.click('.mobile-nav-toggle');
+	assert.equal(
+		await page.$eval('.mobile-nav-picker', menu => menu.open),
+		true,
+		'移动端 Browse 菜单必须能够展开',
+	);
+	assert.equal(
+		await page.$$eval('.mobile-nav-menu a', links => links.length),
+		3,
+		'移动端 Browse 菜单必须包含分类、标签和关于入口',
+	);
 
 	await page.click('.theme-toggle');
 	await page.click('[data-theme-value="dark"]');

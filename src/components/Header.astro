@@ -3,20 +3,50 @@ import { site } from '../config/site';
 import ThemeToggle from './ThemeToggle.astro';
 
 const pathname = Astro.url.pathname;
+const primaryNav = site.nav.filter((item) => item.href === '/' || item.href === '/writing/');
+const browseNav = site.nav.filter((item) => item.href !== '/' && item.href !== '/writing/');
+const isCurrent = (href: string) => href === '/' ? pathname === '/' : pathname.startsWith(href);
+const isBrowseCurrent = browseNav.some((item) => isCurrent(item.href));
 ---
 
 <header class="site-header">
 	<nav class="main-nav" aria-label="主导航">
-		{site.nav.map((item) => (
-			<a href={item.href} aria-current={item.href === '/' ? pathname === '/' ? 'page' : undefined : pathname.startsWith(item.href) ? 'page' : undefined}>
+		{primaryNav.map((item) => (
+			<a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
 				{item.label}
 			</a>
 		))}
+		{browseNav.map((item) => (
+			<a class="nav-secondary" href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+				{item.label}
+			</a>
+		))}
+		<details class="mobile-nav-picker">
+			<summary class:list={['mobile-nav-toggle', { 'is-current': isBrowseCurrent }]}>Browse</summary>
+			<div class="mobile-nav-menu" role="group" aria-label="更多页面">
+				{browseNav.map((item) => (
+					<a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+						{item.label}
+					</a>
+				))}
+			</div>
+		</details>
 	</nav>
 	<div class="header-actions">
 		<nav class="social-nav" aria-label="其他链接">
-			<a href={site.links.rss}>RSS</a>
+			<a href="/search/" aria-current={pathname.startsWith('/search/') ? 'page' : undefined}>Search</a>
+			<a class="rss-link" href={site.links.rss}>RSS</a>
 		</nav>
 		<ThemeToggle />
 	</div>
 </header>
+
+<script>
+	const mobileNav = document.querySelector<HTMLDetailsElement>('.mobile-nav-picker');
+	document.addEventListener('click', (event) => {
+		if (mobileNav?.open && !mobileNav.contains(event.target as Node)) mobileNav.removeAttribute('open');
+	});
+	document.addEventListener('keydown', (event) => {
+		if (event.key === 'Escape') mobileNav?.removeAttribute('open');
+	});
+</script>

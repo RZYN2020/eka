@@ -1,0 +1,28 @@
+---
+import type { WritingEntry } from '../lib/content';
+import { writingSlug } from '../lib/content';
+
+interface Props {
+	newer?: WritingEntry;
+	older?: WritingEntry;
+}
+
+const { newer, older } = Astro.props;
+---
+
+{(newer || older) && (
+	<nav class="article-navigation" aria-label="继续阅读">
+		{newer ? (
+			<a href={`/writing/${writingSlug(newer.id)}/`} rel="prev">
+				<span><span aria-hidden="true">←</span> Newer</span>
+				<strong>{newer.data.title}</strong>
+			</a>
+		) : <span></span>}
+		{older && (
+			<a class="article-navigation-older" href={`/writing/${writingSlug(older.id)}/`} rel="next">
+				<span>Older <span aria-hidden="true">→</span></span>
+				<strong>{older.data.title}</strong>
+			</a>
+		)}
+	</nav>
+)}

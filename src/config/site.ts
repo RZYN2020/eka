@@ -2,7 +2,7 @@ export const site = {
 	url: 'https://yongzhen.space',
 	title: 'Eka',
 	fullTitle: 'Eka',
-	description: '关于技术、阅读与生活的个人博客。',
+	description: '江雨霏霏江草齐 六朝如梦鸟空啼',
 	nav: [
 		{ href: '/', label: 'Home' },
 		{ href: '/writing/', label: 'Writing' },

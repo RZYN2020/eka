@@ -1,3 +1,4 @@
+/* Map structure and legacy component rules. */
 
         :root {
             --bg:    #faf8f5;
@@ -295,4 +296,677 @@
             cursor: pointer; color: var(--muted); backdrop-filter: blur(6px);
         }
         @media (max-width: 767px) { .btn-mob { display: flex; } }
-    
+
+
+/* Theme tokens and visual refinements. Kept later to preserve the existing cascade. */
+:root,
+:root[data-theme="light"] {
+	--bg: #ffffff;
+	--card: #ffffff;
+	--text: #171717;
+	--muted: #737373;
+	--line: #dedede;
+	--map-raised: #f5f5f3;
+	--map-control: rgb(255 255 255 / 92%);
+	--map-selection: #f2f2ef;
+	--map-boundary: #aaa7a0;
+	--map-visited-fill: #68788a;
+	--map-visited-line: #536170;
+	--map-tile-filter: grayscale(0.82) saturate(0.38) contrast(0.9) brightness(1.04);
+	--journey-line: #536b85;
+	--sidebar-w: 360px;
+}
+
+:root[data-theme="dark"] {
+	--bg: #1e1e1e;
+	--card: #222222;
+	--text: #dddddc;
+	--muted: #aaaaa7;
+	--line: #3b3b39;
+	--map-raised: #292929;
+	--map-control: rgb(34 34 34 / 92%);
+	--map-selection: #2b2b2a;
+	--map-boundary: #656565;
+	--map-visited-fill: #8798a9;
+	--map-visited-line: #a5b2bf;
+	--map-tile-filter: grayscale(0.9) invert(0.88) hue-rotate(180deg) brightness(0.68) contrast(0.86);
+	--journey-line: #9eb7d2;
+}
+
+html,
+body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+	background: var(--bg);
+	color: var(--text);
+}
+
+.map-page {
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+}
+
+.map-body {
+	display: flex;
+	flex: 1;
+	min-height: 0;
+}
+
+.map-main {
+	position: relative;
+	flex: 1;
+	min-height: 0;
+}
+
+.sidebar-col {
+	flex-shrink: 0;
+	min-height: 0;
+}
+
+#map {
+	background: var(--bg);
+}
+
+.leaflet-tile-pane {
+	filter: var(--map-tile-filter);
+}
+
+.topbar {
+	position: relative;
+	z-index: 1100;
+	display: grid;
+	grid-template-columns: 1fr auto 1fr;
+	height: 52px;
+	padding: 0 18px;
+	background: var(--card);
+}
+
+.topbar .btn-back {
+	justify-self: start;
+}
+
+.topbar .theme-picker {
+	justify-self: end;
+}
+
+.topbar h1,
+.sidebar-top h2 {
+	font-family: inherit;
+	font-weight: 500;
+	letter-spacing: -0.01em;
+}
+
+.topbar h1 {
+	font-size: 14px;
+	justify-self: center;
+}
+
+.btn-back,
+.btn-mob {
+	border: 0;
+	border-radius: 0;
+	background: transparent;
+	color: var(--muted);
+}
+
+.btn-back:hover,
+.btn-mob:hover {
+	background: transparent;
+	color: var(--text);
+}
+
+.map-ctrls-bar {
+	top: 14px;
+	gap: 7px;
+}
+
+.map-ctrls {
+	padding: 0;
+	overflow: hidden;
+	border: 1px solid var(--line);
+	border-radius: 2px;
+	background: var(--map-control);
+	box-shadow: none;
+	backdrop-filter: blur(8px);
+}
+
+.map-ctrls[hidden] {
+	display: none;
+}
+
+.map-ctrl-btn {
+	padding: 6px 12px;
+	border-radius: 0;
+	color: var(--muted);
+	font-size: 12px;
+	font-weight: 400;
+	letter-spacing: 0;
+}
+
+.map-ctrl-btn + .map-ctrl-btn {
+	border-left: 1px solid var(--line);
+}
+
+.map-ctrl-btn.active {
+	background: var(--text);
+	color: var(--bg);
+	box-shadow: none;
+}
+
+.journey-button {
+	padding: 6px 12px;
+	border: 1px solid var(--line);
+	border-radius: 2px;
+	background: var(--map-control);
+	color: var(--muted);
+	cursor: pointer;
+	font: inherit;
+	font-size: 12px;
+	backdrop-filter: blur(8px);
+}
+
+.journey-button:hover,
+.journey-button[aria-pressed="true"] {
+	border-color: var(--text);
+	color: var(--text);
+}
+
+.journey-button:disabled {
+	cursor: wait;
+	opacity: 0.5;
+}
+
+.journey-status {
+	position: absolute;
+	bottom: 82px;
+	left: 22px;
+	z-index: 900;
+	display: grid;
+	min-width: 190px;
+	padding: 10px 12px;
+	border: 1px solid var(--line);
+	background: var(--map-control);
+	box-shadow: 0 6px 20px rgb(0 0 0 / 8%);
+	backdrop-filter: blur(8px);
+}
+
+.journey-timeline {
+	position: absolute;
+	bottom: 20px;
+	left: 50%;
+	z-index: 900;
+	width: min(calc(100% - 44px), 680px);
+	padding: 9px 12px 11px;
+	transform: translateX(-50%);
+	border: 1px solid var(--line);
+	background: var(--map-control);
+	backdrop-filter: blur(8px);
+}
+
+.journey-timeline[hidden] {
+	display: none;
+}
+
+.journey-time-meta {
+	display: grid;
+	grid-template-columns: 1fr auto 1fr;
+	align-items: baseline;
+	gap: 12px;
+	margin-bottom: 8px;
+	color: var(--muted);
+	font-size: 9px;
+	font-variant-numeric: tabular-nums;
+}
+
+.journey-time-meta strong {
+	color: var(--text);
+	font-size: 11px;
+	font-weight: 500;
+}
+
+.journey-time-meta span:last-child {
+	text-align: right;
+}
+
+.journey-time-track {
+	position: relative;
+	height: 9px;
+	cursor: ew-resize;
+	touch-action: none;
+}
+
+.journey-time-track.is-scrubbing {
+	cursor: grabbing;
+}
+
+.journey-time-track::before,
+.journey-time-fill {
+	position: absolute;
+	top: 4px;
+	left: 0;
+	height: 1px;
+	content: "";
+}
+
+.journey-time-track::before {
+	width: 100%;
+	background: var(--line);
+}
+
+.journey-time-fill {
+	z-index: 1;
+	width: 0;
+	background: var(--journey-line);
+	transition: width 240ms ease;
+}
+
+.journey-time-ticks {
+	position: absolute;
+	inset: 0;
+}
+
+.journey-time-ticks button {
+	position: absolute;
+	top: 3px;
+	width: 1px;
+	height: 3px;
+	padding: 0;
+	transform: translateX(-50%);
+	border: 0;
+	background: var(--line);
+	cursor: pointer;
+}
+
+.journey-time-ticks button:hover,
+.journey-time-ticks button:focus-visible {
+	background: var(--text);
+	outline: none;
+}
+
+.journey-time-ticks button.is-stay {
+	top: 1px;
+	width: 2px;
+	height: 7px;
+	background: var(--muted);
+}
+
+.journey-time-ticks button.is-phase {
+	top: 0;
+	width: 3px;
+	height: 9px;
+	background: var(--text);
+}
+
+.journey-time-cursor {
+	position: absolute;
+	top: 1px;
+	left: 0;
+	z-index: 2;
+	width: 7px;
+	height: 7px;
+	transform: translateX(-50%);
+	border: 1px solid var(--card);
+	border-radius: 50%;
+	background: var(--journey-line);
+	box-shadow: 0 0 0 1px var(--journey-line);
+	transition: left 240ms ease;
+}
+
+.journey-status.is-changing > :not(.journey-actions) {
+	animation: journey-reveal 260ms ease-out;
+}
+
+.journey-status[hidden] {
+	display: none;
+}
+
+.journey-status-head,
+.journey-actions {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+}
+
+.journey-status span {
+	color: var(--muted);
+	font-size: 10px;
+}
+
+.journey-status strong {
+	font-size: 15px;
+	font-weight: 500;
+}
+
+.journey-actions {
+	margin-top: 9px;
+	padding-top: 8px;
+	border-top: 1px solid var(--line);
+}
+
+.journey-actions button {
+	padding: 0;
+	border: 0;
+	background: transparent;
+	color: var(--muted);
+	cursor: pointer;
+	font: inherit;
+	font-size: 11px;
+}
+
+.journey-actions button:hover {
+	color: var(--text);
+}
+
+.journey-actions button:disabled {
+	cursor: default;
+	opacity: 0.38;
+}
+
+.journey-avatar {
+	display: block;
+	width: 36px;
+	height: 36px;
+	border: 2px solid #fff;
+	border-radius: 50%;
+	background-image: url("/slides/proxy/images/yuki.jpg");
+	background-position: 53% 18%;
+	background-size: 400% auto;
+	box-shadow: 0 0 0 2px color-mix(in srgb, var(--journey-line) 60%, transparent), 0 2px 8px rgb(0 0 0 / 28%);
+	animation: journey-step 420ms ease-in-out infinite alternate;
+}
+
+@keyframes journey-reveal {
+	from { opacity: 0; transform: translateY(3px); }
+	to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes journey-step {
+	from { transform: translateY(0); }
+	to { transform: translateY(-2px); }
+}
+
+.btn-global {
+	padding: 7px 13px;
+	border-color: var(--line);
+	border-radius: 2px;
+	background: var(--map-control);
+	box-shadow: none;
+	color: var(--text);
+	font-size: 12px;
+	font-weight: 400;
+}
+
+.btn-global:hover {
+	border-color: var(--text);
+	background: var(--card);
+	box-shadow: none;
+}
+
+.sidebar {
+	background: var(--card);
+	box-shadow: -1px 0 0 var(--line);
+}
+
+.sidebar-top {
+	padding: 20px 22px 14px;
+}
+
+.sidebar-top h2 {
+	font-size: 16px;
+}
+
+.sidebar-top .sub {
+	margin-top: 2px;
+	font-size: 11px;
+}
+
+.sidebar-scroll {
+	padding: 12px 22px 20px;
+}
+
+.sidebar-foot {
+	display: none;
+}
+
+.sidebar-scroll::-webkit-scrollbar-thumb,
+.pu-list::-webkit-scrollbar-thumb {
+	background: var(--line);
+}
+
+.back-top-btn {
+	border-color: var(--line);
+	background: transparent;
+	color: var(--muted);
+}
+
+.back-top-btn:hover {
+	background: var(--map-selection);
+	color: var(--text);
+}
+
+.tl::before {
+	left: 5px;
+	width: 1px;
+	background: var(--line);
+}
+
+.tl-base,
+.tl-base-sub,
+.tl-trip {
+	border-radius: 0;
+	box-shadow: none;
+}
+
+.tl-base {
+	padding: 14px 30px 14px 24px;
+	border: 0;
+	border-top: 1px solid var(--line);
+	background: transparent;
+}
+
+.tl-base:first-child {
+	border-top: 0;
+}
+
+.tl-base:hover,
+.tl-base.sel,
+.tl-base-sub:hover,
+.tl-base-sub.sel,
+.tl-trip:hover,
+.tl-trip.sel {
+	border-color: var(--line);
+	background: var(--map-selection);
+	box-shadow: none;
+}
+
+.tl-base-sub {
+	border: 1px solid var(--line);
+	background: transparent;
+}
+
+.tl-trip {
+	border: 0;
+}
+
+.tl-dot {
+	left: 0;
+	width: 11px;
+	height: 11px;
+	border-width: 2px;
+	border-radius: 50%;
+	transform: none;
+	box-shadow: none !important;
+}
+
+.tl-dot-sub {
+	width: 9px;
+	height: 9px;
+	border-width: 1.5px;
+	border-radius: 50%;
+	transform: none;
+}
+
+.tl-period {
+	font-size: 10px;
+	font-weight: 500;
+	letter-spacing: 0.03em;
+}
+
+.tl-city,
+.tl-trip-city,
+.pu-city {
+	font-weight: 500;
+}
+
+.tl-city {
+	font-size: 14px;
+}
+
+.tl-toggle {
+	padding: 0;
+	border: 0;
+	background: transparent;
+	border-radius: 0;
+	color: var(--muted);
+	font: inherit;
+}
+
+.tl-toggle:hover {
+	background: transparent;
+	color: var(--text);
+}
+
+.blink {
+	margin-left: 6px;
+	color: var(--muted);
+	font-size: 10px;
+	font-weight: 400;
+}
+
+.blink:hover {
+	color: var(--text);
+}
+
+.leaflet-marker-icon > div {
+	box-shadow: 0 0 0 2px rgb(255 255 255 / 75%) !important;
+	transform-origin: center;
+	transition: scale 150ms ease;
+}
+
+.leaflet-marker-icon.is-pulsing > div {
+	scale: 1.4;
+}
+
+.leaflet-control-zoom {
+	overflow: hidden;
+	border: 1px solid var(--line) !important;
+	border-radius: 2px !important;
+	box-shadow: none !important;
+}
+
+.leaflet-control-zoom a,
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+	background: var(--card);
+	color: var(--text);
+}
+
+.leaflet-control-zoom a {
+	border-color: var(--line) !important;
+}
+
+.leaflet-control-attribution {
+	background: color-mix(in srgb, var(--card) 82%, transparent) !important;
+	color: var(--muted);
+	font-size: 9px;
+}
+
+.leaflet-control-attribution a {
+	color: inherit;
+}
+
+.leaflet-popup-content-wrapper {
+	border-color: var(--line);
+	border-radius: 2px;
+	box-shadow: 0 8px 24px rgb(0 0 0 / 12%);
+}
+
+.pu-note {
+	color: var(--muted);
+}
+
+.loader-cover {
+	background: color-mix(in srgb, var(--bg) 78%, transparent);
+}
+
+.map-ctrl-btn:disabled {
+	cursor: progress;
+	opacity: 0.55;
+}
+
+.loader-ring {
+	width: 28px;
+	height: 28px;
+	border-width: 2px;
+	border-color: var(--line);
+	border-top-color: var(--text);
+}
+
+@media (max-width: 767px) {
+	.map-ctrls-bar {
+		top: 10px;
+		left: 10px;
+		transform: none;
+	}
+
+	.journey-button {
+		padding-inline: 9px;
+	}
+
+	.journey-status {
+		bottom: 76px;
+		left: 10px;
+	}
+
+	.journey-timeline {
+		bottom: 10px;
+		width: calc(100% - 20px);
+	}
+
+	.btn-mob {
+		position: fixed;
+		top: 60px;
+		right: 10px;
+		z-index: 600;
+	}
+
+	.map-sidebar-open .map-ctrls-bar {
+		display: none;
+	}
+
+	.sidebar-col.open {
+		max-width: 100vw;
+		padding: 0;
+		background: var(--card);
+	}
+
+	.sidebar-col.open .sidebar {
+		border-radius: 0;
+		box-shadow: none;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	#map,
+	.loader-cover,
+	.tl-trips,
+	.leaflet-marker-icon > div {
+		transition: none;
+	}
+
+	.journey-avatar,
+	.journey-status.is-changing > :not(.journey-actions) {
+		animation: none;
+	}
+}

@@ -3,8 +3,9 @@ import { site } from '../config/site';
 ---
 
 <footer class="site-footer">
+	<span>© {new Date().getFullYear()} {site.title}</span>
 	<nav aria-label="页脚导航">
-		{site.nav.map((item) => <a href={item.href}>{item.label}</a>)}
+		<a href="/search/">Search</a>
+		<a href={site.links.rss}>RSS</a>
 	</nav>
-	<span>Copyright © {new Date().getFullYear()}</span>
 </footer>

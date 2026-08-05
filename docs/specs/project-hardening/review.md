@@ -28,3 +28,23 @@
 ## 🔴 Blocking
 
 - （无）
+
+## 2026-08-05 仓库治理复审
+
+### 🟢 Passing
+
+- 资产预算：庐山游记 20 张大体积 PNG 已替换为 WebP，内容目录由约 160 MiB 降至 30 MiB；GeoJSON 总量由约 25 MiB 降至 4.5 MiB，并由 `scripts/verify-repo-health.mjs` 持续约束。
+- 模块边界：人生轨迹状态、动画与时间轴逻辑迁移到 `src/lib/travel-map-journey.js`；地图运行时覆盖点击、拖动、Home/End 键盘导航和图层懒加载。
+- 样式治理：`map.css` 与 `map-theme.css` 合并为单一地图样式入口，消除跨文件重复选择器的隐式覆盖。
+- 依赖与验证：移除未使用的模块化 `d3` 依赖，保留幻灯片所需的 vendored D3；完整验证由 `scripts/verify.mjs` 分阶段调度，并提供 fast/runtime 两种子集。
+- 文档治理：删除 About 单行文案调整产生的 112 行一次性过程材料，README 明确只长期保留复杂功能方案和设计决策。
+- 验证证据：`pnpm check` 为 74 个文件、0 errors / 0 warnings / 0 hints；`pnpm build` 成功生成 121 个页面与 PDF；`pnpm verify` 共 13 项通过，地图运行时为 35 个标记、缩放 5 → 7；冻结 lockfile 离线校验通过。
+- 风险扫描：Correctness、Project standards、Security、Robustness、Performance、Testability、API contract 与 Architecture 均无阻塞项；未执行部署、推送或历史重写。
+
+### 🟡 Improvement
+
+- （无）
+
+### 🔴 Blocking
+
+- （无）

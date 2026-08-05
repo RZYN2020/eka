@@ -9,7 +9,7 @@ const [
 	astroConfig,
 	globalCss,
 	contentCss,
-	mapThemeCss,
+	mapCss,
 	baseLayout,
 	mapPage,
 	searchPage,
@@ -20,7 +20,7 @@ const [
 	read('astro.config.mjs'),
 	read('src/styles/global.css'),
 	read('src/styles/content.css'),
-	read('src/styles/map-theme.css'),
+	read('src/styles/map.css'),
 	read('src/layouts/BaseLayout.astro'),
 	read('src/pages/map/index.astro'),
 	read('src/pages/search.astro'),
@@ -64,7 +64,7 @@ requireContract(
 	'Display equations are not contained by a horizontal scroller on narrow screens.',
 );
 requireContract(
-	/@media\s*\(max-width:\s*767px\)[^{]*\{[\s\S]*?\.sidebar-col\.open\s*\{[^}]*max-width:\s*100vw/s.test(mapThemeCss),
+	/@media\s*\(max-width:\s*767px\)[^{]*\{[\s\S]*?\.sidebar-col\.open\s*\{[^}]*max-width:\s*100vw/s.test(mapCss),
 	'The open mobile map sidebar can exceed the viewport below 360px.',
 );
 requireContract(
