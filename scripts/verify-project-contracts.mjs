@@ -48,6 +48,10 @@ requireContract(!searchPage.includes('item: any'), 'Search documents are not typ
 requireContract(articleImages.includes("'pointercancel'"), 'Image gallery drag state is not cleared on pointer cancellation.');
 requireContract(articleImages.includes("'lostpointercapture'"), 'Image gallery drag state is not cleared after lost pointer capture.');
 requireContract(
+	articleImages.includes('image.draggable = false'),
+	'Image gallery pictures still allow native browser dragging, which interrupts horizontal pointer scrolling.',
+);
+requireContract(
 	!/\bfrom\s+['"][^'"]+\.ts['"]/.test(contentModelVerifier),
 	'Content verification imports TypeScript directly and is incompatible with the minimum Node version.',
 );
