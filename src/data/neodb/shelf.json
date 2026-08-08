@@ -1,20 +1,8 @@
 {
-  "syncedAt": "2026-08-03T21:31:29.195Z",
+  "syncedAt": "2026-08-08T20:49:44.432Z",
   "source": "https://neodb.social",
   "shelves": {
     "progress": [
-      {
-        "createdTime": "2026-08-03T15:24:03.098Z",
-        "comment": "",
-        "ratingGrade": null,
-        "item": {
-          "uuid": "5wURXjcN1HgtuGap9K8ZLJ",
-          "url": "https://neodb.social/book/5wURXjcN1HgtuGap9K8ZLJ",
-          "category": "book",
-          "title": "烽火與流星：蕭梁王朝的文學與文化",
-          "cover": "https://neodb.social/m/book/2021/10/23f866ca8e-9d0c-4b96-9ed3-bcb4db270eb9.jpg"
-        }
-      },
       {
         "createdTime": "2026-07-31T03:49:28.761Z",
         "comment": "",
@@ -53,6 +41,18 @@
       }
     ],
     "complete": [
+      {
+        "createdTime": "2026-08-08T06:16:24.600Z",
+        "comment": "",
+        "ratingGrade": 9,
+        "item": {
+          "uuid": "5wURXjcN1HgtuGap9K8ZLJ",
+          "url": "https://neodb.social/book/5wURXjcN1HgtuGap9K8ZLJ",
+          "category": "book",
+          "title": "烽火與流星：蕭梁王朝的文學與文化",
+          "cover": "https://neodb.social/m/book/2021/10/23f866ca8e-9d0c-4b96-9ed3-bcb4db270eb9.jpg"
+        }
+      },
       {
         "createdTime": "2026-08-03T15:23:34.753Z",
         "comment": "",
