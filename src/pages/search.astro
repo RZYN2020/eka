@@ -109,7 +109,7 @@ const documents = writing.map((entry) => ({
 <style>
 	.search-box {
 		display: block;
-		width: min(100%, 700px);
+		width: min(100%, var(--layout-search));
 		margin-bottom: 16px;
 	}
 
@@ -145,7 +145,7 @@ const documents = writing.map((entry) => ({
 
 	.search-results {
 		gap: 0;
-		width: min(100%, 720px);
+		width: min(100%, var(--layout-wide));
 		border-top: 1px solid var(--line);
 	}
 

@@ -89,10 +89,10 @@
 .pagination {
 	display: grid;
 	grid-template-columns: minmax(70px, 1fr) auto minmax(70px, 1fr);
-	gap: 20px;
+	gap: var(--space-5);
 	align-items: center;
-	margin-top: 56px;
-	padding-top: 20px;
+	margin-top: var(--space-10);
+	padding-top: var(--space-5);
 	border-top: 1px solid var(--line);
 	color: var(--muted);
 	font-size: 12px;
@@ -165,7 +165,7 @@
 
 .article-header,
 .article-shell {
-	width: min(100%, 680px);
+	width: min(100%, var(--layout-reading));
 	margin-inline: auto;
 }
 
@@ -174,7 +174,7 @@
 }
 
 .article-header {
-	margin-bottom: 48px;
+	margin-bottom: var(--space-9);
 }
 
 .article-kicker {
@@ -215,9 +215,9 @@
 }
 
 .comments {
-	width: min(100%, 680px);
-	margin: 72px auto 0;
-	padding-top: 28px;
+	width: min(100%, var(--layout-reading));
+	margin: var(--space-12) auto 0;
+	padding-top: var(--space-7);
 	border-top: 1px solid var(--line);
 }
 
@@ -225,9 +225,9 @@
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
 	gap: 28px;
-	width: min(100%, 680px);
-	margin: 72px auto 0;
-	padding-top: 24px;
+	width: min(100%, var(--layout-reading));
+	margin: var(--space-12) auto 0;
+	padding-top: var(--space-6);
 	border-top: 1px solid var(--line);
 }
 
@@ -754,7 +754,7 @@
 	.article-navigation {
 		grid-template-columns: 1fr;
 		gap: 22px;
-		margin-top: 56px;
+		margin-top: var(--space-10);
 	}
 
 	.article-navigation > span:empty {
