@@ -2,21 +2,57 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="About">
-	<div class="about-panel">
-		<p class="about-placeholder" aria-hidden="true">…</p>
+<BaseLayout
+	title="About"
+	description="关于 Eka：一个在北京写代码、怀念南京，也把博客当作铁盒子的人。"
+>
+	<section class="about-panel">
+		<header class="page-heading about-heading">
+			<h1>About</h1>
+		</header>
+
+		<div class="about-copy">
+			<p>
+				现在靠写代码为生，但在 AI 的冲击下，也不知道还能写多久。即便没乘上模型的东风，活到 AGI，应该也总有一口饭吃。
+			</p>
+
+			<p>西北人，在南京上过六年学。2026 年，24 岁，开始在北京工作。</p>
+
+			<p>
+				在南京，历史好像是活的。六朝、明，还有民国，都铺在大街小巷里。在北京，日常的工作和城市生活却压倒了一切历史。因此常常怀念南京。
+			</p>
+
+			<p>上班以后，只有晚上回家后的一两个小时属于自己，可以做些无用的事情。</p>
+
+			<p>
+				这个博客，本来是大学时效仿许多厉害的程序员建的，想在这里写一些技术文章。那时也希望，有一天自己能在技术上有些真知灼见。后来觉得，还有一些技术之外的东西，我更想写下来。
+			</p>
+
+			<p>
+				高中毕业前，曾和朋友计划把一些有纪念意义的东西装进铁盒，埋在学校花园里；若干年后，再回来看看。只是记忆模糊，也想不起最后有没有埋下去。
+			</p>
+
+			<p>这个博客，大概也是我的铁盒子。</p>
+
+			<p>存一些有意思的技术，一些感想，一些历史，还有一些没有想明白的问题。</p>
+		</div>
+
+		<h2>Elsewhere</h2>
 		<nav class="about-explore" aria-label="相关页面">
 			<ul>
 				<li>
 					<a href="/media/">Media</a>
+					<span>最近读过和看过的东西</span>
 				</li>
 				<li>
 					<a href="/map/">Map</a>
+					<span>去过的地方</span>
 				</li>
 				<li>
 					<a href="/resume/">Résumé</a>
+					<span>关于工作和经历</span>
 				</li>
 			</ul>
 		</nav>
-	</div>
+	</section>
 </BaseLayout>

@@ -1,8 +1,20 @@
 {
-  "syncedAt": "2026-07-26T10:14:54.580Z",
+  "syncedAt": "2026-08-08T20:49:44.432Z",
   "source": "https://neodb.social",
   "shelves": {
     "progress": [
+      {
+        "createdTime": "2026-07-31T03:49:28.761Z",
+        "comment": "",
+        "ratingGrade": null,
+        "item": {
+          "uuid": "7P6eOU4OCUbWE77PrGKb8X",
+          "url": "https://neodb.social/book/7P6eOU4OCUbWE77PrGKb8X",
+          "category": "book",
+          "title": "脑与数学",
+          "cover": "https://neodb.social/m/item/doubanbook/2023/10/10/e4ec89ca-1466-4ada-b934-7c7d76c1a91f.jpg"
+        }
+      },
       {
         "createdTime": "2026-07-01T12:18:22.077Z",
         "comment": "",
@@ -29,6 +41,42 @@
       }
     ],
     "complete": [
+      {
+        "createdTime": "2026-08-08T06:16:24.600Z",
+        "comment": "",
+        "ratingGrade": 9,
+        "item": {
+          "uuid": "5wURXjcN1HgtuGap9K8ZLJ",
+          "url": "https://neodb.social/book/5wURXjcN1HgtuGap9K8ZLJ",
+          "category": "book",
+          "title": "烽火與流星：蕭梁王朝的文學與文化",
+          "cover": "https://neodb.social/m/book/2021/10/23f866ca8e-9d0c-4b96-9ed3-bcb4db270eb9.jpg"
+        }
+      },
+      {
+        "createdTime": "2026-08-03T15:23:34.753Z",
+        "comment": "",
+        "ratingGrade": 7,
+        "item": {
+          "uuid": "2ngF8fAElTPdxO3I8nNJGf",
+          "url": "https://neodb.social/book/2ngF8fAElTPdxO3I8nNJGf",
+          "category": "book",
+          "title": "东晋门阀政治",
+          "cover": "https://neodb.social/m/book/2021/09/1516490b2c-885c-4bb6-a7a6-e3f3a059696d.jpg"
+        }
+      },
+      {
+        "createdTime": "2026-08-01T17:18:06.954Z",
+        "comment": "",
+        "ratingGrade": 7,
+        "item": {
+          "uuid": "6qMyccVQzCJfyY9rFP8xff",
+          "url": "https://neodb.social/book/6qMyccVQzCJfyY9rFP8xff",
+          "category": "book",
+          "title": "魏晋南北朝史略",
+          "cover": "https://neodb.social/m/book/2021/09/265ea76988-9131-4c59-9438-9da4efa842d4.jpg"
+        }
+      },
       {
         "createdTime": "2026-07-26T08:11:58.976Z",
         "comment": "",
@@ -590,7 +638,7 @@
           "url": "https://neodb.social/movie/6TlNfO3Svt0mcuUh67RnpO",
           "category": "movie",
           "title": "The Godfather",
-          "cover": "https://neodb.social/m/movie/2021/09/1324f7bdb2-898a-450b-95ca-73c4d1b92011.jpg"
+          "cover": "https://neodb.social/m/item/tmdb_movie/2026/07/27/e26c144b-6c9f-45a7-9112-01670bf3ce5a.jpg"
         }
       },
       {
@@ -1868,6 +1916,78 @@
     ],
     "wishlist": [
       {
+        "createdTime": "2026-07-31T03:48:48.018Z",
+        "comment": "",
+        "ratingGrade": null,
+        "item": {
+          "uuid": "1462hsnHpdKEghSXJLrBWy",
+          "url": "https://neodb.social/book/1462hsnHpdKEghSXJLrBWy",
+          "category": "book",
+          "title": "Where Mathematics Come From: How the Embodied Mind Brings Mathematics into Being",
+          "cover": "https://neodb.social/m/book/2022/11/25d5205e71-2804-4113-baca-20789ee480a3.jpg"
+        }
+      },
+      {
+        "createdTime": "2026-07-28T16:03:17.192Z",
+        "comment": "",
+        "ratingGrade": null,
+        "item": {
+          "uuid": "1ITlnwIPgYIRFYwGvuGwfO",
+          "url": "https://neodb.social/book/1ITlnwIPgYIRFYwGvuGwfO",
+          "category": "book",
+          "title": "陈寅恪魏晋南北朝史讲演录",
+          "cover": "https://neodb.social/m/book/2021/09/16b6bc7ca4-7292-4a1f-b8de-6b6a9c1bb879.jpg"
+        }
+      },
+      {
+        "createdTime": "2026-07-28T15:56:43.700Z",
+        "comment": "",
+        "ratingGrade": null,
+        "item": {
+          "uuid": "1c81bP5nPcih45jgks7IMg",
+          "url": "https://neodb.social/book/1c81bP5nPcih45jgks7IMg",
+          "category": "book",
+          "title": "玄学与魏晋士人心态",
+          "cover": "https://neodb.social/m/book/2021/12/09e56303d0-ec95-4319-9e52-2978f7d9801f.jpg"
+        }
+      },
+      {
+        "createdTime": "2026-07-28T15:52:32.358Z",
+        "comment": "",
+        "ratingGrade": null,
+        "item": {
+          "uuid": "4Ycabz6shBPQxuMqBs0qh8",
+          "url": "https://neodb.social/book/4Ycabz6shBPQxuMqBs0qh8",
+          "category": "book",
+          "title": "隋唐制度渊源略论稿",
+          "cover": "https://neodb.social/m/book/2021/10/224c69fce0-961e-4634-b744-f3d5ba548bfd.jpg"
+        }
+      },
+      {
+        "createdTime": "2026-07-28T15:50:02.252Z",
+        "comment": "",
+        "ratingGrade": null,
+        "item": {
+          "uuid": "7MtZHvD4zstU4OIxleE1Qj",
+          "url": "https://neodb.social/book/7MtZHvD4zstU4OIxleE1Qj",
+          "category": "book",
+          "title": "在汉帝国的阴影下",
+          "cover": "https://neodb.social/m/book/2021/09/17c8b55c73-c512-447c-8620-877360468d85.jpg"
+        }
+      },
+      {
+        "createdTime": "2026-07-26T15:02:00.853Z",
+        "comment": "",
+        "ratingGrade": null,
+        "item": {
+          "uuid": "5NQCxjnsb4YamxVpVJ8qUu",
+          "url": "https://neodb.social/book/5NQCxjnsb4YamxVpVJ8qUu",
+          "category": "book",
+          "title": "因子投资：方法与实践",
+          "cover": "https://neodb.social/m/book/2022/05/010a157b2d-ce89-42e5-80f5-6c4de097b839.jpg"
+        }
+      },
+      {
         "createdTime": "2026-06-25T03:44:12.106Z",
         "comment": "",
         "ratingGrade": null,
@@ -2105,18 +2225,6 @@
           "category": "book",
           "title": "万历十五年",
           "cover": "https://neodb.social/m/book/2021/09/1535080f33-7dd8-465f-b924-ace42d2978e0.jpg"
-        }
-      },
-      {
-        "createdTime": "2026-03-27T18:00:44.499Z",
-        "comment": "",
-        "ratingGrade": null,
-        "item": {
-          "uuid": "2ngF8fAElTPdxO3I8nNJGf",
-          "url": "https://neodb.social/book/2ngF8fAElTPdxO3I8nNJGf",
-          "category": "book",
-          "title": "东晋门阀政治",
-          "cover": "https://neodb.social/m/book/2021/09/1516490b2c-885c-4bb6-a7a6-e3f3a059696d.jpg"
         }
       },
       {
@@ -4792,7 +4900,7 @@
           "url": "https://neodb.social/movie/6bLbOk0scJtJ0wjIEbtCzM",
           "category": "movie",
           "title": "Trilogy: The Weeping Meadow",
-          "cover": "https://neodb.social/m/movie/2021/09/1693cb872e-5323-40d9-a80b-f9b57f407a7e.jpg"
+          "cover": "https://neodb.social/m/item/movie/2026/07/26/43728e87-0fe8-4862-88a6-bcee47a00eed.jpeg"
         }
       },
       {
@@ -5661,6 +5769,18 @@
       }
     ],
     "dropped": [
+      {
+        "createdTime": "2026-07-31T03:49:21.715Z",
+        "comment": "",
+        "ratingGrade": null,
+        "item": {
+          "uuid": "4IB7d4Gm4Tcvu5RFa0Mse0",
+          "url": "https://neodb.social/book/4IB7d4Gm4Tcvu5RFa0Mse0",
+          "category": "book",
+          "title": "The Number Sense: How the Mind Creates Mathematics",
+          "cover": "https://neodb.social/m/book/2021/11/27d960dc97-aa4a-440d-95e8-9cbb79ca7fb6.jpg"
+        }
+      },
       {
         "createdTime": "2026-05-18T16:24:19.252Z",
         "comment": "",
