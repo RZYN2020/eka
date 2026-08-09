@@ -239,23 +239,29 @@ main {
 }
 
 .about-panel h2 {
-	margin: 48px 0 12px;
+	margin: 56px 0 12px;
 	font-size: 13px;
 	font-weight: 500;
 	letter-spacing: 0.04em;
 	text-transform: uppercase;
 }
 
-.about-panel > p {
-	max-width: 40rem;
-	margin: 0 0 18px;
-	color: var(--muted);
-	line-height: 1.85;
+.about-heading {
+	margin-bottom: 40px;
 }
 
-.about-panel .about-lede {
+.about-copy {
+	max-width: 40rem;
+}
+
+.about-copy p {
+	max-width: 40rem;
+	margin: 0 0 18px;
 	color: var(--ink);
-	font-size: 18px;
+	font-size: 16px;
+	font-weight: 400;
+	line-height: 1.85;
+	text-wrap: pretty;
 }
 
 .about-explore ul {
