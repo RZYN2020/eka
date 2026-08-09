@@ -111,7 +111,6 @@ const journey = journeyController.state;
 const startJourney = () => journeyController.start();
 const stopJourney = () => journeyController.stop();
 const advanceJourney = () => journeyController.advance();
-const seekJourneyIndex = index => journeyController.seek(index);
 const toggleJourneyPlayback = () => journeyController.togglePlayback();
 const seekAdjacentJourney = direction => journeyController.seekAdjacent(direction);
 const seekJourneyBoundary = edge => journeyController.seekBoundary(edge);

@@ -1,3 +1,28 @@
+:root {
+	/* Layout */
+	--layout-shell-max: 60rem;
+	--layout-reading: 42.5rem;
+	--layout-wide: 45rem;
+	--layout-search: 43.75rem;
+	--layout-gutter: 2.5rem;
+	--layout-gutter-compact: 1.75rem;
+
+	/* Spacing */
+	--space-1: 0.25rem;
+	--space-2: 0.5rem;
+	--space-3: 0.75rem;
+	--space-4: 1rem;
+	--space-5: 1.25rem;
+	--space-6: 1.5rem;
+	--space-7: 2rem;
+	--space-8: 2.5rem;
+	--space-9: 3rem;
+	--space-10: 3.5rem;
+	--space-11: 4rem;
+	--space-12: 4.5rem;
+	--space-13: 5rem;
+}
+
 :root,
 :root[data-theme="light"] {
 	color-scheme: light;

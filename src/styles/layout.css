@@ -1,5 +1,5 @@
 .shell {
-	width: min(100% - 40px, 960px);
+	width: min(calc(100% - (2 * var(--layout-gutter))), var(--layout-shell-max));
 	margin-inline: auto;
 }
 
@@ -14,7 +14,7 @@
 }
 
 .site-header {
-	min-height: 72px;
+	min-height: var(--space-12);
 	justify-content: space-between;
 }
 
@@ -144,12 +144,12 @@
 
 main {
 	min-height: calc(100vh - 176px);
-	padding: 64px 0 80px;
+	padding: var(--space-11) 0 var(--space-13);
 }
 
 .site-footer {
 	justify-content: space-between;
-	padding: 24px 0 32px;
+	padding: var(--space-6) 0 var(--space-7);
 	color: var(--faint);
 	font-size: 12px;
 }
@@ -160,8 +160,8 @@ main {
 
 .home-intro,
 .page-heading {
-	width: min(100%, 680px);
-	margin: 0 0 64px;
+	width: min(100%, var(--layout-reading));
+	margin: 0 0 var(--space-11);
 }
 
 .home-intro h1,
@@ -175,7 +175,7 @@ main {
 
 .home-intro p {
 	max-width: 32rem;
-	margin: 14px 0 0;
+	margin: var(--space-3) 0 0;
 	color: var(--muted);
 	font-family: ui-serif, "Songti SC", STSong, "Noto Serif CJK SC", serif;
 	font-size: 18px;
@@ -189,18 +189,18 @@ main {
 
 .home-section,
 .taxonomy-sections > section {
-	margin: 0 0 64px;
+	margin: 0 0 var(--space-11);
 }
 
 .home-section {
-	width: min(100%, 720px);
+	width: min(100%, var(--layout-wide));
 }
 
 .section-rule {
 	display: flex;
 	align-items: baseline;
 	justify-content: space-between;
-	margin-bottom: 16px;
+	margin-bottom: var(--space-4);
 }
 
 .section-rule h2,
@@ -215,14 +215,14 @@ main {
 .home-topics {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
-	gap: 0 28px;
+	gap: 0 var(--space-7);
 	border-top: 1px solid var(--line);
 }
 
 .home-topics a {
 	display: flex;
 	justify-content: space-between;
-	padding: 12px 0;
+	padding: var(--space-3) 0;
 	border-bottom: 1px solid var(--line);
 	font-size: 14px;
 }
@@ -235,11 +235,11 @@ main {
 
 .about-panel,
 .resume-toolbar {
-	width: min(100%, 680px);
+	width: min(100%, var(--layout-reading));
 }
 
 .about-panel h2 {
-	margin: 48px 0 12px;
+	margin: var(--space-9) 0 var(--space-3);
 	font-size: 13px;
 	font-weight: 500;
 	letter-spacing: 0.04em;
@@ -248,7 +248,7 @@ main {
 
 .about-panel > p {
 	max-width: 40rem;
-	margin: 0 0 18px;
+	margin: 0 0 var(--space-6);
 	color: var(--muted);
 	line-height: 1.85;
 }
@@ -270,7 +270,7 @@ main {
 	grid-template-columns: 110px minmax(0, 1fr);
 	gap: 20px;
 	align-items: baseline;
-	padding: 12px 0;
+	padding: var(--space-3) 0;
 	border-bottom: 1px solid var(--line);
 }
 
@@ -298,12 +298,12 @@ main {
 
 @media (max-width: 700px) {
 	.shell {
-		width: min(100% - 28px, 960px);
+		width: min(calc(100% - (2 * var(--layout-gutter-compact))), var(--layout-shell-max));
 	}
 
 	.site-header {
 		gap: 8px;
-		min-height: 64px;
+		min-height: var(--space-11);
 	}
 
 	.main-nav {
@@ -348,12 +348,12 @@ main {
 	}
 
 	main {
-		padding: 48px 0 64px;
+		padding: var(--space-9) 0 var(--space-11);
 	}
 
 	.home-intro,
 	.page-heading {
-		margin-bottom: 48px;
+		margin-bottom: var(--space-9);
 	}
 
 	.home-topics {
