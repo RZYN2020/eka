@@ -1,18 +1,18 @@
 {
-  "syncedAt": "2026-08-09T20:53:14.037Z",
+  "syncedAt": "2026-08-10T21:03:25.430Z",
   "source": "https://neodb.social",
   "shelves": {
     "progress": [
       {
-        "createdTime": "2026-07-31T03:49:28.761Z",
+        "createdTime": "2026-08-10T05:22:07.323Z",
         "comment": "",
         "ratingGrade": null,
         "item": {
-          "uuid": "7P6eOU4OCUbWE77PrGKb8X",
-          "url": "https://neodb.social/book/7P6eOU4OCUbWE77PrGKb8X",
+          "uuid": "5NQCxjnsb4YamxVpVJ8qUu",
+          "url": "https://neodb.social/book/5NQCxjnsb4YamxVpVJ8qUu",
           "category": "book",
-          "title": "脑与数学",
-          "cover": "https://neodb.social/m/item/doubanbook/2023/10/10/e4ec89ca-1466-4ada-b934-7c7d76c1a91f.jpg"
+          "title": "因子投资：方法与实践",
+          "cover": "https://neodb.social/m/book/2022/05/010a157b2d-ce89-42e5-80f5-6c4de097b839.jpg"
         }
       },
       {
@@ -41,6 +41,18 @@
       }
     ],
     "complete": [
+      {
+        "createdTime": "2026-08-10T05:21:49.831Z",
+        "comment": "",
+        "ratingGrade": 6,
+        "item": {
+          "uuid": "7P6eOU4OCUbWE77PrGKb8X",
+          "url": "https://neodb.social/book/7P6eOU4OCUbWE77PrGKb8X",
+          "category": "book",
+          "title": "脑与数学",
+          "cover": "https://neodb.social/m/item/doubanbook/2023/10/10/e4ec89ca-1466-4ada-b934-7c7d76c1a91f.jpg"
+        }
+      },
       {
         "createdTime": "2026-08-08T06:16:24.600Z",
         "comment": "",
@@ -1973,18 +1985,6 @@
           "category": "book",
           "title": "在汉帝国的阴影下",
           "cover": "https://neodb.social/m/book/2021/09/17c8b55c73-c512-447c-8620-877360468d85.jpg"
-        }
-      },
-      {
-        "createdTime": "2026-07-26T15:02:00.853Z",
-        "comment": "",
-        "ratingGrade": null,
-        "item": {
-          "uuid": "5NQCxjnsb4YamxVpVJ8qUu",
-          "url": "https://neodb.social/book/5NQCxjnsb4YamxVpVJ8qUu",
-          "category": "book",
-          "title": "因子投资：方法与实践",
-          "cover": "https://neodb.social/m/book/2022/05/010a157b2d-ce89-42e5-80f5-6c4de097b839.jpg"
         }
       },
       {
