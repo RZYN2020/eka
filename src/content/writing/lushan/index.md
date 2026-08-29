@@ -10,6 +10,8 @@ draft: false
 legacyUrls:
   - /journal/posts/庐山游记/
   - /journal/posts/lushan/
+presentation:
+  backdrop: lushan
 ---
 ## 上庐山
 

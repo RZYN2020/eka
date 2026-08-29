@@ -6,9 +6,8 @@ import TableOfContents from '../components/TableOfContents.astro';
 import ArticleImages from '../components/ArticleImages.astro';
 import Comments from '../components/Comments.astro';
 import ArticleNavigation from '../components/ArticleNavigation.astro';
-import Snowfall from '../components/Snowfall.astro';
-import LushanBackdrop from '../components/LushanBackdrop.astro';
-import { formatDate, writingDescription, writingSlug } from '../lib/content';
+import ArticleEffects from '../components/effects/ArticleEffects.astro';
+import { formatDate, writingDescription } from '../lib/content';
 import type { CollectionEntry } from 'astro:content';
 import 'katex/dist/katex.min.css';
 
@@ -21,33 +20,40 @@ interface Props {
 
 const { entry, headings, newer, older } = Astro.props;
 const description = writingDescription(entry);
-const hasSnowfall = writingSlug(entry.id) === 'memories-of-snow';
-const hasLushanBackdrop = writingSlug(entry.id) === 'lushan';
+const { presentation } = entry.data;
+const hasBackdrop = Boolean(presentation.backdrop);
 ---
 
 <BaseLayout title={entry.data.title} description={description} article>
-	{hasSnowfall && <Snowfall />}
+	<ArticleEffects presentation={presentation} region="ambient" />
 	<article>
 		<header class="article-header">
 			<div class="article-kicker">
 				<CategoryPath category={entry.data.category} subcategories={entry.data.subcategories} />
-				{entry.data.publishedAt && (
-					<span class="article-dates">
-						<time datetime={entry.data.publishedAt.toISOString()}>{formatDate(entry.data.publishedAt, 'sv-SE')}</time>
-						{entry.data.updatedAt && entry.data.updatedAt > entry.data.publishedAt && (
-							<span>
-								Updated <time datetime={entry.data.updatedAt.toISOString()}>{formatDate(entry.data.updatedAt, 'sv-SE')}</time>
-							</span>
-						)}
-					</span>
-				)}
+				{
+					entry.data.publishedAt && (
+						<span class="article-dates">
+							<time datetime={entry.data.publishedAt.toISOString()}>
+								{formatDate(entry.data.publishedAt, 'sv-SE')}
+							</time>
+							{entry.data.updatedAt && entry.data.updatedAt > entry.data.publishedAt && (
+								<span>
+									Updated{' '}
+									<time datetime={entry.data.updatedAt.toISOString()}>
+										{formatDate(entry.data.updatedAt, 'sv-SE')}
+									</time>
+								</span>
+							)}
+						</span>
+					)
+				}
 			</div>
 			<h1>{entry.data.title}</h1>
 			{entry.data.description && <p class="article-deck">{entry.data.description}</p>}
 			<TagList tags={entry.data.tags} />
 		</header>
-		<div class:list={['article-visual-boundary', { 'article-visual-boundary--lushan': hasLushanBackdrop }]}>
-			{hasLushanBackdrop && <LushanBackdrop />}
+		<div class:list={['article-visual-boundary', { 'article-visual-boundary--backdrop': hasBackdrop }]}>
+			<ArticleEffects presentation={presentation} region="backdrop" />
 			<div class="article-shell">
 				{entry.data.toc && <TableOfContents headings={headings} />}
 				<div class="prose prose-eka">

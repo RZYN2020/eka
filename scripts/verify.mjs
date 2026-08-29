@@ -14,12 +14,15 @@ const checks = [
 	['构建产物', 'scripts/verify-build.mjs', 'runtime'],
 	['Terminal', 'scripts/verify-terminal.mjs', 'runtime'],
 	['站点运行时', 'scripts/verify-site-runtime.mjs', 'runtime'],
+	['视觉效果', 'scripts/verify-visual-effects.mjs', 'runtime'],
 	['地图运行时', 'scripts/verify-map-runtime.mjs', 'runtime'],
 ];
 
 const requestedMode = process.argv.includes('--fast')
 	? 'fast'
-	: process.argv.includes('--runtime') ? 'runtime' : 'all';
+	: process.argv.includes('--runtime')
+		? 'runtime'
+		: 'all';
 const selected = checks.filter(([, , mode]) => requestedMode === 'all' || mode === requestedMode);
 
 function run(script) {
@@ -46,4 +49,6 @@ for (const [name, script] of selected) {
 	}
 }
 
-console.log(`\n${selected.length} 项验证通过，共 ${((performance.now() - suiteStartedAt) / 1000).toFixed(1)}s。`);
+console.log(
+	`\n${selected.length} 项验证通过，共 ${((performance.now() - suiteStartedAt) / 1000).toFixed(1)}s。`,
+);

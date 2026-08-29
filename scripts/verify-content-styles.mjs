@@ -14,7 +14,8 @@ const checks = [
 	},
 	{
 		name: 'dark-mode article images have a light backing surface',
-		pattern: /:root\[data-theme="dark"\]\s+\.prose-eka\s+img[^{]*\{[^}]*background(?:-color)?:\s*#fff(?:fff)?\b/s,
+		pattern:
+			/:root\[data-theme=['"]dark['"]\]\s+\.prose-eka\s+img[^{]*\{[^}]*background(?:-color)?:\s*#fff(?:fff)?\b/s,
 	},
 ];
 

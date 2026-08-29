@@ -1,12 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import WindowReader from '../components/WindowReader.astro';
+import WindowReader from '../components/effects/WindowReader.astro';
 ---
 
-<BaseLayout
-	title="About"
-	description="关于 Eka：一个在北京写代码、怀念南京，也把博客当作铁盒子的人。"
->
+<BaseLayout title="About" description="关于 Eka：一个在北京写代码、怀念南京，也把博客当作铁盒子的人。">
 	<section class="about-panel">
 		<header class="page-heading about-heading">
 			<h1>About</h1>
@@ -14,7 +11,8 @@ import WindowReader from '../components/WindowReader.astro';
 
 		<div class="about-copy">
 			<p>
-				现在靠写代码为生，但在 AI 的冲击下，也不知道还能写多久。即便没乘上模型的东风，活到 AGI，应该也总有一口饭吃。
+				现在靠写代码为生，但在 AI 的冲击下，也不知道还能写多久。即便没乘上模型的东风，活到
+				AGI，应该也总有一口饭吃。
 			</p>
 
 			<p>西北人，在南京上过六年学。2026 年，24 岁，开始在北京工作。</p>
@@ -39,7 +37,7 @@ import WindowReader from '../components/WindowReader.astro';
 		</div>
 
 		<div class="about-reader">
-			<WindowReader placement="about" />
+			<WindowReader placement="inline" />
 		</div>
 
 		<h2>Elsewhere</h2>

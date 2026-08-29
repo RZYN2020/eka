@@ -9,34 +9,36 @@ const imageExtensions = new Set(['.avif', '.gif', '.jpeg', '.jpg', '.png', '.svg
 async function walk(directory) {
 	const entries = await fs.readdir(directory, { withFileTypes: true });
 	return (
-		await Promise.all(entries.map((entry) => {
-			const target = path.join(directory, entry.name);
-			return entry.isDirectory() ? walk(target) : target;
-		}))
+		await Promise.all(
+			entries.map((entry) => {
+				const target = path.join(directory, entry.name);
+				return entry.isDirectory() ? walk(target) : target;
+			}),
+		)
 	).flat();
 }
 
 function writingSlug(file) {
-	return path.relative(contentRoot, file)
+	return path
+		.relative(contentRoot, file)
 		.replace(/\.(?:md|mdx)$/, '')
 		.replace(/[/\\]index$/, '')
 		.replace(/^algorithm[/\\]/, '')
 		.replaceAll(path.sep, '/');
 }
 
-const categoryMap = new Map(
-	categories.map((category) => [category.name, new Set(category.subcategories)]),
-);
+const categoryMap = new Map(categories.map((category) => [category.name, new Set(category.subcategories)]));
 const files = await walk(contentRoot);
 const markdownFiles = files.filter((file) => /\.(?:md|mdx)$/.test(file));
-const imageFiles = files.filter((file) => (
-	imageExtensions.has(path.extname(file).toLowerCase())
-	|| file.toLowerCase().endsWith('.svg+xml')
-));
+const imageFiles = files.filter(
+	(file) => imageExtensions.has(path.extname(file).toLowerCase()) || file.toLowerCase().endsWith('.svg+xml'),
+);
 const failures = [];
 const slugs = new Map();
 const legacyUrls = new Map();
 const sources = new Map();
+const allowedAmbientEffects = new Set(['snow']);
+const allowedBackdrops = new Set(['lushan']);
 
 for (const file of markdownFiles) {
 	const raw = await fs.readFile(file, 'utf8');
@@ -60,6 +62,14 @@ for (const file of markdownFiles) {
 	}
 
 	if ('featured' in parsed.data) failures.push(`${relative}: obsolete "featured" field`);
+
+	const presentation = parsed.data.presentation ?? {};
+	if (presentation.ambient && !allowedAmbientEffects.has(presentation.ambient)) {
+		failures.push(`${relative}: unknown ambient effect "${presentation.ambient}"`);
+	}
+	if (presentation.backdrop && !allowedBackdrops.has(presentation.backdrop)) {
+		failures.push(`${relative}: unknown backdrop "${presentation.backdrop}"`);
+	}
 
 	const publishedAt = parsed.data.publishedAt && new Date(parsed.data.publishedAt);
 	const updatedAt = parsed.data.updatedAt && new Date(parsed.data.updatedAt);
@@ -95,4 +105,6 @@ if (failures.length) {
 	process.exit(1);
 }
 
-console.log(`Verified ${markdownFiles.length} writing entries and ${imageFiles.length} referenced article images.`);
+console.log(
+	`Verified ${markdownFiles.length} writing entries and ${imageFiles.length} referenced article images.`,
+);

@@ -1,43 +1,53 @@
 {
-  "name": "eka-site",
-  "type": "module",
-  "version": "0.0.1",
-  "packageManager": "pnpm@10.33.0",
-  "engines": {
-    "node": ">=22.12.0"
-  },
-  "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
-    "resume:build": "mkdir -p public/resume && typst compile --font-path resume/fonts resume/resume.typ public/resume/resume.pdf",
-    "resume:watch": "mkdir -p public/resume && typst watch --font-path resume/fonts resume/resume.typ public/resume/resume.pdf",
-    "preview": "astro preview",
-    "astro": "astro",
-    "sync:neodb": "node --env-file-if-exists=.env scripts/sync-neodb.mjs",
-    "optimize:geojson": "node scripts/optimize-geojson.mjs",
-    "check": "astro check",
-    "check:map": "node scripts/verify-map-runtime.mjs",
-    "verify": "node scripts/verify.mjs",
-    "verify:fast": "node scripts/verify.mjs --fast",
-    "verify:runtime": "node scripts/verify.mjs --runtime",
-    "verify:terminal": "node scripts/verify-terminal.mjs"
-  },
-  "dependencies": {
-    "@astrojs/markdown-remark": "^7.2.1",
-    "@astrojs/rss": "^4.0.19",
-    "@astrojs/sitemap": "^3.7.3",
-    "astro": "^7.1.3",
-    "katex": "^0.18.1",
-    "leaflet": "^1.9.4",
-    "rehype-katex": "^7.0.1",
-    "remark-math": "^6.0.0",
-    "sharp": "^0.35.3"
-  },
-  "devDependencies": {
-    "@astrojs/check": "^0.9.9",
-    "@types/leaflet": "^1.9.21",
-    "gray-matter": "^4.0.3",
-    "puppeteer": "^25.3.0",
-    "typescript": "^6.0.3"
-  }
+	"name": "eka-site",
+	"type": "module",
+	"version": "0.0.1",
+	"packageManager": "pnpm@10.33.0",
+	"engines": {
+		"node": ">=22.12.0"
+	},
+	"scripts": {
+		"dev": "astro dev",
+		"build": "astro build",
+		"resume:build": "mkdir -p public/resume && typst compile --font-path resume/fonts resume/resume.typ public/resume/resume.pdf",
+		"resume:watch": "mkdir -p public/resume && typst watch --font-path resume/fonts resume/resume.typ public/resume/resume.pdf",
+		"preview": "astro preview",
+		"astro": "astro",
+		"sync:neodb": "node --env-file-if-exists=.env scripts/sync-neodb.mjs",
+		"optimize:geojson": "node scripts/optimize-geojson.mjs",
+		"check": "astro check",
+		"format": "node scripts/format.mjs --write",
+		"format:check": "node scripts/format.mjs --check",
+		"lint": "eslint .",
+		"check:map": "node scripts/verify-map-runtime.mjs",
+		"verify": "node scripts/verify.mjs",
+		"verify:fast": "node scripts/verify.mjs --fast",
+		"verify:runtime": "node scripts/verify.mjs --runtime",
+		"verify:terminal": "node scripts/verify-terminal.mjs"
+	},
+	"dependencies": {
+		"@astrojs/markdown-remark": "^7.2.1",
+		"@astrojs/rss": "^4.0.19",
+		"@astrojs/sitemap": "^3.7.3",
+		"astro": "^7.1.3",
+		"katex": "^0.18.1",
+		"leaflet": "^1.9.4",
+		"rehype-katex": "^7.0.1",
+		"remark-math": "^6.0.0",
+		"sharp": "^0.35.3"
+	},
+	"devDependencies": {
+		"@astrojs/check": "^0.9.9",
+		"@eslint/js": "^10.0.1",
+		"@types/leaflet": "^1.9.21",
+		"eslint": "^10.9.1",
+		"eslint-plugin-astro": "^3.1.0",
+		"globals": "^17.11.0",
+		"gray-matter": "^4.0.3",
+		"prettier": "^3.9.6",
+		"prettier-plugin-astro": "^0.14.1",
+		"puppeteer": "^25.3.0",
+		"typescript": "^6.0.3",
+		"typescript-eslint": "^8.68.0"
+	}
 }

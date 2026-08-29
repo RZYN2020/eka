@@ -1,0 +1,10 @@
+.astro
+dist
+node_modules
+public
+resume
+src/content
+src/data/neodb/shelf.json
+src/components/Comments.astro
+src/components/TableOfContents.astro
+pnpm-lock.yaml

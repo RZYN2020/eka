@@ -16,8 +16,10 @@ Node.js 22+ and pnpm are required.
 
 ```sh
 pnpm install
-pnpm dev
+pnpm exec astro dev --background
 ```
+
+Use `pnpm exec astro dev status`, `pnpm exec astro dev logs`, and `pnpm exec astro dev stop` to manage the background server.
 
 文章直接维护在 `src/content/writing/`；分类定义在
 `src/config/taxonomy.ts`。新增文章时复制同目录下现有文章的 frontmatter，
@@ -26,6 +28,8 @@ pnpm dev
 ## Validation
 
 ```sh
+pnpm format:check
+pnpm lint
 pnpm check
 pnpm build
 pnpm verify
@@ -34,6 +38,8 @@ pnpm verify
 `pnpm verify` 已包含内容模型、内部链接、构建产物和真实浏览器地图验证；
 `pnpm verify:fast` 只运行不依赖构建产物的快速检查，`pnpm verify:runtime`
 只运行构建产物与浏览器检查，`pnpm check:map` 可用于只重跑地图验证。
+
+项目结构、文章视觉效果和验证范围分别记录在 `docs/architecture.md`、`docs/visual-effects.md` 和 `docs/testing.md`。
 
 仓库对文章图片和地图数据设有体积预算。GeoJSON 源文件更新后运行
 `pnpm optimize:geojson` 再提交；一次性文案和样式调整以提交记录为准，
@@ -81,11 +87,11 @@ required.
 
 Recommended Git deployment settings:
 
-| Setting | Value |
-| --- | --- |
-| Production branch | `main` |
-| Build command | `pnpm build` |
-| Build output directory | `dist` |
-| Node.js | `22` |
+| Setting                | Value        |
+| ---------------------- | ------------ |
+| Production branch      | `main`       |
+| Build command          | `pnpm build` |
+| Build output directory | `dist`       |
+| Node.js                | `22`         |
 
 Use a feature branch for the first Cloudflare preview. Promote it to `main` only after visual and link validation.

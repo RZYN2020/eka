@@ -117,17 +117,14 @@ async function syncReviews() {
 }
 
 const shelves = {};
-let skippedPrivate = 0;
 
 for (const shelfType of SHELF_TYPES) {
 	const result = await syncShelf(shelfType);
 	shelves[shelfType] = result.items;
-	skippedPrivate += result.skipped;
 	console.log(`${shelfType}: ${result.items.length} public item(s), ${result.skipped} private item(s) skipped`);
 }
 
 const reviewResult = await syncReviews();
-skippedPrivate += reviewResult.skipped;
 console.log(`reviews: ${reviewResult.items.length} public review(s), ${reviewResult.skipped} private review(s) skipped`);
 
 const nextData = {

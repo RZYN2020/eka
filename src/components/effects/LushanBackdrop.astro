@@ -1,20 +1,26 @@
 ---
+
 ---
 
-<aside class="lushan-backdrop" aria-hidden="true">
+<aside class="lushan-backdrop" data-article-effect="lushan" aria-hidden="true">
 	<div class="lushan-backdrop__sticky">
 		<img
-			src="/images/lushan-wulaofeng-silhouette.png"
+			src="/images/lushan-wulaofeng-silhouette.webp"
 			width="1881"
 			height="420"
 			alt=""
 			decoding="async"
+			loading="lazy"
+			fetchpriority="low"
 		/>
 	</div>
 </aside>
 
 <style>
 	.lushan-backdrop {
+		--lushan-opacity: 0.28;
+		--lushan-height: 45vh;
+		--lushan-start: 55vh;
 		position: absolute;
 		z-index: -1;
 		top: 0;
@@ -28,10 +34,10 @@
 
 	.lushan-backdrop__sticky {
 		position: sticky;
-		top: 55vh;
+		top: var(--lushan-start);
 		display: flex;
 		width: 100%;
-		height: 45vh;
+		height: var(--lushan-height);
 		align-items: flex-end;
 		overflow: hidden;
 	}
@@ -41,7 +47,7 @@
 		height: 100%;
 		object-fit: cover;
 		object-position: center bottom;
-		opacity: 0.28;
+		opacity: var(--lushan-opacity);
 		filter: saturate(0.72) contrast(0.9);
 		mix-blend-mode: multiply;
 		-webkit-mask-image: linear-gradient(
@@ -68,7 +74,7 @@
 		);
 	}
 
-	:global(:root[data-theme="dark"]) .lushan-backdrop img {
+	:global(:root[data-theme='dark']) .lushan-backdrop img {
 		opacity: 0.16;
 		filter: invert(1) grayscale(1) contrast(0.82);
 		mix-blend-mode: screen;

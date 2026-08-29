@@ -1,0 +1,17 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import LushanBackdrop from './LushanBackdrop.astro';
+import Snowfall from './Snowfall.astro';
+
+type Presentation = CollectionEntry<'writing'>['data']['presentation'];
+
+interface Props {
+	presentation: Presentation;
+	region: 'ambient' | 'backdrop';
+}
+
+const { presentation, region } = Astro.props;
+---
+
+{region === 'ambient' && presentation.ambient === 'snow' && <Snowfall />}
+{region === 'backdrop' && presentation.backdrop === 'lushan' && <LushanBackdrop />}

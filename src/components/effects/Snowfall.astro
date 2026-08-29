@@ -1,0 +1,98 @@
+---
+const SNOWFLAKE_COUNT = 34;
+
+// A tiny seeded generator keeps the composition reproducible without maintaining
+// dozens of handwritten style declarations.
+function seededValue(index: number, channel: number) {
+	const value = Math.sin((index + 1) * 91.345 + channel * 47.129) * 43_758.5453;
+	return value - Math.floor(value);
+}
+
+const flakes = Array.from({ length: SNOWFLAKE_COUNT }, (_, index) => {
+	const duration = 13 + Math.round(seededValue(index, 1) * 11);
+	const style = [
+		`--snow-x: ${(seededValue(index, 2) * 100).toFixed(2)}vw`,
+		`--snow-size: ${(0.7 + seededValue(index, 3) * 0.48).toFixed(2)}rem`,
+		`--snow-duration: ${duration}s`,
+		`--snow-delay: -${(seededValue(index, 4) * duration).toFixed(2)}s`,
+		`--snow-drift: ${Math.round(-44 + seededValue(index, 5) * 88)}px`,
+		`--snow-opacity: ${(0.38 + seededValue(index, 6) * 0.3).toFixed(2)}`,
+		`--snow-blur: ${seededValue(index, 7) > 0.76 ? '1px' : seededValue(index, 7) > 0.48 ? '0.45px' : '0'}`,
+	].join('; ');
+
+	return { index, style };
+});
+---
+
+<div class="snowfall" data-article-effect="snow" aria-hidden="true">
+	{flakes.map(({ index, style }) => <span data-flake={index} style={style} />)}
+</div>
+
+<style>
+	.snowfall {
+		--snow-clear-half: 22.25rem;
+		--snow-fade-half: 24rem;
+		position: fixed;
+		z-index: 1;
+		inset: 0;
+		overflow: hidden;
+		color: color-mix(in srgb, var(--accent) 68%, var(--ink));
+		pointer-events: none;
+		-webkit-mask-image: linear-gradient(
+			90deg,
+			#000 0,
+			#000 calc(50% - var(--snow-fade-half)),
+			transparent calc(50% - var(--snow-clear-half)),
+			transparent calc(50% + var(--snow-clear-half)),
+			#000 calc(50% + var(--snow-fade-half)),
+			#000 100%
+		);
+		mask-image: linear-gradient(
+			90deg,
+			#000 0,
+			#000 calc(50% - var(--snow-fade-half)),
+			transparent calc(50% - var(--snow-clear-half)),
+			transparent calc(50% + var(--snow-clear-half)),
+			#000 calc(50% + var(--snow-fade-half)),
+			#000 100%
+		);
+	}
+
+	.snowfall span {
+		position: absolute;
+		top: -10vh;
+		left: var(--snow-x);
+		width: 1em;
+		height: 1em;
+		font-family: Georgia, 'Times New Roman', serif;
+		font-size: var(--snow-size);
+		line-height: 1;
+		filter: blur(var(--snow-blur));
+		opacity: var(--snow-opacity);
+		transform: translate3d(0, -12vh, 0);
+		animation: snow-fall var(--snow-duration) linear var(--snow-delay) infinite;
+		will-change: transform;
+	}
+
+	.snowfall span::before {
+		content: '❄';
+	}
+
+	@keyframes snow-fall {
+		to {
+			transform: translate3d(var(--snow-drift), 122vh, 0) rotate(240deg);
+		}
+	}
+
+	@media (max-width: 720px) {
+		.snowfall {
+			display: none;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.snowfall {
+			display: none;
+		}
+	}
+</style>

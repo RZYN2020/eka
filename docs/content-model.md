@@ -33,8 +33,8 @@ Tags are flat and can connect articles across categories. The Tags index present
 ## Frontmatter
 
 ```yaml
-title: ""
-description: ""
+title: ''
+description: ''
 publishedAt: 2026-01-01
 updatedAt:
 category: Tech
@@ -44,10 +44,15 @@ tags:
   - LLM
 order: 999
 draft: false
-featured: false
 toc: true
+neodbIds: []
 legacyUrls: []
+presentation:
+  ambient: snow
+  backdrop: lushan
 ```
 
 Only `title` and `category` are required. Dates are optional so continuously maintained and imported algorithm articles use the same model.
 The table of contents appears automatically when an article has at least three level-two or level-three headings. Set `toc: false` to disable it for an individual article.
+
+`presentation` is optional and accepts only schema-registered decorative effects. Most articles should omit it. See `docs/visual-effects.md` before adding a new value.

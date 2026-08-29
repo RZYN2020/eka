@@ -9,6 +9,8 @@ tags:
   - Reflection
 draft: false
 legacyUrls: []
+presentation:
+  ambient: snow
 ---
 昨天刷到有人怀念南京 23 年的雪。但我一时竟想不起来，那一年的雪是什么样子。
 

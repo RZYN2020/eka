@@ -1,6 +1,8 @@
 import L from 'leaflet';
-import { bases } from '../data/travel.js';
-import { buildJourneyStops } from './travel-journey.js';
+import { bases } from '../../data/travel.js';
+import { buildJourneyStops } from '../../lib/travel-journey.js';
+import { createJourneyView } from './journey-view.js';
+import { prefersReducedMotion } from './motion';
 
 export function createJourneyController({ getMap, getCoords, clearSelection, ensureChinaView, tone }) {
 	const state = {
@@ -28,13 +30,11 @@ export function createJourneyController({ getMap, getCoords, clearSelection, ens
 
 	function timelinePosition(index) {
 		if (state.stops.length <= 1) return 0;
-		return index / (state.stops.length - 1) * 100;
+		return (index / (state.stops.length - 1)) * 100;
 	}
 
 	function destinations() {
-		return state.stops
-			.map((stop, index) => ({ stop, index }))
-			.filter(({ stop }) => !stop.derived);
+		return state.stops.map((stop, index) => ({ stop, index })).filter(({ stop }) => !stop.derived);
 	}
 
 	function currentLabel() {
@@ -42,42 +42,12 @@ export function createJourneyController({ getMap, getCoords, clearSelection, ens
 		return stop ? `${stop.dateLabel} · ${stop.city}` : '';
 	}
 
-	function updateTimeline(stop) {
-		const position = timelinePosition(state.index);
-		const track = document.getElementById('journeyTimeTrack');
-		document.getElementById('journeyTimeCurrent').textContent = `${stop.dateLabel} · ${stop.city}`;
-		document.getElementById('journeyTimeFill').style.width = `${position}%`;
-		document.querySelector('.journey-time-cursor').style.left = `${position}%`;
-		track.setAttribute('aria-valuenow', String(state.index + 1));
-		track.setAttribute('aria-valuetext', `${stop.dateLabel}，${stop.city}`);
-	}
-
-	function updateStatus(stop) {
-		const status = document.getElementById('journeyStatus');
-		status.hidden = false;
-		status.classList.remove('is-changing');
-		void status.offsetWidth;
-		status.classList.add('is-changing');
-		document.getElementById('journeyPeriod').textContent = stop.dateLabel;
-		document.getElementById('journeyCity').textContent = stop.city;
-		document.getElementById('journeySummary').textContent = stop.action;
-		document.getElementById('journeyProgress').textContent = `${state.index + 1} / ${state.stops.length}`;
-		updateTimeline(stop);
-	}
-
-	function resetButton(label = '人生轨迹') {
-		const button = document.getElementById('btnJourney');
-		button.textContent = label;
-		button.setAttribute('aria-pressed', 'false');
-	}
-
-	function updateControls() {
-		const playButton = document.getElementById('btnJourneyPlay');
-		const finished = state.stops.length > 0 && state.index >= state.stops.length - 1;
-		playButton.textContent = finished ? '重播' : state.playing ? '暂停' : '自动播放';
-		playButton.setAttribute('aria-pressed', String(state.playing));
-		document.getElementById('btnJourneyNext').disabled = state.moving || finished;
-	}
+	const { renderTimeline, resetButton, updateControls, updateStatus } = createJourneyView({
+		state,
+		timelinePosition,
+		currentLabel,
+		seek,
+	});
 
 	function seek(index) {
 		const stop = state.stops[index];
@@ -113,9 +83,10 @@ export function createJourneyController({ getMap, getCoords, clearSelection, ens
 
 	function seekAdjacent(direction) {
 		const choices = destinations();
-		const target = direction < 0
-			? choices.filter(({ index }) => index < state.index).at(-1) || choices[0]
-			: choices.find(({ index }) => index > state.index) || choices.at(-1);
+		const target =
+			direction < 0
+				? choices.filter(({ index }) => index < state.index).at(-1) || choices[0]
+				: choices.find(({ index }) => index > state.index) || choices.at(-1);
 		if (!target) return false;
 		seek(target.index);
 		return true;
@@ -140,47 +111,6 @@ export function createJourneyController({ getMap, getCoords, clearSelection, ens
 		if (target) seek(target.index);
 	}
 
-	function renderTimeline() {
-		const timeline = document.getElementById('journeyTimeline');
-		const track = document.getElementById('journeyTimeTrack');
-		const ticks = document.getElementById('journeyTimeTicks');
-		const first = state.stops[0];
-		const last = state.stops.at(-1);
-		timeline.hidden = false;
-		document.getElementById('journeyTimeStart').textContent = first.date.start.slice(0, 4);
-		document.getElementById('journeyTimeCurrent').textContent = first.dateLabel;
-		document.getElementById('journeyTimeEnd').textContent = last.date.start.replaceAll('-', '.');
-		track.setAttribute('aria-valuemax', String(state.stops.length));
-		track.setAttribute('aria-valuenow', '1');
-		ticks.replaceChildren(...state.stops.flatMap((stop, index) => {
-			if (stop.derived) return [];
-			const marker = document.createElement('button');
-			const markerClass = stop.kind === 'phase' ? 'is-phase' : stop.kind === 'stay' ? 'is-stay' : 'is-visit';
-			const label = `${stop.dateLabel} · ${stop.city} · ${stop.action}`;
-			marker.type = 'button';
-			marker.tabIndex = -1;
-			marker.className = markerClass;
-			marker.dataset.index = String(index);
-			marker.dataset.label = label;
-			marker.style.left = `${timelinePosition(index)}%`;
-			marker.setAttribute('aria-label', label);
-			marker.title = label;
-			marker.addEventListener('click', (event) => {
-				event.stopPropagation();
-				seek(index);
-			});
-			marker.addEventListener('mouseenter', () => {
-				document.getElementById('journeyTimeCurrent').textContent = label;
-			});
-			marker.addEventListener('mouseleave', () => {
-				document.getElementById('journeyTimeCurrent').textContent = currentLabel();
-			});
-			return [marker];
-		}));
-		document.getElementById('journeyTimeFill').style.width = '0%';
-		document.querySelector('.journey-time-cursor').style.left = '0%';
-	}
-
 	function stop() {
 		state.token += 1;
 		state.active = false;
@@ -188,6 +118,7 @@ export function createJourneyController({ getMap, getCoords, clearSelection, ens
 		state.moving = false;
 		state.index = -1;
 		clearTimeout(state.timer);
+		cancelAnimationFrame(state.frame);
 		state.frame = 0;
 		const map = getMap();
 		if (map) {
@@ -210,10 +141,7 @@ export function createJourneyController({ getMap, getCoords, clearSelection, ens
 				if (token !== state.token) return resolve(false);
 				const progress = Math.min((now - startedAt) / duration, 1);
 				const eased = 0.5 - Math.cos(Math.PI * progress) / 2;
-				const current = [
-					from.lat + (to.lat - from.lat) * eased,
-					from.lng + (to.lng - from.lng) * eased,
-				];
+				const current = [from.lat + (to.lat - from.lat) * eased, from.lng + (to.lng - from.lng) * eased];
 				state.person.setLatLng(current);
 				state.line.setLatLngs([...completed, current]);
 				if (progress < 1) state.frame = requestAnimationFrame(step);
@@ -234,7 +162,7 @@ export function createJourneyController({ getMap, getCoords, clearSelection, ens
 			if (token !== state.token) return resolve(false);
 			const map = getMap();
 			const samePlace = from.lat === to.lat && from.lng === to.lng;
-			const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+			const reducedMotion = prefersReducedMotion();
 			let settled = false;
 			const finish = () => {
 				if (settled) return;
@@ -250,13 +178,19 @@ export function createJourneyController({ getMap, getCoords, clearSelection, ens
 					duration: reducedMotion ? 0 : 0.45,
 				});
 			} else {
-				map.flyToBounds([[from.lat, from.lng], [to.lat, to.lng]], {
-					paddingTopLeft: [72, 92],
-					paddingBottomRight: [72, 92],
-					maxZoom: 8,
-					animate: !reducedMotion,
-					duration: reducedMotion ? 0 : 0.55,
-				});
+				map.flyToBounds(
+					[
+						[from.lat, from.lng],
+						[to.lat, to.lng],
+					],
+					{
+						paddingTopLeft: [72, 92],
+						paddingBottomRight: [72, 92],
+						maxZoom: 8,
+						animate: !reducedMotion,
+						duration: reducedMotion ? 0 : 0.55,
+					},
+				);
 			}
 			window.setTimeout(finish, reducedMotion ? 80 : 900);
 		});
@@ -269,7 +203,7 @@ export function createJourneyController({ getMap, getCoords, clearSelection, ens
 		const nextIndex = state.index + 1;
 		const next = state.stops[nextIndex];
 		const previous = state.index >= 0 ? state.stops[state.index] : next;
-		const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+		const reducedMotion = prefersReducedMotion();
 		const map = getMap();
 
 		state.moving = true;
@@ -287,8 +221,13 @@ export function createJourneyController({ getMap, getCoords, clearSelection, ens
 		} else {
 			const focused = await focusSegment(previous, next, token);
 			if (!focused) return;
-			const completed = await animateSegment(previous, next, state.completed, reducedMotion ? 120 : 720, token);
-			if (!completed) return;
+			if (reducedMotion) {
+				state.person.setLatLng([next.lat, next.lng]);
+				state.line.setLatLngs([...state.completed, [next.lat, next.lng]]);
+			} else {
+				const completed = await animateSegment(previous, next, state.completed, 720, token);
+				if (!completed) return;
+			}
 			state.completed.push([next.lat, next.lng]);
 		}
 
@@ -322,7 +261,7 @@ export function createJourneyController({ getMap, getCoords, clearSelection, ens
 		stop();
 		const map = getMap();
 		const button = document.getElementById('btnJourney');
-		const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+		const reducedMotion = prefersReducedMotion();
 		state.active = true;
 		state.playing = true;
 		state.stops = buildJourneyStops(bases).map((stop) => ({ ...stop, ...getCoords(stop) }));
@@ -332,11 +271,14 @@ export function createJourneyController({ getMap, getCoords, clearSelection, ens
 		clearSelection();
 		map.closePopup();
 		ensureChinaView();
-		map.fitBounds(state.stops.map((stop) => [stop.lat, stop.lng]), {
-			padding: [64, 64],
-			maxZoom: 5,
-			animate: !reducedMotion,
-		});
+		map.fitBounds(
+			state.stops.map((stop) => [stop.lat, stop.lng]),
+			{
+				padding: [64, 64],
+				maxZoom: 5,
+				animate: !reducedMotion,
+			},
+		);
 		state.line = L.polyline([], {
 			color: tone('--journey-line', '#536b85'),
 			weight: 2,
@@ -350,5 +292,16 @@ export function createJourneyController({ getMap, getCoords, clearSelection, ens
 		state.line?.setStyle({ color: tone('--journey-line', '#536b85') });
 	}
 
-	return { state, start, stop, advance, seek, togglePlayback, seekAdjacent, seekBoundary, seekFromPointer, updateTheme };
+	return {
+		state,
+		start,
+		stop,
+		advance,
+		seek,
+		togglePlayback,
+		seekAdjacent,
+		seekBoundary,
+		seekFromPointer,
+		updateTheme,
+	};
 }
