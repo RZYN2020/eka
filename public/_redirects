@@ -12,9 +12,10 @@
 /journal/ /writing/?kind=journal 301
 /algorithm/ /categories/tech/algorithm/ 301
 /algorithm/* /notes/algorithm/:splat 301
-/resume/zh/ /resume/ 301
-/resume/en/ /resume/ 301
-/resume/ja/ /resume/ 301
+/resume/ /resume/resume.pdf 301
+/resume/zh/ /resume/resume.pdf 301
+/resume/en/ /resume/resume.pdf 301
+/resume/ja/ /resume/resume.pdf 301
 /posts/building-a-transformer-lm/ /writing/building-a-transformer-lm/ 301
 /posts/optimize-the-performance-of-a-lm/ /writing/optimize-language-model-performance/ 301
 /posts/adaptation-in-action/ /writing/adaptation-in-action/ 301

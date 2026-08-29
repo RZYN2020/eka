@@ -6,7 +6,9 @@ import TableOfContents from '../components/TableOfContents.astro';
 import ArticleImages from '../components/ArticleImages.astro';
 import Comments from '../components/Comments.astro';
 import ArticleNavigation from '../components/ArticleNavigation.astro';
-import { formatDate, writingDescription } from '../lib/content';
+import Snowfall from '../components/Snowfall.astro';
+import LushanBackdrop from '../components/LushanBackdrop.astro';
+import { formatDate, writingDescription, writingSlug } from '../lib/content';
 import type { CollectionEntry } from 'astro:content';
 import 'katex/dist/katex.min.css';
 
@@ -19,9 +21,12 @@ interface Props {
 
 const { entry, headings, newer, older } = Astro.props;
 const description = writingDescription(entry);
+const hasSnowfall = writingSlug(entry.id) === 'memories-of-snow';
+const hasLushanBackdrop = writingSlug(entry.id) === 'lushan';
 ---
 
 <BaseLayout title={entry.data.title} description={description} article>
+	{hasSnowfall && <Snowfall />}
 	<article>
 		<header class="article-header">
 			<div class="article-kicker">
@@ -41,12 +46,15 @@ const description = writingDescription(entry);
 			{entry.data.description && <p class="article-deck">{entry.data.description}</p>}
 			<TagList tags={entry.data.tags} />
 		</header>
-		<div class="article-shell">
-			{entry.data.toc && <TableOfContents headings={headings} />}
-			<div class="prose prose-eka">
-				<slot />
+		<div class:list={['article-visual-boundary', { 'article-visual-boundary--lushan': hasLushanBackdrop }]}>
+			{hasLushanBackdrop && <LushanBackdrop />}
+			<div class="article-shell">
+				{entry.data.toc && <TableOfContents headings={headings} />}
+				<div class="prose prose-eka">
+					<slot />
+				</div>
+				<ArticleImages />
 			</div>
-			<ArticleImages />
 		</div>
 		<ArticleNavigation newer={newer} older={older} />
 		<Comments />

@@ -1,6 +1,7 @@
 # build output
 dist/
 tmp/
+public/resume/resume.pdf
 .wrangler/
 
 # generated types
@@ -31,3 +32,4 @@ pnpm-debug.log*
 log/app.log
 # Added by CJADK
 .codex/
+.claude/

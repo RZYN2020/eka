@@ -8,7 +8,9 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && node scripts/generate-resume-pdf.mjs",
+    "build": "npm run resume:build && astro build",
+    "resume:build": "mkdir -p public/resume && typst compile --font-path resume/fonts resume/resume.typ public/resume/resume.pdf",
+    "resume:watch": "mkdir -p public/resume && typst watch --font-path resume/fonts resume/resume.typ public/resume/resume.pdf",
     "preview": "astro preview",
     "astro": "astro",
     "sync:neodb": "node --env-file-if-exists=.env scripts/sync-neodb.mjs",

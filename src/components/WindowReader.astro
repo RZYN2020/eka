@@ -1,0 +1,122 @@
+---
+interface Props {
+	placement?: 'fixed' | 'about';
+}
+
+const { placement = 'fixed' } = Astro.props;
+---
+
+<div class:list={['window-reader', `window-reader--${placement}`]} aria-hidden="true">
+	<img
+		class="window-reader__frame window-reader__frame--rest"
+		src="/images/nagato-reader-frame-1.webp"
+		width="440"
+		height="587"
+		alt=""
+		decoding="async"
+	/>
+	<img
+		class="window-reader__frame window-reader__frame--turn"
+		src="/images/nagato-reader-frame-2.webp"
+		width="440"
+		height="587"
+		alt=""
+		decoding="async"
+	/>
+	<img
+		class="window-reader__frame window-reader__frame--settle"
+		src="/images/nagato-reader-frame-3.webp"
+		width="440"
+		height="587"
+		alt=""
+		decoding="async"
+	/>
+</div>
+
+<style>
+	.window-reader {
+		z-index: 0;
+		width: clamp(11rem, 15vw, 13.5rem);
+		aspect-ratio: 440 / 587;
+		contain: layout paint;
+		pointer-events: none;
+		user-select: none;
+	}
+
+	.window-reader--fixed {
+		position: fixed;
+		right: clamp(0.875rem, calc(25vw - 19.125rem), 4rem);
+		bottom: 1rem;
+	}
+
+	.window-reader--about {
+		width: clamp(10.5rem, 15vw, 12rem);
+		margin-inline: auto;
+	}
+
+	.window-reader__frame {
+		position: absolute;
+		inset: 0;
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		opacity: 0;
+		filter: brightness(0) saturate(100%);
+	}
+
+	.window-reader--fixed .window-reader__frame {
+		transform: translateX(18%);
+	}
+
+	.window-reader__frame--rest {
+		animation: reader-rest 10s steps(1, end) infinite;
+	}
+
+	.window-reader__frame--turn {
+		animation: reader-turn 10s steps(1, end) infinite;
+	}
+
+	.window-reader__frame--settle {
+		animation: reader-settle 10s steps(1, end) infinite;
+	}
+
+	@keyframes reader-rest {
+		0%, 68%, 91%, 100% { opacity: 0.74; }
+		69%, 90% { opacity: 0; }
+	}
+
+	@keyframes reader-turn {
+		0%, 68%, 79%, 100% { opacity: 0; }
+		69%, 78% { opacity: 0.74; }
+	}
+
+	@keyframes reader-settle {
+		0%, 78%, 91%, 100% { opacity: 0; }
+		79%, 90% { opacity: 0.74; }
+	}
+
+	:global(:root[data-theme="dark"]) .window-reader__frame {
+		filter: brightness(0) saturate(100%) invert(1);
+	}
+
+	@media (max-width: 979px) {
+		.window-reader--fixed {
+			display: none;
+		}
+
+		.window-reader--about {
+			width: clamp(9rem, 46vw, 10.5rem);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.window-reader__frame {
+			animation: none;
+		}
+
+		.window-reader__frame--rest {
+			opacity: 0.74;
+		}
+	}
+</style>

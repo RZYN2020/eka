@@ -42,11 +42,11 @@
 }
 
 .main-nav a[aria-current="page"] {
-	color: var(--ink);
+	color: var(--accent);
 }
 
 .social-nav a[aria-current="page"] {
-	color: var(--ink);
+	color: var(--accent);
 }
 
 .theme-toggle {
@@ -131,6 +131,10 @@
 	color: var(--ink);
 }
 
+.theme-menu button[aria-pressed="true"] {
+	background: var(--accent-wash);
+}
+
 .theme-menu i {
 	width: 8px;
 	height: 8px;
@@ -160,8 +164,22 @@ main {
 
 .home-intro,
 .page-heading {
+	position: relative;
 	width: min(100%, var(--layout-reading));
 	margin: 0 0 var(--space-11);
+	padding-top: var(--space-4);
+}
+
+.home-intro::before,
+.page-heading::before {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 2.25rem;
+	height: 2px;
+	border-radius: 999px;
+	background: var(--accent);
+	content: "";
 }
 
 .home-intro h1,
@@ -212,6 +230,19 @@ main {
 	font-weight: 400;
 }
 
+.section-rule h2 {
+	display: inline-flex;
+	gap: 0.5rem;
+	align-items: center;
+}
+
+.section-rule h2::before {
+	width: 0.85rem;
+	height: 2px;
+	background: var(--accent);
+	content: "";
+}
+
 .home-topics {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -225,10 +256,17 @@ main {
 	padding: var(--space-3) 0;
 	border-bottom: 1px solid var(--line);
 	font-size: 14px;
+	transition: background 160ms ease, color 160ms ease;
+}
+
+.home-topics a:hover {
+	background: linear-gradient(90deg, var(--accent-wash), transparent 82%);
+	color: var(--ink);
+	text-decoration: none;
 }
 
 .home-topics small {
-	color: var(--faint);
+	color: var(--accent);
 	font-size: 12px;
 	font-variant-numeric: tabular-nums;
 }

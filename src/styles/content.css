@@ -173,8 +173,22 @@
 	position: relative;
 }
 
+.article-visual-boundary {
+	position: relative;
+}
+
+.article-visual-boundary--lushan {
+	isolation: isolate;
+}
+
 .article-header {
 	margin-bottom: var(--space-9);
+}
+
+.about-reader {
+	display: flex;
+	justify-content: center;
+	margin-top: var(--space-10);
 }
 
 .article-kicker {

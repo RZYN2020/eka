@@ -8,7 +8,7 @@ Eka 的个人内容出版网站。四个旧站被合并为一个 Astro 项目：
 - `About`：Media、人生足迹与中文简历入口
 - `Media`：NeoDB 书影音记录
 - `/map/`：人生足迹
-- `/resume/`：中文简历与 PDF
+- `/resume/resume.pdf`：Typst 生成的中文 PDF 简历
 
 ## Local development
 
@@ -39,8 +39,8 @@ pnpm verify
 `pnpm optimize:geojson` 再提交；一次性文案和样式调整以提交记录为准，
 `docs/specs/` 只保留需要长期追溯的设计决策或复杂功能方案。
 
-`pnpm build` 会从唯一的中文 Markdown 简历同时生成网页与
-`dist/resume/resume.pdf`。
+`pnpm build` 会先编译唯一的 Typst 简历到 `public/resume/resume.pdf`，
+随后 Astro 构建把它复制为 `dist/resume/resume.pdf`。
 
 ## NeoDB
 

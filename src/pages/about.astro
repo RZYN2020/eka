@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import WindowReader from '../components/WindowReader.astro';
 ---
 
 <BaseLayout
@@ -37,6 +38,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 			<p>存一些有意思的技术，一些感想，一些历史，还有一些没有想明白的问题。</p>
 		</div>
 
+		<div class="about-reader">
+			<WindowReader placement="about" />
+		</div>
+
 		<h2>Elsewhere</h2>
 		<nav class="about-explore" aria-label="相关页面">
 			<ul>
@@ -49,7 +54,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 					<span>去过的地方</span>
 				</li>
 				<li>
-					<a href="/resume/">Résumé</a>
+					<a href="/resume/resume.pdf" target="_blank" rel="noopener">Résumé</a>
 					<span>关于工作和经历</span>
 				</li>
 			</ul>

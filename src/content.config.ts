@@ -41,12 +41,4 @@ const writing = defineCollection({
 	}),
 });
 
-const resume = defineCollection({
-	loader: glob({ pattern: '*.md', base: './src/content/resume' }),
-	schema: z.object({
-		title: z.string(),
-		lang: z.literal('zh'),
-	}),
-});
-
-export const collections = { writing, resume };
+export const collections = { writing };

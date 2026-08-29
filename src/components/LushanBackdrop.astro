@@ -1,0 +1,90 @@
+---
+---
+
+<aside class="lushan-backdrop" aria-hidden="true">
+	<div class="lushan-backdrop__sticky">
+		<img
+			src="/images/lushan-wulaofeng-silhouette.png"
+			width="1881"
+			height="420"
+			alt=""
+			decoding="async"
+		/>
+	</div>
+</aside>
+
+<style>
+	.lushan-backdrop {
+		position: absolute;
+		z-index: -1;
+		top: 0;
+		bottom: 0;
+		left: 50%;
+		width: 100vw;
+		transform: translateX(-50%);
+		pointer-events: none;
+		user-select: none;
+	}
+
+	.lushan-backdrop__sticky {
+		position: sticky;
+		top: 55vh;
+		display: flex;
+		width: 100%;
+		height: 45vh;
+		align-items: flex-end;
+		overflow: hidden;
+	}
+
+	.lushan-backdrop img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center bottom;
+		opacity: 0.28;
+		filter: saturate(0.72) contrast(0.9);
+		mix-blend-mode: multiply;
+		-webkit-mask-image: linear-gradient(
+			90deg,
+			#000 0%,
+			#000 16%,
+			rgb(0 0 0 / 55%) 22%,
+			transparent 30%,
+			transparent 70%,
+			rgb(0 0 0 / 55%) 78%,
+			#000 84%,
+			#000 100%
+		);
+		mask-image: linear-gradient(
+			90deg,
+			#000 0%,
+			#000 16%,
+			rgb(0 0 0 / 55%) 22%,
+			transparent 30%,
+			transparent 70%,
+			rgb(0 0 0 / 55%) 78%,
+			#000 84%,
+			#000 100%
+		);
+	}
+
+	:global(:root[data-theme="dark"]) .lushan-backdrop img {
+		opacity: 0.16;
+		filter: invert(1) grayscale(1) contrast(0.82);
+		mix-blend-mode: screen;
+	}
+
+	@media (max-width: 979px) {
+		.lushan-backdrop {
+			display: none;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.lushan-backdrop__sticky {
+			position: absolute;
+			bottom: 0;
+			top: auto;
+		}
+	}
+</style>

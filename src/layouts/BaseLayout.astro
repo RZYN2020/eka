@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import ThemeBootstrap from '../components/ThemeBootstrap.astro';
+import WindowReader from '../components/WindowReader.astro';
 import { site } from '../config/site';
 import { renderTerminal } from '../lib/terminal';
 import '../styles/global.css';
@@ -11,12 +12,14 @@ interface Props {
 	title?: string;
 	description?: string;
 	article?: boolean;
+	reader?: boolean;
 }
 
 const {
 	title = site.fullTitle,
 	description = site.description,
 	article = false,
+	reader = false,
 } = Astro.props;
 const effectiveDescription = description.trim() || site.description;
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -66,6 +69,7 @@ const terminalCard = renderTerminal(await getCollection('writing'));
 			</main>
 			<Footer />
 		</div>
+		{reader && <WindowReader placement="fixed" />}
 		<div class="developer-toast" role="status" aria-live="polite" aria-hidden="true">
 			<span aria-hidden="true">&gt;_</span>
 			Welcome, developer.
