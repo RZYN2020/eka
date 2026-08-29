@@ -58,15 +58,37 @@
   ]),
 )
 
-#let education-entry(item) = [
-  #grid(
-    columns: (1fr, auto),
-    column-gutter: 1em,
-    align: horizon,
+#let brand-logo(path, height: 4.5mm) = box(
+  height: height,
+  align(center + horizon, image(path, height: height, fit: "contain")),
+)
+
+#let education-entry(item) = block(breakable: false)[
+  #block(
+    inset: (x: 6pt, y: 2pt),
   )[
-    #strong(item.school) · #item.degree · #item.major #if item.note != "" { [（#item.note）] }
-  ][
-    #item.date
+    #grid(
+      columns: (auto, 1fr),
+      column-gutter: 8pt,
+      align: top,
+      brand-logo(item.logo, height: item.logo_height),
+      [
+        #text(fill: item.theme, weight: "bold")[#item.school]
+        #for line in item.lines [
+          #v(0.25em)
+          #grid(
+            columns: (1fr, auto),
+            column-gutter: 0.5em,
+            align: horizon,
+            [#line.degree · #line.major],
+            text(size: 9.5pt, fill: rgb("#52606d"))[
+              #line.date
+              #if line.note != "" [（#line.note）]
+            ],
+          )
+        ]
+      ],
+    )
   ]
   #v(0.4em)
 ]
@@ -76,11 +98,6 @@
   #labeled-list(project.points)
   #v(0.35em)
 ]
-
-#let brand-logo(path, height: 4.5mm) = box(
-  height: height,
-  align(center + horizon, image(path, height: height, fit: "contain")),
-)
 
 #let job-title(job) = {
   strong(job.company)
@@ -96,22 +113,30 @@
   }
 }
 
-#let experience-entry(job) = block(breakable: false)[
+#let experience-entry(job) = [
   #block(
-    fill: job.theme.lighten(88%),
-    radius: 3pt,
-    inset: (x: 6pt, y: 4pt),
+    breakable: false,
   )[
-    #grid(
-      columns: (auto, 1fr, auto),
-      column-gutter: 6pt,
-      align: horizon,
-      brand-logo(job.logo, height: job.logo_height),
-      job-title(job),
-      text(size: 9.5pt, fill: rgb("#52606d"))[#job.dates.join("；")],
-    )
+    #block(
+      fill: job.theme.lighten(88%),
+      radius: 3pt,
+      inset: (x: 6pt, y: 4pt),
+    )[
+      #grid(
+        columns: (auto, 1fr, auto),
+        column-gutter: 6pt,
+        align: horizon,
+        brand-logo(job.logo, height: job.logo_height),
+        job-title(job),
+        text(size: 9.5pt, fill: rgb("#52606d"))[#job.dates.join("；")],
+      )
+    ]
+    #if job.projects.len() == 0 and job.points.len() > 0 {
+      v(0.5em)
+      labeled-list((job.points.at(0),))
+    }
   ]
-  #if job.projects.len() > 0 or job.points.len() > 0 {
+  #if job.projects.len() > 0 {
     v(0.5em)
   }
   #if job.projects.len() > 0 {
@@ -120,7 +145,11 @@
     }
   }
   #if job.points.len() > 0 {
-    labeled-list(job.points)
+    if job.projects.len() == 0 {
+      labeled-list(job.points.slice(1))
+    } else {
+      labeled-list(job.points)
+    }
   }
   #v(0.8em)
 ]
