@@ -39,8 +39,8 @@ pnpm verify
 `pnpm optimize:geojson` 再提交；一次性文案和样式调整以提交记录为准，
 `docs/specs/` 只保留需要长期追溯的设计决策或复杂功能方案。
 
-`pnpm build` 会先编译唯一的 Typst 简历到 `public/resume/resume.pdf`，
-随后 Astro 构建把它复制为 `dist/resume/resume.pdf`。
+简历 PDF 已编译并提交为 `public/resume/resume.pdf`，由 Astro 构建复制为
+`dist/resume/resume.pdf`；修改简历内容后运行 `pnpm resume:build` 重新生成并提交。
 
 ## NeoDB
 

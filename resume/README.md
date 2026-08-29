@@ -13,9 +13,9 @@ pnpm resume:build
 pnpm resume:watch
 ```
 
-`pnpm resume:build` 会把 PDF 编译到 `public/resume/resume.pdf`；完整的
-`pnpm build` 会先执行同一编译，再由 Astro 构建把 `public/` 复制为 `dist/`，
-最终产出 `dist/resume/resume.pdf`。
+`pnpm resume:build` 会把 PDF 编译到 `public/resume/resume.pdf`。该 PDF 已提交进
+仓库，Astro 构建会把它复制为 `dist/resume/resume.pdf`；修改内容后重新运行
+`pnpm resume:build` 并提交新 PDF 即可。
 
 内容迁移以原 Markdown 简历为完整基线，并保留此前已经补充的字节跳动项目说明。
 “专业技能”目前仅保留章节，等待后续补充。

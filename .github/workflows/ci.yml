@@ -37,11 +37,6 @@ jobs:
       - name: Type-check content and components
         run: pnpm check
 
-      - name: Install Typst
-        uses: typst-community/setup-typst@v4
-        with:
-          typst-version: '0.15.1'
-
       - name: Build static site and PDF
         run: pnpm build
 
