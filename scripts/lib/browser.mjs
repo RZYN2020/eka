@@ -50,6 +50,7 @@ export async function ensureBrowser() {
 }
 
 export async function launchBrowser() {
+	await ensureBrowser();
 	return puppeteer.launch({
 		headless: true,
 		executablePath: await getExecutablePath(),
