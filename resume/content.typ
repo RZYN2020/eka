@@ -175,6 +175,7 @@
   ),
   (
     name: [SysY-RISCV 编译器],
+    url: "https://github.com/RZYN2020/2024-antpie",
     date: "2024.07 - 2024.09",
     points: (
       [使用 *C++17* 实现 SysY 到 RISC-V 的编译器，生成代码的性能达到 *GCC O2 水准*。],

@@ -155,7 +155,19 @@
 ]
 
 #let project-entry(project) = [
-  #strong(project.name) #h(1fr) #project.date \
+  #if "url" in project {
+    link(project.url)[
+      #box(
+        height: 0.8em,
+        align(center + horizon, image("assets/logos/github.svg", height: 0.72em)),
+      )
+      #h(0.22em)
+      #strong(project.name)
+    ]
+  } else {
+    strong(project.name)
+  }
+  #h(1fr) #project.date \
   #list(..project.points)
   #v(0.8em)
 ]
