@@ -41,6 +41,7 @@ legacyUrls:
 		<span class="article-music__sr-only">展开或收起背景音乐</span>
 	</summary>
 	<div class="article-music__panel">
+		<a class="article-music__mobile-link" href="https://music.163.com/song?id=1312767490" target="_blank" rel="noopener noreferrer">白露 · 封茗囧菌 <span>在网易云播放 ↗</span></a>
 		<iframe
 			src="https://music.163.com/outchain/player?type=2&id=1312767490&auto=0&height=90"
 			title="白露 - 封茗囧菌"
