@@ -1,8 +1,32 @@
 {
-  "syncedAt": "2026-08-17T20:45:23.991Z",
+  "syncedAt": "2026-09-07T22:51:44.629Z",
   "source": "https://neodb.social",
   "shelves": {
     "progress": [
+      {
+        "createdTime": "2026-09-07T15:15:33.673Z",
+        "comment": "",
+        "ratingGrade": null,
+        "item": {
+          "uuid": "6BqamILWyKtJOAFarXBv3t",
+          "url": "https://neodb.social/book/6BqamILWyKtJOAFarXBv3t",
+          "category": "book",
+          "title": "朱熹的历史世界",
+          "cover": "https://neodb.social/m/book/2021/09/16e8958ef3-0437-47d1-9e79-bb26576718dc.jpg"
+        }
+      },
+      {
+        "createdTime": "2026-09-07T15:13:14.685Z",
+        "comment": "",
+        "ratingGrade": null,
+        "item": {
+          "uuid": "6eQ7O70UCOE1GG8tBd5rIc",
+          "url": "https://neodb.social/book/6eQ7O70UCOE1GG8tBd5rIc",
+          "category": "book",
+          "title": "宋史十讲",
+          "cover": "https://neodb.social/m/book/2021/10/1236acc34e-c91f-4bd3-801c-e54a07af2fbc.jpg"
+        }
+      },
       {
         "createdTime": "2026-08-17T10:51:48.854Z",
         "comment": "",
@@ -14,33 +38,11 @@
           "title": "苏东坡传",
           "cover": "https://neodb.social/m/book/2021/09/16132e1df4-6313-4289-b28e-5575d05a8f8f.jpg"
         }
-      },
+      }
+    ],
+    "complete": [
       {
-        "createdTime": "2026-08-10T05:22:07.323Z",
-        "comment": "",
-        "ratingGrade": null,
-        "item": {
-          "uuid": "5NQCxjnsb4YamxVpVJ8qUu",
-          "url": "https://neodb.social/book/5NQCxjnsb4YamxVpVJ8qUu",
-          "category": "book",
-          "title": "因子投资：方法与实践",
-          "cover": "https://neodb.social/m/book/2022/05/010a157b2d-ce89-42e5-80f5-6c4de097b839.jpg"
-        }
-      },
-      {
-        "createdTime": "2026-07-01T12:18:22.077Z",
-        "comment": "",
-        "ratingGrade": null,
-        "item": {
-          "uuid": "2VrORufPoXOGJpsAcaf4LK",
-          "url": "https://neodb.social/book/2VrORufPoXOGJpsAcaf4LK",
-          "category": "book",
-          "title": "Postwar: A History of Europe Since 1945",
-          "cover": "https://neodb.social/m/item/goodreads/2023/03/12/5045e188-f60e-4cec-8b71-fbdeade7f709.jpg"
-        }
-      },
-      {
-        "createdTime": "2026-06-22T05:07:22.084Z",
+        "createdTime": "2026-09-07T15:12:11.561Z",
         "comment": "",
         "ratingGrade": null,
         "item": {
@@ -50,9 +52,7 @@
           "title": "债务危机",
           "cover": "https://neodb.social/m/book/2021/09/16c0b55d59-7700-4837-910d-34dbafd55023.jpg"
         }
-      }
-    ],
-    "complete": [
+      },
       {
         "createdTime": "2026-08-10T05:21:49.831Z",
         "comment": "",
@@ -1940,6 +1940,42 @@
     ],
     "wishlist": [
       {
+        "createdTime": "2026-09-07T15:14:38.846Z",
+        "comment": "",
+        "ratingGrade": null,
+        "item": {
+          "uuid": "1iEjY9ED4y42l8IfsDc42L",
+          "url": "https://neodb.social/book/1iEjY9ED4y42l8IfsDc42L",
+          "category": "book",
+          "title": "中国思想与宗教的奔流：宋朝",
+          "cover": "https://neodb.social/m/book/2021/09/161b51f377-67b1-49cd-92e1-6358ed503e1e.jpg"
+        }
+      },
+      {
+        "createdTime": "2026-09-07T15:12:03.527Z",
+        "comment": "",
+        "ratingGrade": null,
+        "item": {
+          "uuid": "2VrORufPoXOGJpsAcaf4LK",
+          "url": "https://neodb.social/book/2VrORufPoXOGJpsAcaf4LK",
+          "category": "book",
+          "title": "Postwar: A History of Europe Since 1945",
+          "cover": "https://neodb.social/m/item/goodreads/2023/03/12/5045e188-f60e-4cec-8b71-fbdeade7f709.jpg"
+        }
+      },
+      {
+        "createdTime": "2026-09-07T15:11:53.681Z",
+        "comment": "",
+        "ratingGrade": null,
+        "item": {
+          "uuid": "5NQCxjnsb4YamxVpVJ8qUu",
+          "url": "https://neodb.social/book/5NQCxjnsb4YamxVpVJ8qUu",
+          "category": "book",
+          "title": "因子投资：方法与实践",
+          "cover": "https://neodb.social/m/book/2022/05/010a157b2d-ce89-42e5-80f5-6c4de097b839.jpg"
+        }
+      },
+      {
         "createdTime": "2026-07-31T03:48:48.018Z",
         "comment": "",
         "ratingGrade": null,
@@ -2513,18 +2549,6 @@
           "category": "book",
           "title": "宋代中国的改革",
           "cover": "https://neodb.social/m/book/2022/06/03c7750256-023b-4771-90b8-248e33d94916.jpeg"
-        }
-      },
-      {
-        "createdTime": "2025-10-23T11:06:11.740Z",
-        "comment": "",
-        "ratingGrade": null,
-        "item": {
-          "uuid": "6BqamILWyKtJOAFarXBv3t",
-          "url": "https://neodb.social/book/6BqamILWyKtJOAFarXBv3t",
-          "category": "book",
-          "title": "朱熹的历史世界",
-          "cover": "https://neodb.social/m/book/2021/09/16e8958ef3-0437-47d1-9e79-bb26576718dc.jpg"
         }
       },
       {
