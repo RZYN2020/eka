@@ -41,7 +41,7 @@ jobs:
         run: pnpm sync:neodb
 
       - name: Validate synchronized data
-        run: pnpm check
+        run: pnpm verify:fast
 
       - name: Commit data changes
         run: |

@@ -43,8 +43,16 @@ jobs:
       - name: Type-check content and components
         run: pnpm check
 
-      - name: Build static site and PDF
+      - name: Build static site
         run: pnpm build
 
       - name: Verify content, output, and map runtime
         run: pnpm verify
+
+      - name: Upload runtime screenshots on failure
+        if: failure()
+        uses: actions/upload-artifact@v6
+        with:
+          name: runtime-screenshots
+          path: tmp/*.png
+          if-no-files-found: ignore

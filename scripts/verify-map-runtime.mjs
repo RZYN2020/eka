@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { bases } from '../src/data/travel.js';
+import { buildJourneyStops } from '../src/lib/travel-journey.js';
 import { launchBrowser } from './lib/browser.mjs';
 import { startStaticServer } from './lib/static-server.mjs';
 
@@ -19,6 +20,7 @@ const expectedTimelineMarkers = {
 	stays: places.filter(({ kind }) => kind === 'stay').length,
 	visits: places.filter(({ kind }) => kind === 'visit').length,
 };
+const expectedJourneyEnd = buildJourneyStops(bases).findLast((stop) => !stop.derived);
 const server = await startStaticServer(DIST_DIR);
 let browser;
 
@@ -195,9 +197,11 @@ try {
 	await page.waitForFunction(() => document.getElementById('journeyCity')?.textContent === '庆阳');
 	await page.keyboard.press('End');
 	await page.waitForFunction(
-		() =>
-			document.getElementById('journeyCity')?.textContent === '保定' &&
-			document.getElementById('journeyPeriod')?.textContent === '2026.9.11–12',
+		(expected) =>
+			document.getElementById('journeyCity')?.textContent === expected.city &&
+			document.getElementById('journeyPeriod')?.textContent === expected.dateLabel,
+		{},
+		expectedJourneyEnd,
 	);
 	await new Promise((resolve) => setTimeout(resolve, 350));
 
