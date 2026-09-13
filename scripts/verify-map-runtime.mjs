@@ -196,8 +196,8 @@ try {
 	await page.keyboard.press('End');
 	await page.waitForFunction(
 		() =>
-			document.getElementById('journeyCity')?.textContent === '北京' &&
-			document.getElementById('journeyPeriod')?.textContent === '2026.6.27 — 至今',
+			document.getElementById('journeyCity')?.textContent === '保定' &&
+			document.getElementById('journeyPeriod')?.textContent === '2026.9.11–12',
 	);
 	await new Promise((resolve) => setTimeout(resolve, 350));
 
