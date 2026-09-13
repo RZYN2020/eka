@@ -37,7 +37,7 @@ const canonical = new URL('/map/', Astro.site);
     </div>
 
     <!-- Body: edge-to-edge flex row -->
-    <div class="map-body">
+    <main class="map-body">
         <!-- Map -->
         <div class="map-main">
             <div class="map-shell">
@@ -101,7 +101,7 @@ const canonical = new URL('/map/', Astro.site);
         </div>
 
         <!-- Sidebar -->
-        <div id="sidebarCol" class="sidebar-col" style="width:var(--sidebar-w)">
+        <aside id="sidebarCol" class="sidebar-col" style="width:var(--sidebar-w)">
             <div class="sidebar">
                 <div class="sidebar-top">
                     <h2>时间线</h2>
@@ -117,8 +117,8 @@ const canonical = new URL('/map/', Astro.site);
                     <div class="legend" id="legend"></div>
                 </div>
             </div>
-        </div>
-    </div>
+        </aside>
+    </main>
 </div>
 <script src="../../scripts/travel-map.ts"></script>
 </body>

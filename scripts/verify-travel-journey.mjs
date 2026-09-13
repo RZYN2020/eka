@@ -271,4 +271,19 @@ const juneQingyang = actualNodes.find(
 assert.equal(juneQingyang?.kind, 'visit', '2026.6 庆阳是连续行程访问，不是次基地');
 assert.equal(juneQingyang?.journeyId, 'southbound-2026-06');
 
+const baoding = actualStops.findIndex(
+	stop => stop.city === '保定' && stop.date.start === '2026-09-11',
+);
+assert.deepEqual(
+	actualStops.slice(baoding - 1, baoding + 2).map(({ city }) => city),
+	['北京', '保定', '北京'],
+	'2026.9 保定行程必须从北京往返，并保留同行信息',
+);
+const baodingStay = actualNodes.find(
+	node => node.city === '保定' && node.date.start === '2026-09-11',
+);
+assert.equal(baodingStay?.kind, 'stay', '保定两日行程应为短期驻留');
+assert.equal(baodingStay?.date.label, '2026.9.11–12');
+assert.equal(baodingStay?.note, '与孙宇同游');
+
 console.log('Travel journey verification passed.');

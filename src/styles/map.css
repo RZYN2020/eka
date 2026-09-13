@@ -617,9 +617,13 @@ body {
 	.sidebar-col.open {
 		display: flex;
 		position: fixed;
-		inset: 0;
-		z-index: 500;
+		top: 52px;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		z-index: 900;
 		padding: 0.5rem;
+		background: var(--bg);
 	}
 	.sidebar-col.open .sidebar {
 		border-radius: 1rem;
@@ -1313,7 +1317,7 @@ body {
 		position: fixed;
 		top: 60px;
 		right: 10px;
-		z-index: 600;
+		z-index: 1000;
 	}
 
 	.map-sidebar-open .map-ctrls-bar {

@@ -149,6 +149,16 @@ export const bases = [
 		color: '#75677d',
 		slug: '',
 		note: '主基地',
-		children: [],
+		children: [
+			{
+				kind: 'stay',
+				city: '保定',
+				province: '河北',
+				date: { start: '2026-09-11', end: '2026-09-13', label: '2026.9.11–12' },
+				slug: '',
+				note: '与孙宇同游',
+				children: [],
+			},
+		],
 	},
 ];

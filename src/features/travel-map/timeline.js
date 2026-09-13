@@ -18,8 +18,10 @@ function activateWithKeyboard(element, handler) {
 
 function setTripsExpanded(id, expanded) {
 	const trips = document.getElementById(id);
-	if (!trips || trips.classList.contains('collapsed') === expanded) return;
+	if (!trips || trips.classList.contains('collapsed') !== expanded) return;
 	const toggle = document.querySelector(`.tl-toggle[data-target="${id}"]`);
+	trips.inert = !expanded;
+	toggle?.setAttribute('aria-expanded', String(expanded));
 
 	if (prefersReducedMotion()) {
 		trips.classList.toggle('collapsed', !expanded);
@@ -172,11 +174,12 @@ export function createTimelineController({ bases, getMarker, forEachMarker, stop
 				card.style.setProperty('--dot', base.color);
 				const hasNestedTrips = childrenOf(trip).length > 0;
 				card.innerHTML = `<div class="tl-dot-sub"></div>
-					${hasNestedTrips ? `<button type="button" class="tl-toggle flipped" data-target="tps-sub-${baseIndex}-${tripIndex}" title="展开" aria-label="展开 ${trip.city} 的旅行" style="top:0.6rem;right:0.4rem;">${toggleIcon}</button>` : ''}
+						${hasNestedTrips ? `<button type="button" class="tl-toggle flipped" data-target="tps-sub-${baseIndex}-${tripIndex}" title="展开" aria-label="展开 ${trip.city} 的旅行" aria-expanded="false" style="top:0.6rem;right:0.4rem;">${toggleIcon}</button>` : ''}
 					<div class="tl-period" style="color:${base.color};font-size:0.68rem;">${formatTravelDate(trip)}</div>
-					<div style="display:flex;align-items:baseline;gap:4px;flex-wrap:wrap;">
-						<span class="tl-city" style="font-size:0.88rem;">${trip.city}</span><span class="tl-prov">${trip.province}</span>${articleLink(trip.slug, { compact: true })}
-					</div>`;
+						<div style="display:flex;align-items:baseline;gap:4px;flex-wrap:wrap;">
+							<span class="tl-city" style="font-size:0.88rem;">${trip.city}</span><span class="tl-prov">${trip.province}</span>${articleLink(trip.slug, { compact: true })}
+						</div>`;
+				if (trip.note) card.insertAdjacentHTML('beforeend', `<div class="tl-trip-note">${trip.note}</div>`);
 				card.addEventListener('click', (event) => {
 					event.stopPropagation();
 					selectTrip(baseIndex, tripIndex);
@@ -225,7 +228,7 @@ export function createTimelineController({ bases, getMarker, forEachMarker, stop
 			card.id = `b-${baseIndex}`;
 			card.style.setProperty('--dot', base.color);
 			card.innerHTML = `<div class="tl-dot" style="background:${base.color};box-shadow:0 0 0 2px ${base.color},0 1px 4px rgba(0,0,0,0.15);"></div>
-				${childrenOf(base).length ? `<button type="button" class="tl-toggle flipped" data-target="tps-${baseIndex}" title="展开" aria-label="展开 ${base.city} 的旅行">${toggleIcon}</button>` : ''}
+					${childrenOf(base).length ? `<button type="button" class="tl-toggle flipped" data-target="tps-${baseIndex}" title="展开" aria-label="展开 ${base.city} 的旅行" aria-expanded="false">${toggleIcon}</button>` : ''}
 				<div class="tl-period" style="color:${base.color}">${formatTravelDate(base)}</div>
 				<div style="display:flex;align-items:baseline;gap:4px;flex-wrap:wrap;">
 					<span class="tl-city">${base.city}</span><span class="tl-prov">${base.province}</span>${articleLink(base.slug, { compact: true })}
@@ -243,6 +246,7 @@ export function createTimelineController({ bases, getMarker, forEachMarker, stop
 
 			const trips = document.createElement('div');
 			trips.className = 'tl-trips collapsed';
+			trips.inert = true;
 			trips.id = `tps-${baseIndex}`;
 			renderTrips(trips, base, baseIndex);
 			timeline.append(card, trips);
