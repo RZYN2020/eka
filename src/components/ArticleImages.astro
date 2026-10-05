@@ -56,6 +56,32 @@
 			}
 		}
 
+		if (prose.classList.contains('prose-eka--image-captions')) {
+			for (const image of prose.querySelectorAll<HTMLImageElement>('img[alt]')) {
+				if (!image.alt.trim() || image.closest('figure')) continue;
+
+				const item = image.closest('a') ?? image;
+				const figure = document.createElement('figure');
+				figure.className = 'article-image-figure';
+
+				const gallery = image.closest('.image-gallery');
+				if (gallery) {
+					item.before(figure);
+					figure.append(item);
+				} else {
+					const paragraph = image.closest('p');
+					if (!paragraph || !isImageOnly(paragraph)) continue;
+					paragraph.before(figure);
+					for (const node of [...paragraph.childNodes]) figure.append(node);
+					paragraph.remove();
+				}
+
+				const caption = document.createElement('figcaption');
+				caption.textContent = image.alt.trim();
+				figure.append(caption);
+			}
+		}
+
 		const galleries = prose.querySelectorAll<HTMLElement>('.image-gallery');
 		for (const gallery of galleries) {
 			for (const image of gallery.querySelectorAll('img')) {
@@ -237,6 +263,12 @@
 				event.preventDefault();
 				active.stage.focus({ preventScroll: true });
 			}
+		});
+	}
+
+	if (document.querySelector('.gps-route-map[data-route-id]')) {
+		void import('../features/ride-route-map/initialize').then(({ initializeRideRouteMaps }) => {
+			initializeRideRouteMaps();
 		});
 	}
 </script>

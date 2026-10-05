@@ -63,7 +63,10 @@ export function createLayerController({ bases, coordinates, getMap, tone }) {
 				visits.push({ period: formatTravelDate(base), type: '驻地', color: base.color });
 			}
 			walkPlaces(childrenOf(base), (place) => {
-				if (normalizeCity(place.city) === normalized) {
+				if (
+					normalizeCity(place.city) === normalized ||
+					normalizeCity(place.administrativeCity) === normalized
+				) {
 					visits.push({
 						period: formatTravelDate(place),
 						type: place.kind === 'stay' ? '驻留' : '旅行',

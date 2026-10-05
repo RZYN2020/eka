@@ -33,6 +33,7 @@ export function collectVisitedNames(bases: TravelPlace[]) {
 	const provinces = new Set();
 	walkPlaces(bases, (place) => {
 		cities.add(normalizeCity(place.city));
+		if (place.administrativeCity) cities.add(normalizeCity(place.administrativeCity));
 		provinces.add(normalizeProvince(place.province));
 	});
 	return { cities, provinces };

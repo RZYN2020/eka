@@ -122,6 +122,7 @@ export const bases = [
 				slug: '',
 				children: [
 					{ kind: 'visit', city: '大同', province: '山西', date: { start: '2026-01', end: '2026-01', label: '2026.1' }, slug: '' },
+					{ kind: 'visit', city: '庆阳', province: '甘肃', date: { start: '2026-02', end: '2026-02', label: '2026.2' }, slug: '', note: '春节回家' },
 					{ kind: 'visit', journeyId: 'zhuhai-hong-kong-2026', city: '珠海', province: '广东', date: { start: '2026-03', end: '2026-03', label: '2026.3', sequence: 1 }, slug: '' },
 					{ kind: 'visit', journeyId: 'zhuhai-hong-kong-2026', city: '香港', province: '香港', date: { start: '2026-03', end: '2026-03', label: '2026.3', sequence: 2 }, slug: '' },
 					{ kind: 'visit', journeyId: 'zhuhai-hong-kong-2026', city: '珠海', province: '广东', date: { start: '2026-03', end: '2026-03', label: '2026.3', sequence: 3 }, slug: '' },
@@ -150,15 +151,10 @@ export const bases = [
 		slug: '',
 		note: '主基地',
 		children: [
-			{
-				kind: 'stay',
-				city: '保定',
-				province: '河北',
-				date: { start: '2026-09-11', end: '2026-09-13', label: '2026.9.11–12' },
-				slug: '',
-				note: '与孙宇同游',
-				children: [],
-			},
+			{ kind: 'visit', city: '保定', province: '河北', date: { start: '2026-09-11', end: '2026-09-11', label: '2026.9.11' }, slug: '', note: '与孙宇同游，途经白洋淀和雄安新区' },
+			{ kind: 'visit', journeyId: 'tianjin-cycling-2026', city: '香河', administrativeCity: '廊坊', province: '河北', date: { start: '2026-10-01', end: '2026-10-01', label: '2026.10.1', sequence: 1 }, slug: '', coordinates: { lat: 39.76, lng: 117.01 }, note: '廊坊北三县·香河，去程骑行经过' },
+			{ kind: 'visit', journeyId: 'tianjin-cycling-2026', city: '天津', province: '天津', date: { start: '2026-10-01', end: '2026-10-01', label: '2026.10.1', sequence: 2 }, slug: '', note: '骑行抵达' },
+			{ kind: 'visit', journeyId: 'tianjin-cycling-2026', city: '香河', administrativeCity: '廊坊', province: '河北', date: { start: '2026-10-04', end: '2026-10-04', label: '2026.10.4', sequence: 1 }, slug: '', coordinates: { lat: 39.76, lng: 117.01 }, note: '廊坊北三县·香河，返京骑行经过' },
 		],
 	},
 ];

@@ -523,6 +523,141 @@
 	box-shadow: var(--image-shadow);
 }
 
+.prose-eka .article-image-figure {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: max-content;
+	max-width: 100%;
+	gap: 5px;
+	margin: 2em auto;
+}
+
+.prose-eka .article-image-figure > a {
+	display: block;
+	line-height: 0;
+}
+
+.prose-eka .article-image-figure > img {
+	display: block;
+	margin: 0;
+}
+
+.prose-eka .article-image-figure figcaption {
+	max-width: 100%;
+	margin: 0;
+	color: var(--faint);
+	font-size: 12px;
+	line-height: 1.5;
+	text-align: center;
+}
+
+.prose-eka .gps-route-figure {
+	margin-block: 1.5em;
+}
+
+.prose-eka .gps-route-map {
+	width: 100%;
+	height: clamp(280px, 46vw, 460px);
+	border: 1px solid var(--line);
+	border-radius: 7px;
+	background: color-mix(in srgb, var(--paper) 72%, var(--line));
+	color: var(--muted);
+	font-size: 14px;
+	line-height: 1.4;
+}
+
+.prose-eka .gps-route-map .leaflet-control-attribution {
+	font-size: 10px;
+	line-height: 1.3;
+	white-space: nowrap;
+}
+
+.prose-eka .ride-route-legend {
+	display: grid;
+	gap: 5px;
+	padding: 8px 10px;
+	border: 1px solid var(--line);
+	border-radius: 5px;
+	background: color-mix(in srgb, var(--paper) 94%, transparent);
+	color: var(--ink);
+	font-size: 11px;
+	line-height: 1.2;
+}
+
+.prose-eka .ride-route-legend span {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.prose-eka .ride-route-legend i {
+	position: relative;
+	display: inline-block;
+	flex: 0 0 auto;
+	width: 20px;
+	border-top-width: 3px;
+	border-top-style: solid;
+}
+
+.prose-eka .ride-route-legend i::after {
+	position: absolute;
+	top: -11px;
+	right: -1px;
+	font-size: 14px;
+	font-style: normal;
+	line-height: 1;
+	content: '›';
+}
+
+.prose-eka .ride-route-legend__outbound {
+	color: #2563c7;
+	border-top-color: #2563c7;
+}
+
+.prose-eka .ride-route-legend__return {
+	color: #d95436;
+	border-top-color: #d95436;
+	border-top-style: dashed !important;
+}
+
+.prose-eka .route-direction-arrow {
+	border: 0;
+	background: transparent;
+}
+
+.prose-eka .route-direction-arrow svg {
+	display: block;
+	width: 14px;
+	height: 14px;
+	overflow: visible;
+	transform-origin: center;
+	stroke: var(--paper);
+	stroke-width: 3px;
+	paint-order: stroke;
+}
+
+.prose-eka .route-direction-arrow--outbound svg {
+	fill: #2563c7;
+}
+
+.prose-eka .route-direction-arrow--return svg {
+	fill: #d95436;
+}
+
+.prose-eka .gps-route-map--error {
+	display: grid;
+	place-items: center;
+	padding: 24px;
+	text-align: center;
+}
+
+.prose-eka .gps-route-figure figcaption {
+	margin-top: 7px;
+	color: var(--faint);
+	font-size: 12px;
+}
+
 .prose-eka a {
 	overflow-wrap: anywhere;
 }
@@ -576,6 +711,12 @@
 	scroll-snap-align: center;
 }
 
+.prose-eka .image-gallery > figure {
+	width: max-content;
+	max-width: min(82vw, 680px);
+	margin: 0;
+}
+
 .prose-eka .image-gallery > a {
 	display: block;
 }
@@ -588,6 +729,15 @@
 	margin: 0;
 	border-radius: 7px;
 	object-fit: cover;
+}
+
+.prose-eka .image-gallery figure figcaption {
+	max-width: min(82vw, 680px);
+	margin: 0;
+	color: var(--faint);
+	font-size: 11px;
+	line-height: 1.4;
+	text-align: center;
 }
 
 .image-zoom-active {
@@ -753,25 +903,31 @@
 	position: fixed;
 	top: 128px;
 	left: max(24px, calc(50vw - 600px));
-	z-index: 10;
+	z-index: 20;
 	width: 200px;
 	max-height: calc(100vh - 176px);
-	padding-left: 14px;
-	border-left: 1px solid var(--line);
-	background: transparent;
-	opacity: 0.8;
+	padding: 8px 10px;
+	border: 1px solid var(--line);
+	border-radius: 6px;
+	background: color-mix(in srgb, var(--paper) 96%, transparent);
+	box-shadow: 0 4px 18px rgb(0 0 0 / 8%);
+	backdrop-filter: blur(8px);
+	opacity: 0.92;
 	transition: opacity 150ms ease;
 }
 
 .article-toc:not([open]) {
 	width: auto;
-	padding-left: 0;
-	border-left: 0;
+	padding: 6px 9px;
 }
 
 .article-toc:hover,
 .article-toc:focus-within {
 	opacity: 1;
+}
+
+.article-toc[open] {
+	max-width: min(220px, calc(100vw - 48px));
 }
 
 .article-toc summary {
@@ -869,6 +1025,12 @@
 	}
 }
 
+@media (min-width: 1200px) {
+	.prose-eka .image-gallery {
+		width: min(calc(100vw - 32px), 736px);
+	}
+}
+
 @media (max-width: 700px) {
 	.writing-list {
 		gap: 18px;
@@ -928,6 +1090,10 @@
 
 	.prose-eka .image-gallery img {
 		height: min(58vw, 360px);
+	}
+
+	.prose-eka .gps-route-map {
+		height: clamp(280px, 72vw, 360px);
 	}
 }
 

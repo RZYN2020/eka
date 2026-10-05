@@ -45,6 +45,7 @@ tags:
 order: 999
 draft: false
 toc: true
+imageCaptions: false
 neodbIds: []
 legacyUrls: []
 presentation:
@@ -54,5 +55,7 @@ presentation:
 
 Only `title` and `category` are required. Dates are optional so continuously maintained and imported algorithm articles use the same model.
 The table of contents appears automatically when an article has at least three level-two or level-three headings. Set `toc: false` to disable it for an individual article.
+
+Set `imageCaptions: true` to show concise captions derived from an article's image alt text. Leave it disabled when the alt text is only decorative or is not suitable as a visible caption.
 
 `presentation` is optional and accepts only schema-registered decorative effects. Most articles should omit it. See `docs/visual-effects.md` before adding a new value.

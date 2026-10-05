@@ -279,11 +279,11 @@ assert.deepEqual(
 	['北京', '保定', '北京'],
 	'2026.9 保定行程必须从北京往返，并保留同行信息',
 );
-const baodingStay = actualNodes.find(
+const baodingVisit = actualNodes.find(
 	node => node.city === '保定' && node.date.start === '2026-09-11',
 );
-assert.equal(baodingStay?.kind, 'stay', '保定两日行程应为短期驻留');
-assert.equal(baodingStay?.date.label, '2026.9.11–12');
-assert.equal(baodingStay?.note, '与孙宇同游');
+assert.equal(baodingVisit?.kind, 'visit', '保定应记录为旅行访问而不是次级基地');
+assert.equal(baodingVisit?.date.label, '2026.9.11');
+assert.equal(baodingVisit?.note, '与孙宇同游，途经白洋淀和雄安新区');
 
 console.log('Travel journey verification passed.');

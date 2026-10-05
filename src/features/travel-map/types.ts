@@ -18,6 +18,7 @@ export interface Coordinates {
 export interface TravelPlace extends Partial<Coordinates> {
 	kind: TravelKind;
 	city: string;
+	administrativeCity?: string;
 	province: string;
 	date: TravelDate;
 	children?: TravelPlace[];

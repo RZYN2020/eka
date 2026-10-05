@@ -16,7 +16,7 @@ const items = headings.filter((heading) => heading.depth === 2 || heading.depth 
 {items.length >= 3 && (
 	<>
 		<details class="article-toc" open>
-			<summary>Contents</summary>
+			<summary>目录</summary>
 			<nav aria-label="文章目录">
 				{items.map((heading) => (
 					<a href={`#${heading.slug}`} data-depth={heading.depth}>
@@ -27,7 +27,7 @@ const items = headings.filter((heading) => heading.depth === 2 || heading.depth 
 		</details>
 
 		<details class="article-toc-mobile">
-			<summary>Contents</summary>
+			<summary>目录</summary>
 			<nav aria-label="文章目录">
 				{items.map((heading) => (
 					<a href={`#${heading.slug}`} data-depth={heading.depth}>
