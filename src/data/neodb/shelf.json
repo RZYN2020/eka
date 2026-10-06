@@ -1,20 +1,8 @@
 {
-  "syncedAt": "2026-10-06T14:54:15.591Z",
+  "syncedAt": "2026-10-06T23:50:30.797Z",
   "source": "https://neodb.social",
   "shelves": {
     "progress": [
-      {
-        "createdTime": "2026-10-05T14:36:50.402Z",
-        "comment": "",
-        "ratingGrade": null,
-        "item": {
-          "uuid": "2d6tvRX9C7MZkC6TleKZje",
-          "url": "https://neodb.social/book/2d6tvRX9C7MZkC6TleKZje",
-          "category": "book",
-          "title": "绍宋（上中下）",
-          "cover": "https://neodb.social/m/item/doubanbook/2023/10/24/f5410393-3c48-4fbe-9e7b-ef88d1d3ec25.jpg"
-        }
-      },
       {
         "createdTime": "2026-09-28T15:54:12.899Z",
         "comment": "",
@@ -53,6 +41,18 @@
       }
     ],
     "complete": [
+      {
+        "createdTime": "2026-10-06T16:59:38.790Z",
+        "comment": "",
+        "ratingGrade": null,
+        "item": {
+          "uuid": "2d6tvRX9C7MZkC6TleKZje",
+          "url": "https://neodb.social/book/2d6tvRX9C7MZkC6TleKZje",
+          "category": "book",
+          "title": "绍宋（上中下）",
+          "cover": "https://neodb.social/m/item/doubanbook/2023/10/24/f5410393-3c48-4fbe-9e7b-ef88d1d3ec25.jpg"
+        }
+      },
       {
         "createdTime": "2026-10-06T14:13:29.712Z",
         "comment": "",
