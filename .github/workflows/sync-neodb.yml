@@ -40,6 +40,9 @@ jobs:
       - name: Sync public NeoDB data
         run: pnpm sync:neodb
 
+      - name: Build site for validation
+        run: pnpm build
+
       - name: Validate synchronized data
         run: pnpm verify:fast
 
