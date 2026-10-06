@@ -1,8 +1,32 @@
 {
-  "syncedAt": "2026-09-08T22:42:34.015Z",
+  "syncedAt": "2026-10-06T14:54:15.591Z",
   "source": "https://neodb.social",
   "shelves": {
     "progress": [
+      {
+        "createdTime": "2026-10-05T14:36:50.402Z",
+        "comment": "",
+        "ratingGrade": null,
+        "item": {
+          "uuid": "2d6tvRX9C7MZkC6TleKZje",
+          "url": "https://neodb.social/book/2d6tvRX9C7MZkC6TleKZje",
+          "category": "book",
+          "title": "绍宋（上中下）",
+          "cover": "https://neodb.social/m/item/doubanbook/2023/10/24/f5410393-3c48-4fbe-9e7b-ef88d1d3ec25.jpg"
+        }
+      },
+      {
+        "createdTime": "2026-09-28T15:54:12.899Z",
+        "comment": "",
+        "ratingGrade": null,
+        "item": {
+          "uuid": "4WMMz3OmKk0Z2Oxfewxc6Y",
+          "url": "https://neodb.social/book/4WMMz3OmKk0Z2Oxfewxc6Y",
+          "category": "book",
+          "title": "克林索尔的最后夏天",
+          "cover": "https://neodb.social/m/book/2021/10/1694fe1cda-7d5d-44ab-93a9-3e627c3e96ec.jpg"
+        }
+      },
       {
         "createdTime": "2026-09-07T15:15:33.673Z",
         "comment": "",
@@ -29,6 +53,42 @@
       }
     ],
     "complete": [
+      {
+        "createdTime": "2026-10-06T14:13:29.712Z",
+        "comment": "",
+        "ratingGrade": 7,
+        "item": {
+          "uuid": "1XoBZ5O9oQ9AWkdguAbKs5",
+          "url": "https://neodb.social/movie/1XoBZ5O9oQ9AWkdguAbKs5",
+          "category": "movie",
+          "title": "Once Upon A Time in the Middle East",
+          "cover": "https://neodb.social/m/item/doubanmovie/2026/08/05/762a0056-53ca-4121-9b7d-2ee9e885b81a.webp"
+        }
+      },
+      {
+        "createdTime": "2026-10-06T14:12:53.830Z",
+        "comment": "",
+        "ratingGrade": 6,
+        "item": {
+          "uuid": "5Sd0Dw4oPFeRC5uF64tqQ4",
+          "url": "https://neodb.social/movie/5Sd0Dw4oPFeRC5uF64tqQ4",
+          "category": "movie",
+          "title": "The Odyssey",
+          "cover": "https://neodb.social/m/item/doubanmovie/2026/08/23/da5df2a8-ab85-4ded-8a05-9df5d8e7d685.webp"
+        }
+      },
+      {
+        "createdTime": "2026-09-14T15:54:43.332Z",
+        "comment": "",
+        "ratingGrade": 9,
+        "item": {
+          "uuid": "4UWD5bVOqlxNOvi9uJRaKK",
+          "url": "https://neodb.social/book/4UWD5bVOqlxNOvi9uJRaKK",
+          "category": "book",
+          "title": "体国经野之道",
+          "cover": "https://neodb.social/m/book/2021/09/16d1e344b4-e999-476b-8705-c62d054e16c9.jpg"
+        }
+      },
       {
         "createdTime": "2026-09-08T16:29:46.979Z",
         "comment": "",
@@ -1058,7 +1118,7 @@
           "url": "https://neodb.social/book/2StSiIvSQzOXg9rnsRUwhu",
           "category": "book",
           "title": "台北人",
-          "cover": "https://neodb.social/m/book/default.svg"
+          "cover": ""
         }
       },
       {
@@ -2224,7 +2284,7 @@
           "url": "https://neodb.social/book/25EixMHowFD3GBB08dMAVn",
           "category": "book",
           "title": "Three Days To See",
-          "cover": "https://neodb.social/m/book/default.svg"
+          "cover": ""
         }
       },
       {
@@ -3233,18 +3293,6 @@
           "category": "game",
           "title": "The Bustling World",
           "cover": "https://neodb.social/m/item/doubangame/2024/07/16/c3544449-c1c3-4231-b576-c07fa4e0fbd3.jpg"
-        }
-      },
-      {
-        "createdTime": "2025-03-05T04:05:33.201Z",
-        "comment": "",
-        "ratingGrade": null,
-        "item": {
-          "uuid": "4WMMz3OmKk0Z2Oxfewxc6Y",
-          "url": "https://neodb.social/book/4WMMz3OmKk0Z2Oxfewxc6Y",
-          "category": "book",
-          "title": "克林索尔的最后夏天",
-          "cover": "https://neodb.social/m/book/2021/10/1694fe1cda-7d5d-44ab-93a9-3e627c3e96ec.jpg"
         }
       },
       {
