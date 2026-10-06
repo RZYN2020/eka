@@ -107,6 +107,11 @@
 				pressedImage = (event.target as Element).closest('img');
 			});
 			gallery.addEventListener('pointermove', (event) => {
+				// Touch scrolling is handled by the browser. The drag origin is only
+				// initialized for mouse/pen, so applying this math to touch can send
+				// scrollLeft back to zero during a swipe.
+				if (event.pointerType === 'touch') return;
+
 				const delta = event.clientX - startX;
 				if (!dragged && Math.abs(delta) > 4 && event.buttons === 1) {
 					dragged = true;

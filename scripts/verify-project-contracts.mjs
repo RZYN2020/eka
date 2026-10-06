@@ -94,6 +94,10 @@ requireContract(
 	'Image gallery pictures still allow native browser dragging, which interrupts horizontal pointer scrolling.',
 );
 requireContract(
+	(articleImages.match(/if \(event\.pointerType === 'touch'\) return;/g) ?? []).length >= 2,
+	'Touch pointers must bypass the mouse/pen drag logic and keep native gallery scrolling.',
+);
+requireContract(
 	/\.prose-eka\s+a\s*\{[^}]*overflow-wrap:\s*anywhere/s.test(contentCss),
 	'Article links do not wrap long URLs on narrow screens.',
 );
