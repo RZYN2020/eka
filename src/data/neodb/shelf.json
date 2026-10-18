@@ -1,8 +1,20 @@
 {
-  "syncedAt": "2026-10-17T22:21:46.817Z",
+  "syncedAt": "2026-10-18T22:27:12.304Z",
   "source": "https://neodb.social",
   "shelves": {
     "progress": [
+      {
+        "createdTime": "2026-10-18T15:42:25.332Z",
+        "comment": "",
+        "ratingGrade": null,
+        "item": {
+          "uuid": "5UlMufByX2jbZRX55LhlEY",
+          "url": "https://neodb.social/book/5UlMufByX2jbZRX55LhlEY",
+          "category": "book",
+          "title": "我与地坛",
+          "cover": "https://neodb.social/m/book/2021/09/15d70558c0-2ef4-4e69-a4e9-57ddb348dfdf.jpg"
+        }
+      },
       {
         "createdTime": "2026-09-28T15:54:12.899Z",
         "comment": "",
@@ -4409,18 +4421,6 @@
           "category": "book",
           "title": "郁达夫散文",
           "cover": "https://neodb.social/m/book/2021/11/02361b5938-491f-4f10-babe-08659c5286ea.jpg"
-        }
-      },
-      {
-        "createdTime": "2024-09-12T09:16:04.237Z",
-        "comment": "",
-        "ratingGrade": null,
-        "item": {
-          "uuid": "5UlMufByX2jbZRX55LhlEY",
-          "url": "https://neodb.social/book/5UlMufByX2jbZRX55LhlEY",
-          "category": "book",
-          "title": "我与地坛",
-          "cover": "https://neodb.social/m/book/2021/09/15d70558c0-2ef4-4e69-a4e9-57ddb348dfdf.jpg"
         }
       },
       {
