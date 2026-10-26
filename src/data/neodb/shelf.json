@@ -1,5 +1,5 @@
 {
-  "syncedAt": "2026-10-25T22:35:15.759Z",
+  "syncedAt": "2026-10-26T23:55:19.743Z",
   "source": "https://neodb.social",
   "shelves": {
     "progress": [
@@ -470,7 +470,7 @@
           "url": "https://neodb.social/book/51XgX0K7wDNwZjuIM9exbT",
           "category": "book",
           "title": "牛鬼蛇神錄",
-          "cover": "https://neodb.social/m/item/book/2024/01/14/f9b13712-c649-4f81-a5b1-6457802cad19.webp"
+          "cover": "https://neodb.social/m/item/book/2026/10/26/b5805b59-59bc-4ce1-82fb-81c5f78980ec.webp"
         }
       },
       {
@@ -2064,11 +2064,11 @@
         "comment": "",
         "ratingGrade": null,
         "item": {
-          "uuid": "1462hsnHpdKEghSXJLrBWy",
-          "url": "https://neodb.social/book/1462hsnHpdKEghSXJLrBWy",
+          "uuid": "4aElCHfeM5ZFkouRAmUtd4",
+          "url": "https://neodb.social/book/4aElCHfeM5ZFkouRAmUtd4",
           "category": "book",
-          "title": "Where Mathematics Come From: How the Embodied Mind Brings Mathematics into Being",
-          "cover": "https://neodb.social/m/book/2022/11/25d5205e71-2804-4113-baca-20789ee480a3.jpg"
+          "title": "Where Mathematics Come From",
+          "cover": "https://neodb.social/m/book/2021/12/04f097bdc4-fad7-4aa8-ae93-d0ea438a09a1.jpg"
         }
       },
       {
@@ -2304,11 +2304,11 @@
         "comment": "",
         "ratingGrade": null,
         "item": {
-          "uuid": "25EixMHowFD3GBB08dMAVn",
-          "url": "https://neodb.social/book/25EixMHowFD3GBB08dMAVn",
+          "uuid": "3KYiY2FCgePOx1TfctkALT",
+          "url": "https://neodb.social/book/3KYiY2FCgePOx1TfctkALT",
           "category": "book",
-          "title": "Three Days To See",
-          "cover": ""
+          "title": "英汉对照 金牌励志系列 Three Days to See 假如给我三天光明",
+          "cover": "https://neodb.social/m/book/2021/11/28c816a34c-539f-48bf-9f0f-21af8486bbc2.jpg"
         }
       },
       {
@@ -2856,11 +2856,11 @@
         "comment": "",
         "ratingGrade": null,
         "item": {
-          "uuid": "7VmkLquhVEgwkzYt1oE59j",
-          "url": "https://neodb.social/book/7VmkLquhVEgwkzYt1oE59j",
+          "uuid": "6nCMwWAFiKVx8BBEo72iqz",
+          "url": "https://neodb.social/book/6nCMwWAFiKVx8BBEo72iqz",
           "category": "book",
-          "title": "Buddhism: A Very Short Introduction",
-          "cover": "https://neodb.social/m/book/2022/05/152df582a5-9329-4e9f-8bcf-7c59a1e1d922.jpg"
+          "title": "Buddhism",
+          "cover": "https://neodb.social/m/book/2021/10/2449910fe6-7853-4d04-8614-052c04079e40.jpg"
         }
       },
       {
