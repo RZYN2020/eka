@@ -1,20 +1,8 @@
 {
-  "syncedAt": "2026-10-29T23:57:40.489Z",
+  "syncedAt": "2026-10-30T23:50:26.731Z",
   "source": "https://neodb.social",
   "shelves": {
     "progress": [
-      {
-        "createdTime": "2026-10-18T15:42:25.332Z",
-        "comment": "",
-        "ratingGrade": null,
-        "item": {
-          "uuid": "5UlMufByX2jbZRX55LhlEY",
-          "url": "https://neodb.social/book/5UlMufByX2jbZRX55LhlEY",
-          "category": "book",
-          "title": "我与地坛",
-          "cover": "https://neodb.social/m/book/2021/09/15d70558c0-2ef4-4e69-a4e9-57ddb348dfdf.jpg"
-        }
-      },
       {
         "createdTime": "2026-09-28T15:54:12.899Z",
         "comment": "",
@@ -53,6 +41,18 @@
       }
     ],
     "complete": [
+      {
+        "createdTime": "2026-10-30T16:42:16.276Z",
+        "comment": "",
+        "ratingGrade": 8,
+        "item": {
+          "uuid": "5UlMufByX2jbZRX55LhlEY",
+          "url": "https://neodb.social/book/5UlMufByX2jbZRX55LhlEY",
+          "category": "book",
+          "title": "我与地坛",
+          "cover": "https://neodb.social/m/book/2021/09/15d70558c0-2ef4-4e69-a4e9-57ddb348dfdf.jpg"
+        }
+      },
       {
         "createdTime": "2026-10-11T12:28:48.810Z",
         "comment": "",
