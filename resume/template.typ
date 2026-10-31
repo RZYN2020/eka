@@ -12,14 +12,14 @@
     fill: rgb("#173f5f"),
   )
   show link: set text(fill: rgb("#173f5f"))
-  set page(margin: (x: 0.9cm, y: 1.3cm))
+  set page(margin: (x: 0.9cm, y: 1.15cm))
   set text(
     font: ("Libertinus Serif", "Songti SC"),
     size: 11pt,
     lang: "zh",
     region: "cn",
   )
-  set par(justify: true, leading: 1.2em)
+  set par(justify: true, leading: 1.14em)
 
   body
 }
@@ -93,10 +93,37 @@
   #v(0.4em)
 ]
 
+#let blog-link(url, body) = link(url)[
+  #underline(body, stroke: (
+    paint: rgb("#173f5f"),
+    thickness: 0.45pt,
+    dash: "dotted",
+  ))
+  #text(size: 0.62em, baseline: 0.32em, fill: rgb("#173f5f"))[↗]
+]
+
+#let project-title(name) = text(
+  font: ("Libertinus Serif", "Songti SC"),
+  weight: "black",
+  size: 11.5pt,
+)[#name]
+
 #let subproject(project) = [
-  #strong(project.name) \
+  #grid(
+    columns: (1fr, auto),
+    column-gutter: 0.5em,
+    align: horizon,
+    [
+      #project-title(project.name)
+    ],
+    if "date" in project {
+      text(size: 9.5pt, fill: rgb("#52606d"))[#project.date]
+    } else {
+      []
+    },
+  )
   #labeled-list(project.points)
-  #v(0.35em)
+  #v(0.25em)
 ]
 
 #let job-title(job) = {
@@ -151,23 +178,6 @@
       labeled-list(job.points)
     }
   }
-  #v(0.8em)
+  #v(0.6em)
 ]
 
-#let project-entry(project) = [
-  #if "url" in project {
-    link(project.url)[
-      #box(
-        height: 0.8em,
-        align(center + horizon, image("assets/logos/github.svg", height: 0.72em)),
-      )
-      #h(0.22em)
-      #strong(project.name)
-    ]
-  } else {
-    strong(project.name)
-  }
-  #h(1fr) #project.date \
-  #list(..project.points)
-  #v(0.8em)
-]
