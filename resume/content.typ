@@ -55,7 +55,7 @@
 #let experience = (
   (
     company: [字节跳动],
-    department: [中间件],
+    department: [组件],
     role: [后端开发 / AI Agent],
     logo: "assets/logos/bytedance.svg",
     logo_height: 4.5mm,
