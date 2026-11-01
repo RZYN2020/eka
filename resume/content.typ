@@ -18,7 +18,7 @@
 // ---------- 基本信息 ----------
 #let profile = (
   name: "赵勇臻",
-  headline: "AI Agent 基础设施 / 后端开发",
+  headline: "AI Agent 应用 / 后端开发",
   phone: "(+86) 181-6810-0075",
   phone-link: "+8618168100075",
   email: "zhaoyzzz@outlook.com",
@@ -56,17 +56,17 @@
   (
     company: [字节跳动],
     department: [组件],
-    role: [后端开发 / AI Agent],
+    role: [AI Agent 应用开发 / 后端开发],
     logo: "assets/logos/bytedance.svg",
     logo_height: 4.5mm,
     theme: rgb("#3c8cff"),
     dates: ("2025.12 - 2026.05 实习", "2026.07 - 至今 正式"),
     projects: (
       (
-        name: [中间件 AI 提效],
+        name: [组件方向 AI 提效],
         points: (
-          (label: "项目简介", text: [面向中间件研发与运维的 AI 提效平台，负责知识库、Oncall Agent、排障 Skill、评测与研发流程。]),
-          (label: "Oncall 与知识库", text: [建设覆盖 *26 个中间件*组件的三级知识库（AI 知识库 / 代码仓库 / Wiki 长尾召回）；在 Fops 建统一 Oncall 入口，配置 26 个问题分类与值班计划。]),
+          (label: "项目简介", text: [面向组件研发与运维的 AI 提效平台，负责知识库、Oncall Agent、排障 Skill、评测与研发流程。]),
+          (label: "Oncall 与知识库", text: [建设覆盖 *26 个*组件的三级知识库（AI 知识库 / 代码仓库 / Wiki 长尾召回）；在 Fops 建统一 Oncall 入口，配置 26 个问题分类与值班计划。]),
           (label: "工具与 Skill", text: [封装 5 个排障查询 Skill 和 21 个组件接入/开发 Skill，基于内部 Agent 平台搭建 Oncall Agent 与机器人入口。]),
           (label: "评测与流程", text: [建设 *104 题*问答测评与真实排障样例，准确率从*约 50% 提升至 80%+*；推进 Flux + Meego 流程在 *3 个需求*中落地，季度拦截率约 *30%*，节省 *4 人日+*。]),
         ),
