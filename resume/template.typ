@@ -108,7 +108,7 @@
   size: 11.5pt,
 )[#name]
 
-#let subproject(project) = [
+#let subproject(project) = block(breakable: false)[
   #grid(
     columns: (1fr, auto),
     column-gutter: 0.5em,

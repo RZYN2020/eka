@@ -15,15 +15,14 @@
 == 技术经历
 #chiline()
 
-// 第 1 页：字节跳动（只放这一段，写满第一页）
-#experience-entry(experience.at(0))
-#pagebreak()
-// 第 2 页：腾讯、网易、其他项目、专业技能
-#for job in experience.slice(1) {
+#for job in experience {
   experience-entry(job)
 }
 
-#experience-entry(other-projects)
+// 其他项目整段不拆页；内容多时整体移到下一页
+#block(breakable: false)[
+  #experience-entry(other-projects)
+]
 
 #if skills.len() > 0 [
   == 专业技能
