@@ -1,4 +1,12 @@
-#import "template.typ": blog-link
+// 博客链接样式：内容文件自带，避免编辑器里 import 解析不到。
+#let blog-link(url, body) = link(url)[
+  #underline(body, stroke: (
+    paint: rgb("#173f5f"),
+    thickness: 0.45pt,
+    dash: "dotted",
+  ))
+  #text(size: 0.62em, baseline: 0.32em, fill: rgb("#173f5f"))[↗]
+]
 
 // ============================================================
 // 简历内容（唯一内容源）

@@ -93,15 +93,6 @@
   #v(0.4em)
 ]
 
-#let blog-link(url, body) = link(url)[
-  #underline(body, stroke: (
-    paint: rgb("#173f5f"),
-    thickness: 0.45pt,
-    dash: "dotted",
-  ))
-  #text(size: 0.62em, baseline: 0.32em, fill: rgb("#173f5f"))[↗]
-]
-
 #let project-title(name) = text(
   font: ("Libertinus Serif", "Songti SC"),
   weight: "black",
