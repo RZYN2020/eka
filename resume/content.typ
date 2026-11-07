@@ -74,28 +74,28 @@
         name: [中间件方向 AI-Native 建设],
         points: (
           (label: "项目简介", text: [面向业务中间件团队，设计并推进 AI-Native 建设方案，提升研发人效。]),
-          (label: "AI-Native SDLC 建设", text: [建设中间件 AI-Native SDLC，打通需求澄清、方案设计、开发、测试、发布和运维的全流程AI辅助与状态自动流转；建设从单服务、单业务域，关键链路，到逐步覆盖到全部 2000+ 微服务的 sdk 发布流水线，AI 自动生成各服务仓库 MR 并由机器人推送合入，发布耗时从约 *6 个月*缩短至 *3 个月以内*。]),
-          (label: "Oncall Agent 建设", text: [建设中间件 Oncall Agent， 覆盖接入、排障、选型咨询三类场景；整理 FAQ 文档作为 Fast Path，并通过将已有飞书文档导入 LLM Wiki 覆盖长尾场景。并通过封装已有 RPC接口和 OpenAPI 为 MCP，为Oncall Agent提供微服务运行时状态查询能力。并梳理组件知识，沉淀排障 Skill。Oncall 问题拦截率达 *60% 以上*。]),
-          (label: "数据资产沉淀", text: [把散落在文档和个人经验里的中间件信息统一成 Schema（包括产品名称、Skill、控制面地址、Metrics/告警），并整理通用架构资产（链路信息、服务等级、Owner），使元信息可审计、可调用，支撑 Oncall Agent。]),
+          (label: "研发流程", text: [建设中间件 AI-Native SDLC，打通需求澄清、方案设计、开发、测试、发布和运维的全流程 AI 辅助与状态自动流转；SDK 发布流水线从单服务、单业务域、关键链路，逐步覆盖到全部 2000+ 微服务，AI 自动生成各服务仓库 MR 并由机器人推送合入，发布耗时从约 *6 个月*缩短至 *3 个月以内*。]),
+          (label: "值班提效", text: [建设中间件 Oncall Agent，覆盖接入、排障、选型咨询三类场景；整理 FAQ 作为 Fast Path，导入已有飞书文档到 LLM Wiki 覆盖长尾；把 RPC 接口和 OpenAPI 封装为 MCP，为 Oncall Agent 提供微服务运行时状态查询；梳理组件知识，沉淀排障 Skill。Oncall 问题拦截率达 *60% 以上*。]),
+          (label: "数据资产", text: [把散落在文档和个人经验里的中间件信息统一成 Schema（包括产品名称、Skill、控制面地址、Metrics/告警），并整理通用架构资产（链路信息、服务等级、Owner），使元信息可审计、可调用，支撑 Oncall Agent。]),
         ),
       ),
       (
-        name: [数据中间件 - 动态日志控制组件],
+        name: [数据中间件 · 动态日志控制组件],
         points: (
-          (label: "项目简介", text: [建设动态日志控制组件和对应的控制面前端，可动态配置日志、降级、裁剪、采样和转存规则，助力日志成本优化]),
-          (label: "组件建设", text: [通过提供 SDK 对业务正在使用的日志库进行透明封装；支持切面机制的库通过 Middleware 注入，不支持切面的库通过反射替换底层 LogAgent Sender；支持配置中心下发规则，按行号、前缀/后缀、context KV 匹配做级别控制、JSON 裁剪、采样与分级 TTL 存储；]),
-          (label: "维护和升级", text: [对组件进行维护和升级，通过 Webhook 监听组件版本变化，自动测试 + AI Review 暴露 API 兼容性问题。并通过AI、MR推动全域升级风险版本]),
-          (label: "前端控制面", text: [使用 React 技术栈建设动态日志空间组件的前端控制面，支持通过 UI 快速配置日志财经规则；并建设日志报告能力，分析top日志行号；并通过引入AI日志分析，一键分析不可读字段、冗余字段、上下游链路重复RPC日志并产生相关治理规则建议，可一键应用发布。]),
+          (label: "项目简介", text: [建设动态日志控制组件和对应的控制面前端，可动态配置日志、降级、裁剪、采样和转存规则，助力日志成本优化。]),
+          (label: "组件建设", text: [通过提供 SDK 对业务正在使用的日志库进行透明封装；支持切面机制的库通过 Middleware 注入，不支持切面的库通过反射替换底层 LogAgent Sender；支持配置中心下发规则，按行号、前缀/后缀、context KV 匹配做级别控制、JSON 裁剪、采样与分级 TTL 存储。]),
+          (label: "维护升级", text: [负责组件维护和升级：通过 Webhook 监听组件版本变化，自动测试 + AI Review 暴露 API 兼容性问题；并通过 AI、MR 推动全域风险版本升级。]),
+          (label: "前端建设", text: [使用 React 建设动态日志控制组件的前端控制面，支持通过 UI 快速配置日志裁剪规则；建设日志报告能力，分析 Top 日志行号；引入 AI 日志分析，识别不可读字段、冗余字段、上下游重复 RPC 日志，生成治理规则建议并支持一键发布。]),
           (label: "成本治理", text: [在财经各业务域推广动态日志组件与控制面，年化降本 *50% 以上*。]),
         ),
       ),
       (
-        name: [通信中间件 - MQ 流量解析插件],
+        name: [通信中间件 · MQ 流量解析插件],
         points: (
-          (label: "项目简介", text: [财经 MQ 稳定性问题频发，核心是缺乏快速问题发现与限流降级能力。建设流量解析插件以及相关MQ framework支持，提升MQ稳定性。]),
-          (label: "流量解析插件建设", text: [建设流量解析插件，以 sdk 形式通过起切面接入 RPC、数据库、MQ 等基础组件 sdk，拦截业务流量请求，并进行分析和处理；相比 Mesh 方案更具有业务感知能力。]),
-          (label: "MQ扩展支持", text: [建设流量解析插件的MQ扩展包，通过接口封装和切面形式分装原有的MQ库，复用流量解析差已有的限流降级等能力]),
-          (label: "测试 Skill", text: [沉淀通用测试 Skill，集成内部 CLI 一键完成集成测试；部署服务、接入组件、发 RPC 请求模拟业务行为，通过日志打点验证限流/降级/观测，并统一申请测试资源池。]),
+          (label: "项目简介", text: [财经 MQ 稳定性问题频发，核心是缺乏快速问题发现与限流降级能力。建设流量解析插件，并补齐相关 MQ 框架支持，提升 MQ 稳定性。]),
+          (label: "组件建设", text: [建设流量解析插件，以 SDK 形式通过切面接入 RPC、数据库、MQ 等基础组件 SDK，拦截业务流量请求并进行分析和处理；相比 Mesh 方案更具有业务感知能力。]),
+          (label: "扩展适配", text: [建设流量解析插件的 MQ 扩展包，通过接口封装和切面适配原有 MQ 库，复用流量解析插件已有的限流/降级能力。]),
+          (label: "完善测试", text: [沉淀通用测试 Skill，集成内部 CLI 一键完成集成测试；部署服务、接入组件、发 RPC 请求模拟业务行为，通过日志打点验证限流/降级/观测，并统一申请测试资源池。]),
         ),
       ),
     ),
@@ -112,8 +112,8 @@
       (
         name: [漏回声检测算法],
         points: (
-          (label: "项目简介", text: [负责腾讯实时音视频（TRTC）回声检测（Echo Detection） 的算法优化与工程落地，针对复杂声学环境改进 WebRTC 开源方案，完成参数调优与业务集成。]),
-          (label: "评测体系", text: [独立设计并搭建回声检测自动化评测框架，实现测试音频的自动生成与拼接、自动输出量化指标（精度、召回、F1-score 等）。]),
+          (label: "项目简介", text: [负责腾讯实时音视频（TRTC）漏回声检测（Echo Detection）的算法优化与工程落地，针对复杂声学环境改进 WebRTC 开源方案，完成参数调优与业务集成。]),
+          (label: "评测体系", text: [独立设计并搭建漏回声检测自动化评测框架，实现测试音频的自动生成与拼接，自动输出量化指标（精准率、召回率、F1-score 等）。]),
           (label: "算法优化", text: [通过分析 Bad Case，调节参数并引入相关工程化方法优化算法。精准率从约 *60%* 提升至近 *100%*，召回率从 *50%* 提升至 *80%*。]),
         ),
       ),
@@ -129,12 +129,12 @@
     dates: ("2023.06 - 2023.09 实习",),
     projects: (
       (
-        name: [自研 RPC 框架序列化模块性能优化],
+        name: [自研 RPC 框架序列化模块 · DDL],
         points: (
-          (label: "项目简介", text: [DDL （Data definition language）是自研 RPC 框架的序列化模块：通过 .ddl 后缀的IDL文件定义 schema，框架会通过读取schema动态生成encoder与decoder，实现语言对象与二进制序列的双向转换。主要的后端服务是Python生态，序列化框架也是由纯Python编写，因此性能较慢，我负责该框架的维护与性能优化。]),
-          (label: "类型拓展和安全", text: [扩展 DDL 对 Python 多种复杂数据类型的支持；引入 Type Hints 并结合 mypy 静态类型检查，提升代码可读性，减少运行时异常]),
-          (label: "完善测试", text: [采用 Property-Based Testing 的思路随机生成输入，进行测试验证序列化/反序列化前后一致；代码覆盖率 *90%* 并接入 CI。在性能优化等大规模重构中，使用diff test的方式来保证实现正确性]),
-          (label: "性能优化", text: [编写性能分析脚本并结合火焰图定位性能瓶颈，主导 DDL 序列化性能优化；通过类型特化，C语言拓展、以及基础类型复用msgspec、NumPy 零拷贝、类型缓存等技术；将平均耗时从 protobuf 的 *50 倍*降到 *2 倍以内*，部分场景低于 *1/4*。]),
+          (label: "项目简介", text: [DDL（Data Definition Language）是自研 RPC 框架的序列化模块：通过 .ddl 后缀的 IDL 文件定义 schema，框架读取 schema 后动态生成 encoder 与 decoder，实现语言对象与二进制序列的双向转换。后端服务主要使用 Python，序列化框架也是纯 Python 实现，因此性能较慢。负责该框架的维护与性能优化。]),
+          (label: "类型安全", text: [引入 Type Hints 并结合 mypy 静态类型检查，提升代码可读性，减少运行时异常。]),
+          (label: "完善测试", text: [采用 Property-Based Testing 随机生成输入，验证序列化/反序列化前后一致；代码覆盖率 *90%*，并接入 CI。在性能优化等大规模重构中，使用 diff test 保证实现正确性。]),
+          (label: "性能优化", text: [编写性能分析脚本并结合火焰图定位性能瓶颈，主导 DDL 序列化性能优化；通过类型特化、C 语言扩展、基础类型复用 msgspec、NumPy 零拷贝、类型缓存等技术，将平均耗时从 protobuf 的 *50 倍*降到 *2 倍以内*，部分场景低于 *1/4*。]),
         ),
       ),
     ),
@@ -147,7 +147,7 @@
     name: [Transformer-LLM],
     date: "2025.03 - 2025.04",
     points: (
-      (label: "项目内容", text: [#blog-link("https://yongzhen.space/writing/building-a-transformer-lm/")[从零实现基于 *Transformer* 架构的语言模型]，包括 BPE tokenizer 以及模型架构搭建，并完成训练、#blog-link("https://yongzhen.space/writing/adaptation-in-action/")[微调、和对齐]。]),
+      (label: "项目简介", text: [#blog-link("https://yongzhen.space/writing/building-a-transformer-lm/")[从零实现基于 *Transformer* 架构的语言模型]，包括 BPE Tokenizer 与模型架构搭建，并完成训练、#blog-link("https://yongzhen.space/writing/adaptation-in-action/")[微调与对齐]。]),
       (label: "性能优化", text: [通过 #blog-link("https://yongzhen.space/writing/optimize-language-model-performance/")[Profiling] 定位计算与显存瓶颈，实践混合精度、Triton 融合算子、Tiling/Online Softmax 与 PagedAttention 等优化。]),
     ),
   ),
@@ -155,18 +155,18 @@
     name: [SysY-RISCV 编译器],
     date: "2024.07 - 2024.09",
     points: (
-      (label: "项目内容", text: [使用 *C++17* 实现 #blog-link("https://yongzhen.space/writing/compiler-reflections/")[SysY 到 RISC-V 的编译器]，生成代码的性能达到 *GCC O2 水准*。]),
+      (label: "项目简介", text: [使用 *C++17* 实现 #blog-link("https://yongzhen.space/writing/compiler-reflections/")[SysY 到 RISC-V 的编译器]，生成代码的性能达到 *GCC O2 水准*。]),
       (label: "编译优化", text: [基于 *SSA IR* 实现死代码消除、常量折叠、循环优化与寄存器分配等优化 Pass。]),
-      (label: "团队协作", text: [担任组长并负责后端架构、指令选择与代码生成，推进团队协作和性能调优。]),
+      (label: "团队协作", text: [担任组长，负责后端架构、指令选择与代码生成，推动团队协作与性能调优。]),
     ),
   ),
   (
     name: [miniOS 操作系统],
     date: "2022.03 - 2022.06",
     points: (
-      (label: "项目内容", text: [使用 *C* 实现支持多处理器的#blog-link("https://yongzhen.space/writing/xv6-riscv-hardware/")[mini 操作系统]，完成内存管理与内核多线程等核心模块。]),
-      (label: "内存分配器实现", text: [在实现内存分配器的过程中，分别实现了基于链表的，基于红黑树的，和基于 slab 的内存分配器，深刻理解了不同内存管理策略的性能权衡，并将其融入到“Fast Path，Slow Path”相结合的系统设计原则中。]),
-      (label: "并发编程", text: [在实现内核多线程的过程中，深入理解了并发编程的基本理论，认识到在并发编程中“防御式编程”的重要性。]),
+      (label: "项目简介", text: [使用 *C* 实现支持多处理器的 #blog-link("https://yongzhen.space/writing/xv6-riscv-hardware/")[miniOS 操作系统]，完成内存管理与内核多线程等核心模块。]),
+      (label: "内存分配", text: [实现内存分配器时，分别实现基于链表、红黑树和 slab 的内存分配器，理解不同策略在时间、空间与碎片化上的权衡，并形成 Fast Path / Slow Path 的设计。]),
+      (label: "并发编程", text: [实现内核多线程时，理解并发编程的基本理论，并认识到防御式编程的重要性。]),
 
     ),
   ),
