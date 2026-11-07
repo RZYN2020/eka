@@ -19,13 +19,18 @@
   experience-entry(job)
 }
 
-// 其他项目整段不拆页；内容多时整体移到下一页
+// 内容完整版：其他项目 + 技能放第 3 页；最后压 2 页时删掉这行
+#pagebreak()
+// 其他项目整段不拆页
 #block(breakable: false)[
   #experience-entry(other-projects)
 ]
 
 #if skills.len() > 0 [
-  == 专业技能
-  #chiline()
-  #labeled-list(skills)
+  // 技能整段不拆页，避免标题和条目分到两页
+  #block(breakable: false)[
+    == 专业技能
+    #chiline()
+    #labeled-list(skills)
+  ]
 ]

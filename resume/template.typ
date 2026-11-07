@@ -131,6 +131,7 @@
   }
 }
 
+// 每段经历必须有至少一个 project；points 只存在于 project 内。
 #let experience-entry(job) = [
   #block(
     breakable: false,
@@ -149,10 +150,6 @@
         text(size: 9.5pt, fill: rgb("#52606d"))[#job.dates.join("；")],
       )
     ]
-    #if job.projects.len() == 0 and job.points.len() > 0 {
-      v(0.5em)
-      labeled-list((job.points.at(0),))
-    }
   ]
   #if job.projects.len() > 0 {
     v(0.5em)
@@ -160,13 +157,6 @@
   #if job.projects.len() > 0 {
     for project in job.projects {
       subproject(project)
-    }
-  }
-  #if job.points.len() > 0 {
-    if job.projects.len() == 0 {
-      labeled-list(job.points.slice(1))
-    } else {
-      labeled-list(job.points)
     }
   }
   #v(0.6em)
