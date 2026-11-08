@@ -12,14 +12,15 @@
     fill: rgb("#173f5f"),
   )
   show link: set text(fill: rgb("#173f5f"))
-  set page(margin: (x: 0.9cm, y: 1.15cm))
+  show strong: set text(weight: "black")
+  set page(margin: (x: 0.75cm, y: 0.55cm))
   set text(
     font: ("Libertinus Serif", "Songti SC"),
     size: 11pt,
     lang: "zh",
     region: "cn",
   )
-  set par(justify: true, leading: 1.14em)
+  set par(justify: true, leading: 0.64em)
 
   body
 }
@@ -52,7 +53,8 @@
 
 #let masked = [\*\*\*]
 
-#let labeled-list(items) = list(
+#let labeled-list(items, spacing: 1.08em) = list(
+  spacing: spacing,
   ..items.filter(item => item.text != none).map(item => [
     #strong(item.label + "：") #(if item.text == [] { masked } else { item.text })
   ]),
@@ -90,7 +92,7 @@
       ],
     )
   ]
-  #v(0.4em)
+  #v(0.1em)
 ]
 
 #let project-title(name) = text(
@@ -114,7 +116,6 @@
     },
   )
   #labeled-list(project.points)
-  #v(0.25em)
 ]
 
 #let job-title(job) = {
@@ -152,13 +153,13 @@
     ]
   ]
   #if job.projects.len() > 0 {
-    v(0.5em)
+    v(0.1em)
   }
   #if job.projects.len() > 0 {
     for project in job.projects {
       subproject(project)
     }
   }
-  #v(0.6em)
+  #v(0.4em)
 ]
 

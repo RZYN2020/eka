@@ -16,11 +16,13 @@
 #chiline()
 
 #for job in experience {
-  experience-entry(job)
+  // 公司卡片 + 项目保持在同一页，避免卡片在页底、项目在下一页
+  block(breakable: false)[
+    #experience-entry(job)
+  ]
 }
 
-// 内容完整版：其他项目 + 技能放第 3 页；最后压 2 页时删掉这行
-#pagebreak()
+// 2 页版：其他项目 + 技能接在腾讯/网易后面
 // 其他项目整段不拆页
 #block(breakable: false)[
   #experience-entry(other-projects)
@@ -31,6 +33,6 @@
   #block(breakable: false)[
     == 专业技能
     #chiline()
-    #labeled-list(skills)
+    #labeled-list(skills, spacing: 1.4em)
   ]
 ]
