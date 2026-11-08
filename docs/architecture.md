@@ -12,6 +12,10 @@ Eka is a static Astro publication. The repository has one content source and kee
 - `src/scripts/`: browser composition roots. They assemble feature modules but do not own domain logic.
 - `scripts/verify*.mjs`: executable repository, content, and runtime contracts.
 
+## Homepage
+
+`src/config/site.ts` exposes `home.category` for the homepage "Latest writing" list. It defaults to `"Tech"`; set it to `null` to show every category. The topic index and the "All writing" link remain unfiltered.
+
 ## Article presentation
 
 Article-specific decoration is declared in frontmatter and validated by the content schema:
